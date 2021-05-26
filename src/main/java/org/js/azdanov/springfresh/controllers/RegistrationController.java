@@ -92,12 +92,14 @@ public class RegistrationController {
   public String confirmEmail(@RequestParam String token, RedirectAttributes redirectAttributes) {
     var tokenVerificationStatus = tokenService.validateVerificationToken(token);
 
+    // TODO: Resend token if account is disabled on login OR if token is expired
+
     switch (tokenVerificationStatus) {
       case TOKEN_VERIFIED -> {
         redirectAttributes.addFlashAttribute("confirmationSuccess", true);
         return REDIRECT_LOGIN;
       }
-      case TOKEN_INVALID -> {
+      case TOKEN_EXPIRED -> {
         redirectAttributes.addFlashAttribute("tokenExpired", true);
         return REDIRECT_LOGIN;
       }
