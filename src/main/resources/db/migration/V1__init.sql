@@ -14,7 +14,7 @@ CREATE TABLE users
     email    VARCHAR(120) NOT NULL UNIQUE,
     password TEXT         NOT NULL,
     name     VARCHAR(120) NOT NULL,
-    enabled  BOOL         NOT NULL DEFAULT TRUE
+    enabled  BOOL         NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE users_roles

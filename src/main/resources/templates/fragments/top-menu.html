@@ -16,8 +16,12 @@
       </a>
 
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a class="nav-link px-2 link-secondary" th:href="@{/}" th:text="#{home}">Home</a></li>
-        <li><a class="nav-link px-2 link-dark" th:href="@{/about}" th:text="#{about}">About</a></li>
+        <li><a class="nav-link px-2 link-secondary"
+               th:classappend="${#request.requestURI == '/' ? 'link-dark' : ''}" th:href="@{/}"
+               th:text="#{home}">Home</a></li>
+        <li><a class="nav-link px-2 link-secondary"
+               th:classappend="${#request.requestURI == '/about' ? 'link-dark' : ''}" th:href="@{/about}"
+               th:text="#{about}">About</a></li>
       </ul>
 
       <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -30,10 +34,10 @@
       </div>
 
       <div class="dropdown text-end" sec:authorize="isAuthenticated()">
-        <a aria-expanded="false" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
-           href="#" id="user-menu">
-          <img alt="mdo" class="rounded-circle" height="32" src="https://github.com/mdo.png" width="32">
-        </a>
+        <button aria-expanded="false" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                id="user-menu" sec:authentication="name" type="button">
+          User
+        </button>
         <ul aria-labelledby="user-menu" class="dropdown-menu text-small">
           <li><a class="dropdown-item" href="#">New project...</a></li>
           <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -41,20 +45,22 @@
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{logout}"
-                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+          <li><a class="dropdown-item"
+                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();" th:href="@{/logout}"
+                 th:text="#{logout}">Logout</a></li>
         </ul>
-        <form id="logout-form" th:action="@{/logout}" method="POST" class="d-none"></form>
+        <form class="d-none" id="logout-form" method="POST" th:action="@{/logout}"></form>
       </div>
 
       <!--/* Language selector won't work on login, since LocaleChangeInterceptor is loaded after SecurityFilters */-->
       <!--/* Have to rely on JS setLangCookie and CookieLocaleResolver */-->
-      <div class="ms-4 dropdown text-end" >
-        <a aria-expanded="false" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+      <div class="ms-4 dropdown text-end">
+        <a aria-expanded="false" class="d-block link-dark text-decoration-none dropdown-toggle"
+           data-bs-toggle="dropdown"
            href="#" id="language-select">
           <i class="bi bi-translate"></i>
         </a>
-        <ul id="language-list" aria-labelledby="language-select" class="dropdown-menu text-small">
+        <ul aria-labelledby="language-select" class="dropdown-menu text-small" id="language-list">
           <li data-lang="en"><a class="dropdown-item" th:href="@{''(lang=en)}" th:text="#{lang.en}">English</a></li>
           <li data-lang="ru"><a class="dropdown-item" th:href="@{''(lang=ru)}" th:text="#{lang.ru}">Russian</a></li>
         </ul>
