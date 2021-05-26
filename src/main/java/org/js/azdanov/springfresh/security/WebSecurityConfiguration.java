@@ -19,16 +19,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Value("${remember-me}")
   private String rememberMeKey;
 
-  @Override
-  @Bean
-  protected AuthenticationManager authenticationManager() throws Exception {
-    return super.authenticationManager();
-  }
-
   public WebSecurityConfiguration(
       PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
     this.passwordEncoder = passwordEncoder;
     this.userDetailsService = userDetailsService;
+  }
+
+  @Override
+  @Bean
+  protected AuthenticationManager authenticationManager() throws Exception {
+    return super.authenticationManager();
   }
 
   @Override
@@ -39,15 +39,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests(
-            c ->
-                c.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                    .permitAll()
-                    .mvcMatchers("/", "/register")
-                    .permitAll()
-                    .mvcMatchers("/about")
-                    .hasRole("ADMIN")
-                    .anyRequest()
-                    .authenticated())
+        c ->
+            c.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .permitAll()
+                .mvcMatchers("/", "/register", "/register/confirm")
+                .permitAll()
+                .mvcMatchers("/about")
+                .hasRole("ADMIN")
+                .anyRequest()
+                .authenticated())
         .formLogin(
             c ->
                 c.loginPage("/login")

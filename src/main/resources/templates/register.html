@@ -31,7 +31,7 @@
         <div class="form-floating mb-2">
           <input class="form-control" id="name" name="name" placeholder="Jane Doe"
                  th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
-                 th:value="${user.name}" type="text">
+                 th:value="*{name}" type="text">
           <label for="name" th:text="#{name}">Name</label>
           <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('name')}"
                th:text="${#strings.listJoin(#fields.errors('name'), ' ')}">
@@ -42,7 +42,7 @@
         <div class="form-floating mb-2">
           <input class="form-control" id="email" name="email" placeholder="name@example.com"
                  th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
-                 th:value="${user.email}" type="email">
+                 th:value="*{email}" type="email">
           <label for="email" th:text="#{email-address}">Email Address</label>
           <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('email')}"
                th:text="${#strings.listJoin(#fields.errors('email'), ' ')}">

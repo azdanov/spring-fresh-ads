@@ -12,9 +12,9 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordsMatchValidator.class)
 public @interface PasswordsMatch {
-    String message() default "{PasswordsNotMatching}";
+  String message() default "{PasswordsNotMatching}";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 }

@@ -11,5 +11,10 @@ services:
       POSTGRES_DB: fresh
       POSTGRES_USER: fresh
       POSTGRES_PASSWORD: fresh
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
 volumes:
   postgres_data:

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>menu</title>
+</head>
+<body>
+
+<div class="alert alert-danger" role="alert" th:fragment="login-error" th:text="#{login.error}">
+  Error during login.
+</div>
+<div class="alert alert-info" role="alert" th:fragment="registration-success" th:text="#{registration.success}">
+  Registration success.
+</div>
+<div class="alert alert-info" role="alert" th:fragment="email-confirmed" th:text="#{registration.email-confirmed}">
+  Registration success.
+</div>
+<div class="alert alert-info" role="alert" th:fragment="registration-verification"
+     th:text="#{registration.verification}">
+  Registration success.
+</div>
+<div class="alert alert-info" role="alert" th:fragment="registration-expired"
+     th:text="#{registration.expired}">
+  Registration expired.
+</div>
+
+</body>
+</html>

@@ -1,9 +1,10 @@
 package org.js.azdanov.springfresh.controllers.requests;
 
+import org.js.azdanov.springfresh.validators.PasswordsMatch;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import org.js.azdanov.springfresh.validators.PasswordsMatch;
 
 @PasswordsMatch
 public class RegisterUserFormData {
@@ -16,8 +17,10 @@ public class RegisterUserFormData {
   @Size(max = 120)
   private String email;
 
-  @NotBlank private String password;
-  @NotBlank private String passwordRepeated;
+  @NotBlank
+  private String password;
+  @NotBlank
+  private String passwordRepeated;
 
   public String getName() {
     return name;

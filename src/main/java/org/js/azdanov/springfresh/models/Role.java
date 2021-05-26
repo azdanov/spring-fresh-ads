@@ -1,7 +1,11 @@
 package org.js.azdanov.springfresh.models;
 
+import org.hibernate.Hibernate;
+import org.js.azdanov.springfresh.security.RoleAuthority;
+
 import java.text.MessageFormat;
 import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import org.hibernate.Hibernate;
-import org.js.azdanov.springfresh.security.RoleAuthority;
 
 @Table(name = "roles")
 @Entity
@@ -22,10 +24,11 @@ public class Role {
   private Integer id;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 50, unique = true)
+  @Column(length = 50, unique = true, nullable = false)
   private RoleAuthority role;
 
   @ManyToMany(mappedBy = "roles")
+  @Column(nullable = false)
   private Collection<User> users;
 
   public Integer getId() {

@@ -1,6 +1,9 @@
 package org.js.azdanov.springfresh.models;
 
+import org.hibernate.Hibernate;
+
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +16,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import org.hibernate.Hibernate;
 
 @Table(name = "users")
 @Entity
@@ -25,17 +27,18 @@ public class User {
 
   @NotBlank
   @Size(max = 120)
-  @Column
+  @Column(nullable = false)
   private String name;
 
   @NotBlank
   @Size(max = 120)
   @Email
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String email;
 
   @NotBlank
   @Size(max = 200)
+  @Column(nullable = false)
   private String password;
 
   private boolean enabled;
@@ -47,12 +50,14 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
   private Set<Role> roles;
 
-  public User() {}
+  public User() {
+  }
 
   public User(String name, String email, String password) {
     this.name = name;
     this.email = email;
     this.password = password;
+    this.enabled = false;
   }
 
   public Integer getId() {

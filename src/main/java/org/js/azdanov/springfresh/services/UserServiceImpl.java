@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,17 +29,22 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public void createUser(UserDTO userDTO) {
+  public UserDTO createUser(UserDTO userDTO) {
     var user =
-        new User(userDTO.name(), userDTO.email(), passwordEncoder.encode(userDTO.password()));
+        new User(
+            userDTO.name(),
+            userDTO.email(),
+            passwordEncoder.encode(userDTO.password()));
     var role = roleRepository.findByRole(RoleAuthority.USER);
-    user.setEnabled(true);
 
     if (role.isEmpty()) {
-      return;
+      throw new RuntimeException("Role not found");
     }
 
     user.setRoles(Set.of(role.get()));
-    userRepository.save(user);
+    user = userRepository.save(user);
+
+    return new UserDTO(
+        user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled());
   }
 }
