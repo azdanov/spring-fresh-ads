@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{main}">Main</title>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+  <h1 th:text="#{greeting}">Greeting</h1>
+</main>
+
+</body>
+</html>

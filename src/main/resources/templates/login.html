@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <title th:text="#{login}">Login</title>
+  <style>
+    .form-login {
+      width: 100%;
+      max-width: 330px;
+      padding: 15px;
+      margin: auto;
+    }
+
+    .form-login .checkbox {
+      font-weight: 400;
+    }
+
+    .form-login .form-floating:focus-within {
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+  <div class="text-center">
+    <th:block th:if="${param.error}">
+      <div class="alert alert-danger" role="alert" th:text="#{login.error}">
+        Error during login.
+      </div>
+    </th:block>
+    <div class="form-login">
+      <form method="post" th:action="@{/login}">
+        <h1 class="h3 mb-3 fw-normal" th:text="#{please-sign-in}">Please sign in</h1>
+
+        <div class="form-floating mb-2">
+          <input class="form-control" id="email" name="email" placeholder="name@example.com" type="email">
+          <label for="email" th:text="#{email-address}">Email address</label>
+        </div>
+        <div class="form-floating mb-2">
+          <input class="form-control" id="password" name="password" placeholder="Password" type="password">
+          <label for="password" th:text="#{password}">Password</label>
+        </div>
+
+        <div class="checkbox mb-3">
+          <label>
+            <input name="remember-me" type="checkbox"><span class="ms-1" th:text="#{remember-me}">Remember me</span>
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" th:text="#{sign-in}" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted" th:text="'© ' + ${#dates.year(#dates.createNow())}">© 2020</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

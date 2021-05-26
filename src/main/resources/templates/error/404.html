@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{error}">Error</title>
+</head>
+<body>
+<div layout:fragment="page-content">
+  <div class="text-center">
+    <h2 class="fs-1 mb-3">404</h2>
+    <p class="mb-4" th:text="#{error.page.not.found}">Page not found.</p>
+    <a th:href="@{/}"><span th:text="#{back.to.home.page}">Back to home page</span></a>
+  </div>
+</div>
+</body>
+</html>

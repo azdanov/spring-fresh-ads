@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{error}">Error</title>
+</head>
+<body>
+<div layout:fragment="page-content">
+  <div class="text-center">
+    <h2 class="fs-1 mb-3">403</h2>
+    <p class="mb-4" th:text="#{error.page.forbidden}">The current user is not allowed to access this page.</p>
+    <a th:href="@{/}"><span th:text="#{back.to.home.page}">Back to home page</span></a>
+  </div>
+</div>
+</body>
+</html>

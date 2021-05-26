@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <title th:text="#{register}">Register</title>
+  <style>
+    .form-register {
+      width: 100%;
+      max-width: 400px;
+      padding: 15px;
+      margin: auto;
+    }
+
+    .form-register .form-floating:focus-within {
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+  <div class="text-center">
+    <div class="form-register">
+
+      <form method="post" th:action="@{/register}" th:object="${user}">
+        <h1 class="h3 mb-3 fw-normal" th:text="#{please-register}">Please register</h1>
+
+        <div class="form-floating mb-2">
+          <input class="form-control" id="name" name="name" placeholder="Jane Doe"
+                 th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+                 th:value="${user.name}" type="text">
+          <label for="name" th:text="#{name}">Name</label>
+          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('name')}"
+               th:text="${#strings.listJoin(#fields.errors('name'), ' ')}">
+            Field validation error message(s).
+          </div>
+        </div>
+
+        <div class="form-floating mb-2">
+          <input class="form-control" id="email" name="email" placeholder="name@example.com"
+                 th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+                 th:value="${user.email}" type="email">
+          <label for="email" th:text="#{email-address}">Email Address</label>
+          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('email')}"
+               th:text="${#strings.listJoin(#fields.errors('email'), ' ')}">
+            Field validation error message(s).
+          </div>
+        </div>
+
+        <div class="form-floating mb-2">
+          <input class="form-control" id="password" name="password"
+                 th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}" th:placeholder="#{password}"
+                 type="password">
+          <label for="password" th:text="#{password}">Password</label>
+          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('password')}"
+               th:text="${#strings.listJoin(#fields.errors('password'), ' ')}">
+            Field validation error message(s).
+          </div>
+        </div>
+
+        <div class="form-floating mb-2">
+          <input class="form-control" id="passwordRepeated" name="passwordRepeated"
+                 th:classappend="${#fields.hasErrors('passwordRepeated') ? 'is-invalid' : ''}"
+                 th:placeholder="#{confirm-password}" type="password">
+          <label for="passwordRepeated" th:text="#{confirm-password}">Confirm Password</label>
+          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('passwordRepeated')}"
+               th:text="${#strings.listJoin(#fields.errors('passwordRepeated'), ' ')}">
+            Field validation error message(s).
+          </div>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary mt-2" th:text="#{register}" type="submit">Register</button>
+        <p class="mt-5 mb-3 text-muted" th:text="'© ' + ${#dates.year(#dates.createNow())}">© 2020</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

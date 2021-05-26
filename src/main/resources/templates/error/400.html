@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{error}">Error</title>
+</head>
+<body>
+<div layout:fragment="page-content">
+  <div class="text-center">
+    <h2 class="fs-1 mb-3">400</h2>
+    <p class="mb-4" th:text="#{error.server-error}">There was an error.</p>
+    <a th:href="@{/}"><span th:text="#{back.to.home.page}">Back to home page</span></a>
+  </div>
+  <th:block th:if="${exception}">
+    <div class="mt-3 fs-2">Technical Information</div>
+    <div class="mb-2">
+      <div>Error Code:</div>
+      <code th:text="${status}"></code>
+    </div>
+    <div class="mb-2">
+      <div>Exception:</div>
+      <code th:text="${exception}"></code>
+    </div>
+    <div class="mb-1" th:if="${trace}">Stack trace:</div>
+    <pre th:text="${trace}"></pre>
+  </th:block>
+</div>
+</body>
+</html>
