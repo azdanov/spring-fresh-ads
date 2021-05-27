@@ -1,5 +1,7 @@
 package org.js.azdanov.springfresh.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.js.azdanov.springfresh.controllers.requests.RegisterUserFormData;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.events.UserRegisteredEvent;
@@ -19,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/register")
@@ -72,7 +71,8 @@ public class RegistrationController {
     var token = tokenService.createVerificationTokenForUser(registeredUser);
     var confirmationURI = getConfirmationURI(uriComponentsBuilder, token);
 
-    eventPublisher.publishEvent(new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
+    eventPublisher.publishEvent(
+        new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
 
     redirectAttributes.addFlashAttribute("registrationSuccess", true);
     return REDIRECT_LOGIN;
@@ -81,8 +81,7 @@ public class RegistrationController {
   private String getConfirmationURI(UriComponentsBuilder uriComponentsBuilder, String token) {
     return uriComponentsBuilder
         .uriComponents(
-            MvcUriComponentsBuilder
-                .fromMethodName(
+            MvcUriComponentsBuilder.fromMethodName(
                     RegistrationController.class, "confirmEmail", token, new Object())
                 .build())
         .toUriString();

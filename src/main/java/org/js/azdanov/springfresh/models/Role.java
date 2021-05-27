@@ -1,11 +1,7 @@
 package org.js.azdanov.springfresh.models;
 
-import org.hibernate.Hibernate;
-import org.js.azdanov.springfresh.security.RoleAuthority;
-
 import java.text.MessageFormat;
 import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import org.hibernate.Hibernate;
+import org.js.azdanov.springfresh.security.RoleAuthority;
 
 @Table(name = "roles")
 @Entity

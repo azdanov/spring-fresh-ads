@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.services;
 
+import java.util.Set;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.models.User;
 import org.js.azdanov.springfresh.repositories.RoleRepository;
@@ -8,8 +9,6 @@ import org.js.azdanov.springfresh.security.RoleAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,10 +30,7 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public UserDTO createUser(UserDTO userDTO) {
     var user =
-        new User(
-            userDTO.name(),
-            userDTO.email(),
-            passwordEncoder.encode(userDTO.password()));
+        new User(userDTO.name(), userDTO.email(), passwordEncoder.encode(userDTO.password()));
     var role = roleRepository.findByRole(RoleAuthority.USER);
 
     if (role.isEmpty()) {

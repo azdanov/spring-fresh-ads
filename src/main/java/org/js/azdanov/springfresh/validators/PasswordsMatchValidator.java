@@ -1,11 +1,11 @@
 package org.js.azdanov.springfresh.validators;
 
-import org.js.azdanov.springfresh.controllers.requests.RegisterUserFormData;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import org.js.azdanov.springfresh.controllers.requests.RegisterUserFormData;
 
-public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMatch, RegisterUserFormData> {
+public class PasswordsMatchValidator
+    implements ConstraintValidator<PasswordsMatch, RegisterUserFormData> {
   @Override
   public void initialize(PasswordsMatch constraintAnnotation) {
     // intentionally empty
@@ -18,7 +18,8 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMat
     }
 
     context.disableDefaultConstraintViolation();
-    context.buildConstraintViolationWithTemplate("{PasswordsNotMatching}")
+    context
+        .buildConstraintViolationWithTemplate("{PasswordsNotMatching}")
         .addPropertyNode("passwordRepeated")
         .addConstraintViolation();
     return false;

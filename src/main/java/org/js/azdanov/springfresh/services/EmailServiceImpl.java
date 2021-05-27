@@ -1,13 +1,11 @@
 package org.js.azdanov.springfresh.services;
 
+import java.util.UUID;
+import javax.mail.MessagingException;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
-
-import javax.mail.MessagingException;
 
 @Service
 public class EmailServiceImpl implements EmailService {

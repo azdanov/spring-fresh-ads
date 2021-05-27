@@ -39,20 +39,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests(
-        c ->
-            c.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .permitAll()
-                .mvcMatchers("/", "/register", "/register/confirm")
-                .permitAll()
-                .mvcMatchers("/about")
-                .hasRole("ADMIN")
-                .anyRequest()
-                .authenticated())
-        .formLogin(
             c ->
-                c.loginPage("/login")
+                c.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                     .permitAll()
-                    .usernameParameter("email"))
+                    .mvcMatchers("/", "/register", "/register/confirm")
+                    .permitAll()
+                    .mvcMatchers("/about")
+                    .hasRole("ADMIN")
+                    .anyRequest()
+                    .authenticated())
+        .formLogin(c -> c.loginPage("/login").permitAll().usernameParameter("email"))
         .logout(c -> c.logoutSuccessUrl("/"))
         .rememberMe(c -> c.key(rememberMeKey));
   }

@@ -1,11 +1,8 @@
 package org.js.azdanov.springfresh.models;
 
-import org.hibernate.Hibernate;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import org.hibernate.Hibernate;
 
 @Entity
 public class VerificationToken {
@@ -31,8 +29,7 @@ public class VerificationToken {
   @Column(nullable = false)
   private LocalDateTime expiryDate;
 
-  public VerificationToken() {
-  }
+  public VerificationToken() {}
 
   public VerificationToken(final String token) {
     this.token = token;
@@ -102,9 +99,7 @@ public class VerificationToken {
 
   @Override
   public String toString() {
-    return getClass().getSimpleName() + "(" +
-        "id = " + id + ", " +
-        "token = " + token + ", " +
-        "expiryDate = " + expiryDate + ")";
+    return "%s(id = %d, token = %s, expiryDate = %s)"
+        .formatted(getClass().getSimpleName(), id, token, expiryDate);
   }
 }

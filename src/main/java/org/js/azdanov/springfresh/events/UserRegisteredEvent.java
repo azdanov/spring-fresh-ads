@@ -1,9 +1,8 @@
 package org.js.azdanov.springfresh.events;
 
+import java.util.Locale;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.springframework.context.ApplicationEvent;
-
-import java.util.Locale;
 
 public class UserRegisteredEvent extends ApplicationEvent {
 

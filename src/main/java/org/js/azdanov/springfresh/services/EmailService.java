@@ -1,8 +1,7 @@
 package org.js.azdanov.springfresh.services;
 
-import org.js.azdanov.springfresh.dtos.UserDTO;
-
 import javax.mail.MessagingException;
+import org.js.azdanov.springfresh.dtos.UserDTO;
 
 public interface EmailService {
   void sendVerifyEmail(UserDTO userDTO) throws MessagingException;
