@@ -1,18 +1,19 @@
-version: '3.9'
+version: "3.9"
 services:
   db:
-    image: 'postgres:12'
+    image: postgres:13.3-alpine
     restart: always
     volumes:
-      - "postgres_data:/var/lib/postgresql/data"
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       POSTGRES_DB: fresh
       POSTGRES_USER: fresh
       POSTGRES_PASSWORD: fresh
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:v1.0.1
+    restart: always
     ports:
       - 1025:1025 # smtp server
       - 8025:8025 # web ui

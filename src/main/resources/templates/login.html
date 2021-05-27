@@ -27,25 +27,7 @@
 
 <main layout:fragment="page-content">
   <div class="text-center">
-    <th:block th:if="${param.error}">
-      <div th:replace="fragments/login-alerts :: login-error"></div>
-    </th:block>
-    <!--/*@thymesVar id="registrationSuccess" type="java.lang.Boolean"*/-->
-    <th:block th:if="${registrationSuccess}">
-      <div th:replace="fragments/login-alerts :: registration-success"></div>
-    </th:block>
-    <!--/*@thymesVar id="confirmationSuccess" type="java.lang.Boolean"*/-->
-    <th:block th:if="${confirmationSuccess}">
-      <div th:replace="fragments/login-alerts :: email-confirmed"></div>
-    </th:block>
-    <!--/*@thymesVar id="verificationInProgress" type="java.lang.Boolean"*/-->
-    <th:block th:if="${verificationInProgress}">
-      <div th:replace="fragments/login-alerts :: registration-verification"></div>
-    </th:block>
-    <!--/*@thymesVar id="tokenExpired" type="java.lang.Boolean"*/-->
-    <th:block th:if="${tokenExpired}">
-      <div th:replace="fragments/login-alerts :: registration-expired"></div>
-    </th:block>
+    <th:block th:replace="fragments/alerts :: login"></th:block>
 
     <div class="form-login">
       <form method="post" th:action="@{/login}">
