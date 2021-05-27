@@ -1,8 +1,8 @@
 plugins {
-  id "com.diffplug.spotless" version "5.12.5"
-  id 'org.springframework.boot' version '2.5.0'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-  id 'java'
+	id "com.diffplug.spotless" version "5.12.5"
+	id 'org.springframework.boot' version '2.5.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
 }
 
 group = 'org.js.azdanov'
@@ -10,62 +10,66 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '16'
 
 spotless {
-  format 'misc', {
-    target '*.gradle', '*.md', '.gitignore'
-    trimTrailingWhitespace()
-    indentWithSpaces(2)
-    endWithNewline()
-  }
-  java {
-    importOrder()
-    removeUnusedImports()
-    googleJavaFormat('1.10.0')
-  }
-  groovyGradle {
-    target '*.gradle'
-    greclipse()
-  }
-  sql {
-    target 'src/main/resources/db/**/*.sql'
-    dbeaver()
-  }
+	format 'misc', {
+		target '*.md', '.gitignore'
+		trimTrailingWhitespace()
+		indentWithSpaces(2)
+		endWithNewline()
+	}
+	java {
+		importOrder()
+		removeUnusedImports()
+		googleJavaFormat('1.10.0')
+	}
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
+	sql {
+		target 'src/main/resources/db/**/*.sql'
+		dbeaver()
+	}
+	format 'styling', {
+		target 'src/main/resources/static/**/*.css', 'src/main/resources/static/**/*.js'
+		prettier()
+	}
 }
 
 repositories {
-  mavenCentral()
+	mavenCentral()
 }
 
 ext {
-  set('testcontainersVersion', "1.15.3")
-  set('thymeleafLayoutDialectVersion', "2.5.3")
+	set('testcontainersVersion', "1.15.3")
+	set('thymeleafLayoutDialectVersion', "2.5.3")
 }
 
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  implementation 'org.springframework.boot:spring-boot-starter-mail'
-  implementation 'org.springframework.boot:spring-boot-starter-security'
-  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'org.springframework.boot:spring-boot-starter-validation'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.session:spring-session-core'
-  implementation 'org.flywaydb:flyway-core'
-  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-  implementation "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:${thymeleafLayoutDialectVersion}"
-  developmentOnly 'org.springframework.boot:spring-boot-devtools'
-  runtimeOnly 'org.postgresql:postgresql'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
-  testImplementation 'org.testcontainers:junit-jupiter'
-  testImplementation 'org.testcontainers:postgresql'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.session:spring-session-core'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:${thymeleafLayoutDialectVersion}"
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
 }
 
 dependencyManagement {
-  imports {
-    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-  }
+	imports {
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
 }
 
 test {
-  useJUnitPlatform()
+	useJUnitPlatform()
 }
