@@ -12,4 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends CrudRepository<User, Integer> {
   @EntityGraph(attributePaths = {"roles"})
   Optional<User> findByEmail(String username);
+
+  boolean existsByEmail(String email);
 }

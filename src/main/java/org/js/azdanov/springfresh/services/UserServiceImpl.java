@@ -2,6 +2,8 @@ package org.js.azdanov.springfresh.services;
 
 import java.util.Set;
 import org.js.azdanov.springfresh.dtos.UserDTO;
+import org.js.azdanov.springfresh.exceptions.RoleNotFoundException;
+import org.js.azdanov.springfresh.exceptions.UserAlreadyExistsException;
 import org.js.azdanov.springfresh.models.User;
 import org.js.azdanov.springfresh.repositories.RoleRepository;
 import org.js.azdanov.springfresh.repositories.UserRepository;
@@ -29,12 +31,17 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDTO createUser(UserDTO userDTO) {
+    if (userRepository.existsByEmail(userDTO.email())) {
+      throw new UserAlreadyExistsException(
+          "There is an account with that email address: %s".formatted(userDTO.email()));
+    }
+
     var user =
         new User(userDTO.name(), userDTO.email(), passwordEncoder.encode(userDTO.password()));
     var role = roleRepository.findByRole(RoleAuthority.USER);
 
     if (role.isEmpty()) {
-      throw new RuntimeException("Role not found");
+      throw new RoleNotFoundException("Role not found");
     }
 
     user.setRoles(Set.of(role.get()));
@@ -42,5 +49,10 @@ public class UserServiceImpl implements UserService {
 
     return new UserDTO(
         user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled());
+  }
+
+  @Override
+  public boolean userExistsByEmail(String email) {
+    return userRepository.existsByEmail(email);
   }
 }
