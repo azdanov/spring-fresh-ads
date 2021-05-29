@@ -1,5 +1,58 @@
 [
   {
+    "name": "Estonia",
+    "children": [
+      {
+        "name": "Harjumaa",
+        "children": [
+          {
+            "name": "Tallinn"
+          },
+          {
+            "name": "Maardu"
+          },
+          {
+            "name": "Keila"
+          },
+          {
+            "name": "Haabneeme"
+          },
+          {
+            "name": "Saue"
+          }
+        ]
+      },
+      {
+        "name": "Tartumaa",
+        "children": [
+          {
+            "name": "Tartu"
+          },
+          {
+            "name": "Elva"
+          },
+          {
+            "name": "Kambja"
+          }
+        ]
+      },
+      {
+        "name": "Ida-Virumaa",
+        "children": [
+          {
+            "name": "Narva"
+          },
+          {
+            "name": "Kohtla-Järve"
+          },
+          {
+            "name": "Sillamäe"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "USA",
     "children": [
       {
@@ -180,39 +233,6 @@
           },
           {
             "name": "Yuba-Sutter"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Estonia",
-    "children": [
-      {
-        "name": "Harjumaa",
-        "children": [
-          {
-            "name": "Tallinn"
-          },
-          {
-            "name": "Maardu"
-          },
-          {
-            "name": "Keila"
-          }
-        ]
-      },
-      {
-        "name": "Tartumaa",
-        "children": [
-          {
-            "name": "Tartu"
-          },
-          {
-            "name": "Elva"
-          },
-          {
-            "name": "Kambja"
           }
         ]
       }
