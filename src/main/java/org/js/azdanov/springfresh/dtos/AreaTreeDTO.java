@@ -1,4 +1,4 @@
-package org.js.azdanov.springfresh.loader;
+package org.js.azdanov.springfresh.dtos;
 
 import java.util.List;
 

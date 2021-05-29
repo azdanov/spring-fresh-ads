@@ -44,8 +44,6 @@ public class Area implements NestedNode<Integer> {
   @Column(nullable = false)
   private Long treeLevel;
 
-  private String discriminator;
-
   public Area() {}
 
   public Area(String name, String slug) {
@@ -120,14 +118,6 @@ public class Area implements NestedNode<Integer> {
 
   public boolean isRootNode() {
     return this.getParentId() == null;
-  }
-
-  public String getDiscriminator() {
-    return discriminator;
-  }
-
-  public void setDiscriminator(String discriminator) {
-    this.discriminator = discriminator;
   }
 
   @Override

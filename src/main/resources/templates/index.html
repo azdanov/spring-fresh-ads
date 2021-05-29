@@ -9,7 +9,28 @@
 <body>
 
 <main layout:fragment="page-content">
-  <h1 th:text="#{greeting}">Greeting</h1>
+  <div class="card-group">
+    <div class="card">
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12" th:each="country : ${areas}">
+              <h2 th:text="${country.name}">Country</h2>
+              <div class="row">
+                <div class="col-md-4" th:each="state : ${country.children}">
+                  <h3 th:text="${state.name}">State</h3>
+
+                  <th:block th:each="city : ${state.children}">
+                    <h4 th:text="${city.name}">City</h4>
+                  </th:block>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 </body>

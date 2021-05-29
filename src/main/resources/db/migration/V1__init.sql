@@ -61,6 +61,5 @@ CREATE
             parent_id INTEGER,
             tree_left BIGINT NOT NULL,
             tree_right BIGINT NOT NULL,
-            tree_level BIGINT NOT NULL,
-            discriminator TEXT
+            tree_level BIGINT NOT NULL
         );

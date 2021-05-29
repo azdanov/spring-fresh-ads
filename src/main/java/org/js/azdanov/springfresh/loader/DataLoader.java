@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.slugify.Slugify;
 import java.io.IOException;
 import java.util.List;
+import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
 import org.js.azdanov.springfresh.models.Area;
-import org.js.azdanov.springfresh.models.AreaTreeDiscriminator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -38,39 +38,31 @@ public class DataLoader implements CommandLineRunner {
             ResourceUtils.getFile("classpath:areas.json"),
             mapper.getTypeFactory().constructCollectionType(List.class, AreaTreeDTO.class));
 
-    try {
-      countries.forEach(
-          countryDTO -> {
-            String countrySlug = this.slugify.slugify(countryDTO.name());
-            Area country = new Area(countryDTO.name(), countrySlug);
-            country.setDiscriminator(countrySlug);
-            AreaTreeDiscriminator.setAreaDiscriminator(countrySlug);
-            areaNestedNodeRepository.insertAsLastRoot(country);
+    countries.forEach(
+        countryDTO -> {
+          String countrySlug = this.slugify.slugify(countryDTO.name());
+          Area country = new Area(countryDTO.name(), countrySlug);
+          areaNestedNodeRepository.insertAsLastRoot(country);
 
-            countryDTO
-                .children()
-                .forEach(
-                    stateDTO -> {
-                      String stateSlug =
-                          this.slugify.slugify(countryDTO.name() + " " + stateDTO.name());
-                      Area state = new Area(stateDTO.name(), stateSlug);
-                      state.setDiscriminator(countrySlug);
-                      areaNestedNodeRepository.insertAsLastChildOf(state, country);
+          countryDTO
+              .children()
+              .forEach(
+                  stateDTO -> {
+                    String stateSlug =
+                        this.slugify.slugify(countryDTO.name() + " " + stateDTO.name());
+                    Area state = new Area(stateDTO.name(), stateSlug);
+                    areaNestedNodeRepository.insertAsLastChildOf(state, country);
 
-                      stateDTO
-                          .children()
-                          .forEach(
-                              cityDTO -> {
-                                String citySlug =
-                                    this.slugify.slugify(stateDTO.name() + " " + cityDTO.name());
-                                Area city = new Area(cityDTO.name(), citySlug);
-                                city.setDiscriminator(countrySlug);
-                                areaNestedNodeRepository.insertAsLastChildOf(city, state);
-                              });
-                    });
-          });
-    } finally {
-      AreaTreeDiscriminator.cleanupDiscriminator();
-    }
+                    stateDTO
+                        .children()
+                        .forEach(
+                            cityDTO -> {
+                              String citySlug =
+                                  this.slugify.slugify(stateDTO.name() + " " + cityDTO.name());
+                              Area city = new Area(cityDTO.name(), citySlug);
+                              areaNestedNodeRepository.insertAsLastChildOf(city, state);
+                            });
+                  });
+        });
   }
 }
