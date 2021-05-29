@@ -37,11 +37,15 @@ spotless {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 ext {
 	set('testcontainersVersion', "1.15.3")
 	set('thymeleafLayoutDialectVersion', "2.5.3")
+	set('nestedjVersion', "5.0.3")
+	set('javafakerVersion', "1.0.2")
+	set('slugifyVersion', "2.5")
 }
 
 dependencies {
@@ -56,6 +60,9 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:${thymeleafLayoutDialectVersion}"
+	implementation "com.github.eXsio:nestedj:${nestedjVersion}"
+	implementation "com.github.javafaker:javafaker:${javafakerVersion}"
+	implementation "com.github.slugify:slugify:${slugifyVersion}"
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

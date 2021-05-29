@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.config;
 
+import com.github.slugify.Slugify;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +20,10 @@ public class BeanConfig {
     var bean = new LocalValidatorFactoryBean();
     bean.setValidationMessageSource(messageSource);
     return bean;
+  }
+
+  @Bean
+  public Slugify slugify() {
+    return new Slugify();
   }
 }

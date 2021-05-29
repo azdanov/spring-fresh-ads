@@ -34,6 +34,7 @@ public class RegistrationListener implements ApplicationListener<UserRegisteredE
     String subject = messages.getMessage("registration.email.subject", null, event.getLocale());
     String text = messages.getMessage("registration.email.text", null, event.getLocale());
 
+    // TODO: Use ethereal mail to autogenerate account/preview for each user
     var message = new SimpleMailMessage();
     message.setFrom(email);
     message.setTo(event.getUserDTO().email());

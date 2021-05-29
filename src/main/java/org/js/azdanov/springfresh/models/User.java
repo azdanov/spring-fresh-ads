@@ -1,5 +1,7 @@
 package org.js.azdanov.springfresh.models;
 
+import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Table(name = "users")
 @Entity
@@ -31,7 +35,7 @@ public class User {
   @NotBlank
   @Size(max = 120)
   @Email
-  @Column(unique = true, nullable = false)
+  @Column(nullable = false, unique = true)
   private String email;
 
   @NotBlank
@@ -40,6 +44,10 @@ public class User {
   private String password;
 
   private boolean enabled;
+
+  @CreationTimestamp private LocalDateTime createdAt;
+
+  @UpdateTimestamp private LocalDateTime updatedAt;
 
   @ManyToMany
   @JoinTable(
@@ -125,7 +133,8 @@ public class User {
 
   @Override
   public String toString() {
-    return "%s(id = %d, name = %s, email = %s, enabled = %s)"
-        .formatted(getClass().getSimpleName(), id, name, email, enabled);
+    return MessageFormat.format(
+        "{0}(id = {1}, name = {2}, email = {3}, enabled = {4}, createdAt = {5}, updatedAt = {6})",
+        getClass().getSimpleName(), id, name, email, enabled, createdAt, updatedAt);
   }
 }

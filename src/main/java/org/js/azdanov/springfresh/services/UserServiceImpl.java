@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     var user =
         new User(userDTO.name(), userDTO.email(), passwordEncoder.encode(userDTO.password()));
-    var role = roleRepository.findByRole(RoleAuthority.USER);
+    var role = roleRepository.findByName(RoleAuthority.USER);
 
     if (role.isEmpty()) {
       throw new RoleNotFoundException("Role not found");

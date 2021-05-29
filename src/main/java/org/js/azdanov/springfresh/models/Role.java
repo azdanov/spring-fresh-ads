@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.models;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.js.azdanov.springfresh.security.RoleAuthority;
 
 @Table(name = "roles")
@@ -22,12 +25,16 @@ public class Role {
   private Integer id;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 50, unique = true, nullable = false)
-  private RoleAuthority role;
+  @Column(nullable = false, unique = true)
+  private RoleAuthority name;
 
   @ManyToMany(mappedBy = "roles")
   @Column(nullable = false)
   private Collection<User> users;
+
+  @CreationTimestamp private LocalDateTime createdAt;
+
+  @UpdateTimestamp private LocalDateTime updatedAt;
 
   public Integer getId() {
     return id;
@@ -37,12 +44,12 @@ public class Role {
     this.id = id;
   }
 
-  public RoleAuthority getRole() {
-    return role;
+  public RoleAuthority getName() {
+    return name;
   }
 
-  public void setRole(RoleAuthority role) {
-    this.role = role;
+  public void setName(RoleAuthority role) {
+    this.name = role;
   }
 
   public Collection<User> getUsers() {
@@ -73,6 +80,8 @@ public class Role {
 
   @Override
   public String toString() {
-    return MessageFormat.format("{0}(id = {1}, role = {2})", getClass().getSimpleName(), id, role);
+    return MessageFormat.format(
+        "{0}(id = {1}, name = {2}, createdAt = {3}, updatedAt = {4})",
+        getClass().getSimpleName(), id, name, createdAt, updatedAt);
   }
 }

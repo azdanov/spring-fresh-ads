@@ -12,5 +12,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface RoleRepository extends CrudRepository<Role, Integer> {
   @EntityGraph(attributePaths = {"users"})
-  Optional<Role> findByRole(RoleAuthority role);
+  Optional<Role> findByName(RoleAuthority role);
 }

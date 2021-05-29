@@ -1,7 +1,5 @@
 package org.js.azdanov.springfresh.exceptions;
 
-import java.io.Serial;
-
 public final class UserAlreadyExistsException extends RuntimeException {
   public UserAlreadyExistsException() {
     super();
