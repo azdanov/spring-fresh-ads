@@ -47,7 +47,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .mvcMatchers("/about")
                     .hasRole("ADMIN")
                     .anyRequest()
-                    .authenticated())
+                    .permitAll())
         .formLogin(c -> c.loginPage("/login").permitAll().usernameParameter("email"))
         .logout(c -> c.logoutSuccessUrl("/"))
         .rememberMe(c -> c.key(rememberMeKey));

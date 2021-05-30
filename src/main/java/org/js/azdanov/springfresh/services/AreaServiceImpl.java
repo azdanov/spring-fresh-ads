@@ -34,9 +34,9 @@ public class AreaServiceImpl implements AreaService {
   }
 
   private AreaTreeDTO getAreaTreeDTORecursive(Tree<Integer, Area> tree) {
-    String nodeName = tree.getNode().getName();
+    Area area = tree.getNode();
     List<Tree<Integer, Area>> children = tree.getChildren();
-    return new AreaTreeDTO(nodeName, processTreeList(children));
+    return new AreaTreeDTO(area.getName(), area.getSlug(), processTreeList(children));
   }
 
   private List<AreaTreeDTO> processTreeList(List<Tree<Integer, Area>> treeList) {

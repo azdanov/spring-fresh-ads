@@ -2,7 +2,8 @@
 <html lang="en"
       th:lang="${#locale}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      class="h-100">
 <head>
   <meta charset="UTF-8"/>
   <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Fresh</title>
@@ -23,11 +24,15 @@
   <link rel="icon" sizes="16x16" th:href="@{/favicon-16x16.png}" type="image/png">
   <link rel="manifest" th:href="@{/site.webmanifest}">
 </head>
-<body>
-<div id="app">
-  <header th:replace="fragments/top-menu :: menu"></header>
+<body class="bg-light d-flex flex-column h-100">
+<header th:replace="fragments/top-menu :: menu"></header>
 
-  <main class="py-4 container" layout:fragment="page-content"></main>
-</div>
+<main class="py-4 container flex-shrink-0" layout:fragment="page-content"></main>
+
+<footer class="mt-auto py-2 bg-light">
+  <div class="container">
+    <p class="text-muted text-center" th:text="'© ' + ${#dates.year(#dates.createNow())}">© 2020</p>
+  </div>
+</footer>
 </body>
 </html>
