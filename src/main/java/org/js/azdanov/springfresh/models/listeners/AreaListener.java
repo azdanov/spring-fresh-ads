@@ -2,7 +2,6 @@ package org.js.azdanov.springfresh.models.listeners;
 
 import com.github.slugify.Slugify;
 import javax.persistence.PrePersist;
-import org.jetbrains.annotations.NotNull;
 import org.js.azdanov.springfresh.models.Area;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.js.azdanov.springfresh.utils.BeanUtil;

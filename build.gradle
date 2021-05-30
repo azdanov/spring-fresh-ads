@@ -46,6 +46,7 @@ ext {
 	set('nestedjVersion', "5.0.3")
 	set('javafakerVersion', "1.0.2")
 	set('slugifyVersion', "2.5")
+	set('commonsCollectionVersion', "4.4")
 }
 
 dependencies {
@@ -66,6 +67,7 @@ dependencies {
 	implementation "com.github.eXsio:nestedj:${nestedjVersion}"
 	implementation "com.github.javafaker:javafaker:${javafakerVersion}"
 	implementation "com.github.slugify:slugify:${slugifyVersion}"
+	implementation "org.apache.commons:commons-collections4:${commonsCollectionVersion}"
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
+import org.apache.commons.collections4.ListUtils;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
 import org.js.azdanov.springfresh.models.Area;
@@ -49,7 +50,7 @@ public class DataLoader implements CommandLineRunner {
     return areaTreeDTO -> {
       Area country = new Area(areaTreeDTO.name());
       areaNestedNodeRepository.insertAsLastRoot(country);
-      areaTreeDTO.children().forEach(createAreaNode(country));
+      ListUtils.emptyIfNull(areaTreeDTO.children()).forEach(createAreaNode(country));
     };
   }
 
@@ -57,8 +58,7 @@ public class DataLoader implements CommandLineRunner {
     return areaTreeDTO -> {
       Area node = new Area(areaTreeDTO.name());
       areaNestedNodeRepository.insertAsLastChildOf(node, parent);
-      List<AreaTreeDTO> children = areaTreeDTO.children();
-      if (children != null) children.forEach(createAreaNode(node));
+      ListUtils.emptyIfNull(areaTreeDTO.children()).forEach(createAreaNode(node));
     };
   }
 
@@ -74,7 +74,7 @@ public class DataLoader implements CommandLineRunner {
     return categoryTreeDTO -> {
       Category category = new Category(categoryTreeDTO.name());
       categoryNestedNodeRepository.insertAsLastRoot(category);
-      categoryTreeDTO.children().forEach(createCategoryNode(category));
+      ListUtils.emptyIfNull(categoryTreeDTO.children()).forEach(createCategoryNode(category));
     };
   }
 
@@ -82,8 +82,7 @@ public class DataLoader implements CommandLineRunner {
     return categoryTreeDTO -> {
       Category node = new Category(categoryTreeDTO.name());
       categoryNestedNodeRepository.insertAsLastChildOf(node, parent);
-      List<CategoryTreeDTO> children = categoryTreeDTO.children();
-      if (children != null) children.forEach(createCategoryNode(node));
+      ListUtils.emptyIfNull(categoryTreeDTO.children()).forEach(createCategoryNode(node));
     };
   }
 }
