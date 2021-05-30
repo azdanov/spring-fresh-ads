@@ -1,14 +1,19 @@
 package org.js.azdanov.springfresh.services;
 
+import static org.js.azdanov.springfresh.config.CacheConfig.AREA;
+
 import java.util.List;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
 import org.js.azdanov.springfresh.models.Area;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.exsio.nestedj.NestedNodeRepository;
 import pl.exsio.nestedj.model.Tree;
 
 @Service
+@CacheConfig(cacheNames = {AREA})
 public class AreaServiceImpl implements AreaService {
 
   private final AreaRepository areaRepository;
@@ -20,6 +25,7 @@ public class AreaServiceImpl implements AreaService {
     this.areaNestedNodeRepository = areaNestedNodeRepository;
   }
 
+  @Cacheable
   @Override
   public List<AreaTreeDTO> getAllAreas() {
     List<Area> roots = areaRepository.findAllByParentIdIsNull();
