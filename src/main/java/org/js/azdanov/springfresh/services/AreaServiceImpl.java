@@ -9,6 +9,7 @@ import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.exsio.nestedj.NestedNodeRepository;
 import pl.exsio.nestedj.model.Tree;
 
@@ -27,15 +28,12 @@ public class AreaServiceImpl implements AreaService {
 
   @Cacheable
   @Override
+  @Transactional(readOnly = true)
   public List<AreaTreeDTO> getAllAreas() {
     List<Area> roots = areaRepository.findAllByParentIdIsNull();
 
     return roots.stream()
-        .map(
-            country -> {
-              Tree<Integer, Area> tree = areaNestedNodeRepository.getTree(country);
-              return getAreaTreeDTORecursive(tree);
-            })
+        .map(country -> getAreaTreeDTORecursive(areaNestedNodeRepository.getTree(country)))
         .toList();
   }
 

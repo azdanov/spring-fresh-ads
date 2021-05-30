@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.models;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -13,13 +14,13 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.js.azdanov.springfresh.models.listeners.AreaListener;
+import org.js.azdanov.springfresh.models.listeners.CategoryListener;
 import pl.exsio.nestedj.model.NestedNode;
 
-@EntityListeners(AreaListener.class)
-@Table(name = "areas")
+@EntityListeners(CategoryListener.class)
+@Table(name = "categories")
 @Entity
-public class Area implements NestedNode<Integer> {
+public class Category implements NestedNode<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -32,10 +33,11 @@ public class Area implements NestedNode<Integer> {
   @Column(nullable = false, unique = true)
   private String slug;
 
+  @Column(nullable = false)
+  private BigDecimal price;
+
   @CreationTimestamp private LocalDateTime createdAt;
-
   @UpdateTimestamp private LocalDateTime updatedAt;
-
   private Integer parentId;
 
   @Column(nullable = false)
@@ -47,16 +49,19 @@ public class Area implements NestedNode<Integer> {
   @Column(nullable = false)
   private Long treeLevel;
 
-  public Area() {}
+  public Category() {}
 
-  public Area(String name) {
+  public Category(String name) {
     this.name = name;
+    this.price = BigDecimal.ZERO;
   }
 
+  @Override
   public Integer getId() {
     return id;
   }
 
+  @Override
   public void setId(Integer id) {
     this.id = id;
   }
@@ -75,6 +80,22 @@ public class Area implements NestedNode<Integer> {
 
   public void setSlug(String slug) {
     this.slug = slug;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
   @Override
@@ -125,14 +146,14 @@ public class Area implements NestedNode<Integer> {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    Area area = (Area) o;
+    Category category = (Category) o;
 
-    return id != null && id.equals(area.id);
+    return id != null && id.equals(category.id);
   }
 
   @Override
   public int hashCode() {
-    return 1179343604;
+    return 1596826009;
   }
 
   @Override

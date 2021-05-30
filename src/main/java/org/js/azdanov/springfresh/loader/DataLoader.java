@@ -1,11 +1,13 @@
 package org.js.azdanov.springfresh.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.slugify.Slugify;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
+import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
 import org.js.azdanov.springfresh.models.Area;
+import org.js.azdanov.springfresh.models.Category;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -17,52 +19,71 @@ import pl.exsio.nestedj.NestedNodeRepository;
 @ConditionalOnProperty(value = "dataloader.enabled", havingValue = "true")
 @Transactional
 public class DataLoader implements CommandLineRunner {
-  private final Slugify slugify;
   private final NestedNodeRepository<Integer, Area> areaNestedNodeRepository;
+  private final NestedNodeRepository<Integer, Category> categoryNestedNodeRepository;
+  private final ObjectMapper mapper;
 
-  public DataLoader(Slugify slugify, NestedNodeRepository<Integer, Area> areaNestedNodeRepository) {
-    this.slugify = slugify;
+  public DataLoader(
+      NestedNodeRepository<Integer, Area> areaNestedNodeRepository,
+      NestedNodeRepository<Integer, Category> categoryNestedNodeRepository) {
     this.areaNestedNodeRepository = areaNestedNodeRepository;
+    this.categoryNestedNodeRepository = categoryNestedNodeRepository;
+    this.mapper = new ObjectMapper();
   }
 
   @Override
   public void run(String... args) throws Exception {
     loadAreas();
+    loadCategories();
   }
 
   private void loadAreas() throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-
     List<AreaTreeDTO> countries =
         mapper.readValue(
-            ResourceUtils.getFile("classpath:areas.json"),
+            ResourceUtils.getFile("classpath:data/areas.json"),
             mapper.getTypeFactory().constructCollectionType(List.class, AreaTreeDTO.class));
+    countries.forEach(createAreaRoot());
+  }
 
-    countries.forEach(
-        countryDTO -> {
-          String countrySlug = this.slugify.slugify(countryDTO.name());
-          Area country = new Area(countryDTO.name(), countrySlug);
-          areaNestedNodeRepository.insertAsLastRoot(country);
+  private Consumer<AreaTreeDTO> createAreaRoot() {
+    return areaTreeDTO -> {
+      Area country = new Area(areaTreeDTO.name());
+      areaNestedNodeRepository.insertAsLastRoot(country);
+      areaTreeDTO.children().forEach(createAreaNode(country));
+    };
+  }
 
-          countryDTO
-              .children()
-              .forEach(
-                  stateDTO -> {
-                    String stateSlug =
-                        this.slugify.slugify(countryDTO.name() + " " + stateDTO.name());
-                    Area state = new Area(stateDTO.name(), stateSlug);
-                    areaNestedNodeRepository.insertAsLastChildOf(state, country);
+  private Consumer<AreaTreeDTO> createAreaNode(Area parent) {
+    return areaTreeDTO -> {
+      Area node = new Area(areaTreeDTO.name());
+      areaNestedNodeRepository.insertAsLastChildOf(node, parent);
+      List<AreaTreeDTO> children = areaTreeDTO.children();
+      if (children != null) children.forEach(createAreaNode(node));
+    };
+  }
 
-                    stateDTO
-                        .children()
-                        .forEach(
-                            cityDTO -> {
-                              String citySlug =
-                                  this.slugify.slugify(stateDTO.name() + " " + cityDTO.name());
-                              Area city = new Area(cityDTO.name(), citySlug);
-                              areaNestedNodeRepository.insertAsLastChildOf(city, state);
-                            });
-                  });
-        });
+  private void loadCategories() throws IOException {
+    List<CategoryTreeDTO> categories =
+        mapper.readValue(
+            ResourceUtils.getFile("classpath:data/categories.json"),
+            mapper.getTypeFactory().constructCollectionType(List.class, CategoryTreeDTO.class));
+    categories.forEach(createCategoryRoot());
+  }
+
+  private Consumer<CategoryTreeDTO> createCategoryRoot() {
+    return categoryTreeDTO -> {
+      Category category = new Category(categoryTreeDTO.name());
+      categoryNestedNodeRepository.insertAsLastRoot(category);
+      categoryTreeDTO.children().forEach(createCategoryNode(category));
+    };
+  }
+
+  private Consumer<CategoryTreeDTO> createCategoryNode(Category parent) {
+    return categoryTreeDTO -> {
+      Category node = new Category(categoryTreeDTO.name());
+      categoryNestedNodeRepository.insertAsLastChildOf(node, parent);
+      List<CategoryTreeDTO> children = categoryTreeDTO.children();
+      if (children != null) children.forEach(createCategoryNode(node));
+    };
   }
 }
