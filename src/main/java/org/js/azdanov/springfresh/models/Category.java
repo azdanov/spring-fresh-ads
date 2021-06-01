@@ -82,6 +82,14 @@ public class Category implements NestedNode<Integer> {
     this.slug = slug;
   }
 
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
+
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }

@@ -25,9 +25,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
-  public static final String REGISTER = "register";
-  public static final String REDIRECT = "redirect:/";
-  public static final String REDIRECT_LOGIN = "redirect:/login";
   private final UserService userService;
   private final VerificationTokenService tokenService;
   private final ApplicationEventPublisher eventPublisher;
@@ -45,9 +42,9 @@ public class RegistrationController {
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     if (userDetails == null) {
       model.addAttribute("user", new RegisterUserFormData());
-      return REGISTER;
+      return "register";
     } else {
-      return REDIRECT;
+      return "redirect:/";
     }
   }
 
@@ -64,7 +61,7 @@ public class RegistrationController {
 
     if (bindingResult.hasErrors()) {
       model.addAttribute("user", formData);
-      return REGISTER;
+      return "register";
     }
 
     var registeredUser = userService.createUser(new UserDTO(formData));
@@ -75,7 +72,7 @@ public class RegistrationController {
         new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
 
     redirectAttributes.addFlashAttribute("registrationSuccess", true);
-    return REDIRECT_LOGIN;
+    return "redirect:/login";
   }
 
   private String getConfirmationURI(UriComponentsBuilder uriComponentsBuilder, String token) {
@@ -96,15 +93,15 @@ public class RegistrationController {
     switch (tokenVerificationStatus) {
       case TOKEN_VERIFIED -> {
         redirectAttributes.addFlashAttribute("confirmationSuccess", true);
-        return REDIRECT_LOGIN;
+        return "redirect:/login";
       }
       case TOKEN_EXPIRED -> {
         redirectAttributes.addFlashAttribute("tokenExpired", true);
-        return REDIRECT_LOGIN;
+        return "redirect:/login";
       }
       default -> {
         redirectAttributes.addFlashAttribute("verificationInProgress", true);
-        return REDIRECT_LOGIN;
+        return "redirect:/login";
       }
     }
   }

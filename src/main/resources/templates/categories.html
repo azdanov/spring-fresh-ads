@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{categories}">Categories</title>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+  <div class="card">
+    <div class="card-body">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4" th:each="category : ${categories}">
+            <h4>
+              <a class="text-decoration-none" th:href="@{/{slug}(slug=${category.slug})}"
+                 th:text="${category.name}">Category</a>
+            </h4>
+            <hr>
+            <div class="row">
+              <th:block th:each="sub : ${category.children}">
+                <h5>
+                  <a class="text-decoration-none" th:href="@{/{slug}(slug=${sub.slug})}"
+                     th:text="${sub.name}">Sub-category</a>
+                  (x)
+                </h5>
+              </th:block>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

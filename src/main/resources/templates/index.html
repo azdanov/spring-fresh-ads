@@ -9,26 +9,28 @@
 <body>
 
 <main layout:fragment="page-content">
-  <div class="card-group">
-    <div class="card">
-      <div class="card-body">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 mb-4" th:each="country : ${areas}">
-              <h3>
-                <a class="text-decoration-none" th:href="@{/{slug}(slug=${country.slug})}" th:text="${country.name}">Country</a>
-              </h3>
-              <div class="row">
-                <div class="col-md-4" th:each="state : ${country.children}">
-                  <h4>
-                    <a class="text-decoration-none" th:href="@{/{slug}(slug=${state.slug})}" th:text="${state.name}">State</a>
-                  </h4>
-                  <th:block th:each="city : ${state.children}">
-                    <h5>
-                      <a class="text-decoration-none" th:href="@{/{slug}(slug=${city.slug})}" th:text="${city.name}">City</a>
-                    </h5>
-                  </th:block>
-                </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-4" th:each="country : ${areas}">
+            <h3 class="mb-3 fs-2">
+              <a class="text-decoration-none" th:href="@{/{slug}/categories(slug=${country.slug})}"
+                 th:text="${country.name}">Country</a>
+            </h3>
+            <div class="row">
+              <div class="col-md-4" th:each="state : ${country.children}">
+                <h4>
+                  <a class="text-decoration-none" th:href="@{/{slug}/categories(slug=${state.slug})}"
+                     th:text="${state.name}">State</a>
+                </h4>
+                <hr>
+                <th:block th:each="city : ${state.children}">
+                  <h5>
+                    <a class="text-decoration-none" th:href="@{/{slug}/categories(slug=${city.slug})}"
+                       th:text="${city.name}">City</a>
+                  </h5>
+                </th:block>
               </div>
             </div>
           </div>

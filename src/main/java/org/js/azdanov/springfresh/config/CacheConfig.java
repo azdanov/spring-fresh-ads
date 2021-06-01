@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CacheConfig {
   public static final String AREA = "area";
+  public static final String CATEGORY = "category";
 
   private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration =
       Eh107Configuration.fromEhcacheCacheConfiguration(
@@ -26,6 +27,7 @@ public class CacheConfig {
   public JCacheManagerCustomizer cacheManagerCustomizer() {
     return cm -> {
       createCache(cm, AREA);
+      createCache(cm, CATEGORY);
     };
   }
 

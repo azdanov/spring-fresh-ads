@@ -35,7 +35,7 @@ public class StubUserDetailsService implements UserDetailsService {
         .username(USERNAME_USER)
         .password(passwordEncoder.encode("secret"))
         .disabled(false)
-        .roles(RoleAuthority.USER.name())
+        .roles(RoleAuthority.USER.toString())
         .build();
   }
 
@@ -44,7 +44,7 @@ public class StubUserDetailsService implements UserDetailsService {
         .username(USERNAME_ADMIN)
         .password(passwordEncoder.encode("secret"))
         .disabled(false)
-        .roles(RoleAuthority.USER.name(), RoleAuthority.ADMIN.name())
+        .roles(RoleAuthority.USER.toString(), RoleAuthority.ADMIN.toString())
         .build();
   }
 }
