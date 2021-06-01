@@ -3,7 +3,9 @@ package org.js.azdanov.springfresh.services;
 import static org.js.azdanov.springfresh.config.CacheConfig.AREA;
 
 import java.util.List;
+import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
+import org.js.azdanov.springfresh.exceptions.AreaNotFoundException;
 import org.js.azdanov.springfresh.models.Area;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.springframework.cache.annotation.CacheConfig;
@@ -35,6 +37,14 @@ public class AreaServiceImpl implements AreaService {
     return roots.stream()
         .map(country -> getAreaTreeDTORecursive(areaNestedNodeRepository.getTree(country)))
         .toList();
+  }
+
+  @Override
+  public AreaDTO findBySlug(String slug) {
+    return areaRepository
+        .findBySlug(slug)
+        .map(area -> new AreaDTO(area.getName(), area.getSlug()))
+        .orElseThrow(AreaNotFoundException::new);
   }
 
   private AreaTreeDTO getAreaTreeDTORecursive(Tree<Integer, Area> tree) {

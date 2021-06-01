@@ -1,12 +1,15 @@
 package org.js.azdanov.springfresh.controllers;
 
+import static org.js.azdanov.springfresh.config.SessionConfig.CURRENT_AREA;
+
 import java.util.List;
+import javax.servlet.http.HttpSession;
+import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
 import org.js.azdanov.springfresh.services.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -19,8 +22,9 @@ public class CategoryController {
   }
 
   @GetMapping("/categories")
-  public String index(@PathVariable String areaSlug, Model model) {
-    System.out.println(areaSlug);
+  public String index(AreaDTO areaDTO, Model model, HttpSession session) {
+    session.setAttribute(CURRENT_AREA, areaDTO);
+
     List<CategoryTreeDTO> categories = categoryService.getAllCategories();
     model.addAttribute("categories", categories);
     return "categories";

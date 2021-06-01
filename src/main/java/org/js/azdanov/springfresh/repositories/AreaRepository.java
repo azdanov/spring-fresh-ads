@@ -1,6 +1,8 @@
 package org.js.azdanov.springfresh.repositories;
 
 import java.util.List;
+import java.util.Optional;
+import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.models.Area;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -10,4 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface AreaRepository extends CrudRepository<Area, Integer> {
   List<Area> findAllByParentIdIsNull();
+
+  Optional<Area> findBySlug(String slug);
 }

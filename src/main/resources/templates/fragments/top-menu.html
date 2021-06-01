@@ -10,16 +10,20 @@
 <header class="p-2 mb-2 border-bottom bg-white" th:fragment="menu">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <a class="mb-2 text-dark text-decoration-none" th:href="@{/}">
-        <span class="fs-3 me-4">Fresh</span>
+      <a class="mb-2 text-dark text-decoration-none me-4" th:href="@{/}">
+        <span class="fs-3">Fresh</span>
+        <span th:if="${session.currentArea}" th:text="|(${session.currentArea.name})|">USA</span>
       </a>
 
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li th:if="${session.currentArea}">
+          <a class="nav-link px-2 link-secondary"
+             th:classappend="${#request.requestURI == '/' ? 'link-dark' : ''}"
+             th:href="@{/{slug}/categories(slug=${session.currentArea.slug})}"
+             th:text="#{categories}">Categories</a></li>
         <li><a class="nav-link px-2 link-secondary"
-               th:classappend="${#request.requestURI == '/' ? 'link-dark' : ''}" th:href="@{/}"
-               th:text="#{home}">Home</a></li>
-        <li><a class="nav-link px-2 link-secondary"
-               th:classappend="${#request.requestURI == '/about' ? 'link-dark' : ''}" th:href="@{/about}"
+               th:classappend="${#request.requestURI == '/about' ? 'link-dark' : ''}"
+               th:href="@{/about}"
                th:text="#{about}">About</a></li>
       </ul>
 
