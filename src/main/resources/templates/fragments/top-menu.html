@@ -18,7 +18,7 @@
       <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         <li th:if="${session.currentArea}">
           <a class="nav-link px-2 link-secondary"
-             th:classappend="${#request.requestURI == '/' ? 'link-dark' : ''}"
+             th:classappend="${#strings.contains(#request.requestURI, '/categories') ? 'link-dark' : ''}"
              th:href="@{/{slug}/categories(slug=${session.currentArea.slug})}"
              th:text="#{categories}">Categories</a></li>
         <li><a class="nav-link px-2 link-secondary"
