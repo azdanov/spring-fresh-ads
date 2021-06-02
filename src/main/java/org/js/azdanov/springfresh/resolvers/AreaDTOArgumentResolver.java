@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.resolvers;
 
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.services.AreaService;
 import org.springframework.core.MethodParameter;
@@ -11,12 +12,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
+@RequiredArgsConstructor
 public class AreaDTOArgumentResolver implements HandlerMethodArgumentResolver {
   private final AreaService areaService;
-
-  public AreaDTOArgumentResolver(AreaService areaService) {
-    this.areaService = areaService;
-  }
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {

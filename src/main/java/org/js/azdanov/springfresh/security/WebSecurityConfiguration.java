@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -12,18 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private final PasswordEncoder passwordEncoder;
   private final UserDetailsService userDetailsService;
 
   @Value("${remember-me}")
   private String rememberMeKey;
-
-  public WebSecurityConfiguration(
-      PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
-    this.passwordEncoder = passwordEncoder;
-    this.userDetailsService = userDetailsService;
-  }
 
   @Override
   @Bean

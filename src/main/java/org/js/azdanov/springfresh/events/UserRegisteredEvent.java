@@ -1,9 +1,11 @@
 package org.js.azdanov.springfresh.events;
 
 import java.util.Locale;
+import lombok.Getter;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.springframework.context.ApplicationEvent;
 
+@Getter
 public class UserRegisteredEvent extends ApplicationEvent {
 
   private final UserDTO userDTO;
@@ -15,17 +17,5 @@ public class UserRegisteredEvent extends ApplicationEvent {
     this.userDTO = userDTO;
     this.confirmationURI = confirmationURI;
     this.locale = locale;
-  }
-
-  public UserDTO getUserDTO() {
-    return userDTO;
-  }
-
-  public String getConfirmationURI() {
-    return confirmationURI;
-  }
-
-  public Locale getLocale() {
-    return locale;
   }
 }

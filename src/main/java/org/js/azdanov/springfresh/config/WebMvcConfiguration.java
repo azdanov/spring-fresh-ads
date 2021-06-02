@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.config;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.interceptors.DefaultAreaInterceptor;
 import org.js.azdanov.springfresh.resolvers.AreaDTOArgumentResolver;
 import org.springframework.context.annotation.Configuration;
@@ -9,16 +10,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfiguration implements WebMvcConfigurer {
   private final AreaDTOArgumentResolver areaDTOArgumentResolver;
   private final DefaultAreaInterceptor defaultAreaInterceptor;
-
-  public WebMvcConfiguration(
-      AreaDTOArgumentResolver areaDTOArgumentResolver,
-      DefaultAreaInterceptor defaultAreaInterceptor) {
-    this.areaDTOArgumentResolver = areaDTOArgumentResolver;
-    this.defaultAreaInterceptor = defaultAreaInterceptor;
-  }
 
   @Override
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

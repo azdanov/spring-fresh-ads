@@ -3,6 +3,7 @@ package org.js.azdanov.springfresh.services;
 import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
 import org.js.azdanov.springfresh.models.Category;
 import org.js.azdanov.springfresh.repositories.CategoryRepository;
@@ -15,16 +16,10 @@ import pl.exsio.nestedj.model.Tree;
 
 @Service
 @CacheConfig(cacheNames = {CATEGORY})
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
   private final NestedNodeRepository<Integer, Category> categoryNestedNodeRepository;
-
-  public CategoryServiceImpl(
-      CategoryRepository categoryRepository,
-      NestedNodeRepository<Integer, Category> categoryNestedNodeRepository) {
-    this.categoryRepository = categoryRepository;
-    this.categoryNestedNodeRepository = categoryNestedNodeRepository;
-  }
 
   @Cacheable
   @Transactional(readOnly = true)

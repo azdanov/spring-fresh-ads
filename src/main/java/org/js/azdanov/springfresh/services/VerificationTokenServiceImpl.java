@@ -2,6 +2,7 @@ package org.js.azdanov.springfresh.services;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.enums.TokenVerificationStatus;
 import org.js.azdanov.springfresh.models.VerificationToken;
@@ -11,15 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class VerificationTokenServiceImpl implements VerificationTokenService {
   private final UserRepository userRepository;
   private final VerificationTokenRepository tokenRepository;
-
-  public VerificationTokenServiceImpl(
-      UserRepository userRepository, VerificationTokenRepository tokenRepository) {
-    this.userRepository = userRepository;
-    this.tokenRepository = tokenRepository;
-  }
 
   @Override
   @Transactional

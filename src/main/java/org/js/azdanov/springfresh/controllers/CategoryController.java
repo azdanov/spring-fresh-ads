@@ -4,6 +4,7 @@ import static org.js.azdanov.springfresh.config.SessionConfig.CURRENT_AREA;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
 import org.js.azdanov.springfresh.services.CategoryService;
@@ -14,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/{areaSlug}")
+@RequiredArgsConstructor
 public class CategoryController {
   private final CategoryService categoryService;
-
-  public CategoryController(CategoryService categoryService) {
-    this.categoryService = categoryService;
-  }
 
   @GetMapping("/categories")
   public String index(AreaDTO areaDTO, Model model, HttpSession session) {

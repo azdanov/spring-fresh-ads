@@ -13,4 +13,3 @@ public class GlobalControllerAdvice {
     binder.registerCustomEditor(String.class, stringTrimmerEditor);
   }
 }
-

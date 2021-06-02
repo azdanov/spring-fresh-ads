@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.events;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -8,17 +9,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class RegistrationListener implements ApplicationListener<UserRegisteredEvent> {
   private final MessageSource messages;
   private final JavaMailSender mailSender;
 
   @Value("${support.email}")
   private String email;
-
-  public RegistrationListener(MessageSource messages, JavaMailSender mailSender) {
-    this.messages = messages;
-    this.mailSender = mailSender;
-  }
 
   @Override
   public void onApplicationEvent(UserRegisteredEvent event) {

@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,6 +22,9 @@ import pl.exsio.nestedj.model.NestedNode;
 @EntityListeners(AreaListener.class)
 @Table(name = "areas")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Area implements NestedNode<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,78 +53,8 @@ public class Area implements NestedNode<Integer> {
   @Column(nullable = false)
   private Long treeLevel;
 
-  public Area() {}
-
   public Area(String name) {
     this.name = name;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getSlug() {
-    return slug;
-  }
-
-  public void setSlug(String slug) {
-    this.slug = slug;
-  }
-
-  @Override
-  public Long getTreeLeft() {
-    return treeLeft;
-  }
-
-  @Override
-  public void setTreeLeft(Long treeLeft) {
-    this.treeLeft = treeLeft;
-  }
-
-  @Override
-  public Long getTreeRight() {
-    return treeRight;
-  }
-
-  @Override
-  public void setTreeRight(Long treeRight) {
-    this.treeRight = treeRight;
-  }
-
-  @Override
-  public Long getTreeLevel() {
-    return treeLevel;
-  }
-
-  @Override
-  public void setTreeLevel(Long treeLevel) {
-    this.treeLevel = treeLevel;
-  }
-
-  @Override
-  public Integer getParentId() {
-    return parentId;
-  }
-
-  @Override
-  public void setParentId(Integer parent) {
-    this.parentId = parent;
-  }
-
-  public boolean isRootNode() {
-    return this.getParentId() == null;
   }
 
   @Override

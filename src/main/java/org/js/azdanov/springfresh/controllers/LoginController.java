@@ -2,8 +2,7 @@ package org.js.azdanov.springfresh.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@Slf4j
 public class LoginController {
-  private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
-
   @GetMapping("/login")
   public String login(
       HttpServletRequest request,
@@ -40,7 +38,7 @@ public class LoginController {
       AuthenticationException ex =
           (AuthenticationException) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
       if (ex != null) {
-        LOG.warn(ex.getLocalizedMessage());
+        log.warn(ex.getLocalizedMessage());
       }
     }
   }

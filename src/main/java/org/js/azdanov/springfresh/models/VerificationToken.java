@@ -12,12 +12,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Table(name = "verification_tokens")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class VerificationToken {
   private static final Duration EXPIRATION = Duration.of(24, ChronoUnit.HOURS);
 
@@ -38,58 +44,14 @@ public class VerificationToken {
 
   @UpdateTimestamp private LocalDateTime updatedAt;
 
-  public VerificationToken() {}
-
-  public VerificationToken(final String token) {
-    this.token = token;
-    this.expiryDate = calculateExpiryDate();
-  }
-
   public VerificationToken(String token, User user) {
     this.token = token;
     this.user = user;
     this.expiryDate = calculateExpiryDate();
   }
 
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public LocalDateTime getExpiryDate() {
-    return expiryDate;
-  }
-
-  public void setExpiryDate(LocalDateTime expiryDate) {
-    this.expiryDate = expiryDate;
-  }
-
   private LocalDateTime calculateExpiryDate() {
     return LocalDateTime.now().plus(VerificationToken.EXPIRATION);
-  }
-
-  public void updateToken(String token) {
-    this.token = token;
-    this.expiryDate = calculateExpiryDate();
   }
 
   @Override

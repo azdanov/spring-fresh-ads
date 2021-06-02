@@ -2,6 +2,7 @@ package org.js.azdanov.springfresh.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.controllers.requests.RegisterUserFormData;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.events.UserRegisteredEvent;
@@ -24,19 +25,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping("/register")
+@RequiredArgsConstructor
 public class RegistrationController {
   private final UserService userService;
   private final VerificationTokenService tokenService;
   private final ApplicationEventPublisher eventPublisher;
-
-  public RegistrationController(
-      UserService userService,
-      VerificationTokenService tokenService,
-      ApplicationEventPublisher eventPublisher) {
-    this.userService = userService;
-    this.tokenService = tokenService;
-    this.eventPublisher = eventPublisher;
-  }
 
   @GetMapping
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {

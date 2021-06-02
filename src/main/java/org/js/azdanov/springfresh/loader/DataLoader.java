@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.ListUtils;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
@@ -19,18 +20,11 @@ import pl.exsio.nestedj.NestedNodeRepository;
 @Component
 @ConditionalOnProperty(value = "dataloader.enabled", havingValue = "true")
 @Transactional
+@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
   private final NestedNodeRepository<Integer, Area> areaNestedNodeRepository;
   private final NestedNodeRepository<Integer, Category> categoryNestedNodeRepository;
-  private final ObjectMapper mapper;
-
-  public DataLoader(
-      NestedNodeRepository<Integer, Area> areaNestedNodeRepository,
-      NestedNodeRepository<Integer, Category> categoryNestedNodeRepository) {
-    this.areaNestedNodeRepository = areaNestedNodeRepository;
-    this.categoryNestedNodeRepository = categoryNestedNodeRepository;
-    this.mapper = new ObjectMapper();
-  }
+  private final ObjectMapper mapper = new ObjectMapper();
 
   @Override
   public void run(String... args) throws Exception {

@@ -69,6 +69,8 @@ dependencies {
 	implementation "com.github.slugify:slugify:${slugifyVersion}"
 	implementation "org.apache.commons:commons-collections4:${commonsCollectionVersion}"
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

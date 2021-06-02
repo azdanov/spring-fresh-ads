@@ -3,6 +3,7 @@ package org.js.azdanov.springfresh.services;
 import static org.js.azdanov.springfresh.config.CacheConfig.AREA;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
 import org.js.azdanov.springfresh.exceptions.AreaNotFoundException;
@@ -17,16 +18,11 @@ import pl.exsio.nestedj.model.Tree;
 
 @Service
 @CacheConfig(cacheNames = {AREA})
+@RequiredArgsConstructor
 public class AreaServiceImpl implements AreaService {
 
   private final AreaRepository areaRepository;
   private final NestedNodeRepository<Integer, Area> areaNestedNodeRepository;
-
-  public AreaServiceImpl(
-      AreaRepository areaRepository, NestedNodeRepository<Integer, Area> areaNestedNodeRepository) {
-    this.areaRepository = areaRepository;
-    this.areaNestedNodeRepository = areaNestedNodeRepository;
-  }
 
   @Cacheable
   @Override

@@ -3,14 +3,21 @@ package org.js.azdanov.springfresh.models;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,6 +27,9 @@ import pl.exsio.nestedj.model.NestedNode;
 @EntityListeners(CategoryListener.class)
 @Table(name = "categories")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Category implements NestedNode<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +44,14 @@ public class Category implements NestedNode<Integer> {
   private String slug;
 
   @Column(nullable = false)
-  private BigDecimal price;
+  private BigDecimal price = BigDecimal.ZERO;
+
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Listing> listings = new ArrayList<>();
 
   @CreationTimestamp private LocalDateTime createdAt;
   @UpdateTimestamp private LocalDateTime updatedAt;
+
   private Integer parentId;
 
   @Column(nullable = false)
@@ -49,105 +63,18 @@ public class Category implements NestedNode<Integer> {
   @Column(nullable = false)
   private Long treeLevel;
 
-  public Category() {}
-
   public Category(String name) {
     this.name = name;
-    this.price = BigDecimal.ZERO;
   }
 
-  @Override
-  public Integer getId() {
-    return id;
+  public void addListing(Listing listing) {
+    listings.add(listing);
+    listing.setCategory(this);
   }
 
-  @Override
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getSlug() {
-    return slug;
-  }
-
-  public void setSlug(String slug) {
-    this.slug = slug;
-  }
-
-  public BigDecimal getPrice() {
-    return price;
-  }
-
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(LocalDateTime createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public LocalDateTime getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-  @Override
-  public Long getTreeLeft() {
-    return treeLeft;
-  }
-
-  @Override
-  public void setTreeLeft(Long treeLeft) {
-    this.treeLeft = treeLeft;
-  }
-
-  @Override
-  public Long getTreeRight() {
-    return treeRight;
-  }
-
-  @Override
-  public void setTreeRight(Long treeRight) {
-    this.treeRight = treeRight;
-  }
-
-  @Override
-  public Long getTreeLevel() {
-    return treeLevel;
-  }
-
-  @Override
-  public void setTreeLevel(Long treeLevel) {
-    this.treeLevel = treeLevel;
-  }
-
-  @Override
-  public Integer getParentId() {
-    return parentId;
-  }
-
-  @Override
-  public void setParentId(Integer parent) {
-    this.parentId = parent;
-  }
-
-  public boolean isRootNode() {
-    return this.getParentId() == null;
+  public void removeListing(Listing listing) {
+    listings.remove(listing);
+    listing.setCategory(null);
   }
 
   @Override

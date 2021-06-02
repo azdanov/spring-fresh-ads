@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,6 +21,8 @@ import org.js.azdanov.springfresh.security.RoleAuthority;
 
 @Table(name = "roles")
 @Entity
+@Getter
+@Setter
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,30 +39,6 @@ public class Role {
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public RoleAuthority getName() {
-    return name;
-  }
-
-  public void setName(RoleAuthority role) {
-    this.name = role;
-  }
-
-  public Collection<User> getUsers() {
-    return users;
-  }
-
-  public void setUsers(Collection<User> users) {
-    this.users = users;
-  }
 
   @Override
   public boolean equals(Object o) {

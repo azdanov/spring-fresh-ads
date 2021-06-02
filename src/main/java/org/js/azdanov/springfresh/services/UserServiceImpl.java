@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.services;
 
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.exceptions.RoleNotFoundException;
 import org.js.azdanov.springfresh.exceptions.UserAlreadyExistsException;
@@ -13,20 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final PasswordEncoder passwordEncoder;
-
-  public UserServiceImpl(
-      UserRepository userRepository,
-      PasswordEncoder passwordEncoder,
-      RoleRepository roleRepository) {
-    this.userRepository = userRepository;
-    this.roleRepository = roleRepository;
-    this.passwordEncoder = passwordEncoder;
-  }
 
   @Override
   @Transactional
