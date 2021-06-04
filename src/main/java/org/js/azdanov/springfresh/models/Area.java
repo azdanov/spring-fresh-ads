@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -19,12 +20,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.js.azdanov.springfresh.models.listeners.AreaListener;
 import pl.exsio.nestedj.model.NestedNode;
 
-@EntityListeners(AreaListener.class)
-@Table(name = "areas")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@EntityListeners(AreaListener.class)
+@Table(
+    name = "areas",
+    indexes = {@Index(columnList = "slug", unique = true)})
 public class Area implements NestedNode<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.repositories;
 
 import java.util.List;
+import java.util.Optional;
 import org.js.azdanov.springfresh.models.Category;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -10,4 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
   List<Category> findAllByParentIdIsNull();
+
+  Optional<Category> findBySlug(String slug);
 }

@@ -39,7 +39,7 @@ public class AreaServiceImpl implements AreaService {
   public AreaDTO findBySlug(String slug) {
     return areaRepository
         .findBySlug(slug)
-        .map(area -> new AreaDTO(area.getName(), area.getSlug()))
+        .map(area -> new AreaDTO(area.getId(), area.getName(), area.getSlug()))
         .orElseThrow(AreaNotFoundException::new);
   }
 

@@ -4,7 +4,9 @@ import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
+import org.js.azdanov.springfresh.exceptions.CategoryNotFoundException;
 import org.js.azdanov.springfresh.models.Category;
 import org.js.azdanov.springfresh.repositories.CategoryRepository;
 import org.springframework.cache.annotation.CacheConfig;
@@ -30,6 +32,38 @@ public class CategoryServiceImpl implements CategoryService {
         .map(
             category -> getCategoryTreeDTORecursive(categoryNestedNodeRepository.getTree(category)))
         .toList();
+  }
+
+  @Override
+  public CategoryDTO findBySlug(String slug) {
+    return categoryRepository
+        .findBySlug(slug)
+        .map(
+            category ->
+                new CategoryDTO(
+                    category.getId(), category.getName(), category.getSlug(), category.getPrice()))
+        .orElseThrow(CategoryNotFoundException::new);
+  }
+
+  @Override
+  public CategoryTreeDTO getParent(CategoryDTO categoryDTO) {
+    Category category =
+        categoryRepository
+            .findBySlug(categoryDTO.slug())
+            .orElseThrow(CategoryNotFoundException::new);
+
+    CategoryTreeDTO categoryTreeDTO =
+        new CategoryTreeDTO(category.getName(), category.getSlug(), category.getPrice(), null);
+    return categoryNestedNodeRepository
+        .getParent(category)
+        .map(
+            categoryParent ->
+                new CategoryTreeDTO(
+                    categoryParent.getName(),
+                    categoryParent.getSlug(),
+                    categoryParent.getPrice(),
+                    List.of(categoryTreeDTO)))
+        .orElse(categoryTreeDTO);
   }
 
   private CategoryTreeDTO getCategoryTreeDTORecursive(Tree<Integer, Category> tree) {

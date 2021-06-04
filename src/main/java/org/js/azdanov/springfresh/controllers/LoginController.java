@@ -26,7 +26,7 @@ public class LoginController {
     // TODO: Add email and remember-me restore for form
 
     if (userDetails == null) {
-      return "login";
+      return "auth/login";
     } else {
       return "redirect:/";
     }

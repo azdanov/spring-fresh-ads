@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>pagination</title>
+</head>
+<body>
+
+<!--/*@thymesVar id="page" type="org.springframework.data.domain.Page"*/-->
+<th:block th:fragment="controls(page)"
+          th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+
+  <nav th:aria-label="#{pagination.page-navigation}">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${page.isFirst()} ? 'disabled'">
+        <a class="page-link" href="#"
+           th:aria-disabled="${page.isFirst()}"
+           th:aria-label="#{pagination.previous}"
+           th:href="${page.isFirst()} ? '' : ${urlBuilder.fromCurrentRequest().replaceQueryParam('page', page.number - 1).toUriString()}"
+           th:tabindex="${page.isFirst()} ? '-1'">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+
+      <th:block
+          th:with="startPage=${T(Math).max(1, page.getNumber() - 1)}, endPage=${T(Math).min(startPage + 4, page.getTotalPages())}">
+
+        <li class="page-item"
+            th:classappend="${page.number == pageNumber - 1 ? 'active' : ''}"
+            th:each="pageNumber : ${#numbers.sequence(startPage, endPage)}">
+          <a class="page-link" href="#"
+             th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', pageNumber - 1).toUriString()}"
+             th:id="${'pagination-page-' + pageNumber}"
+             th:text="${pageNumber}">Page Number</a>
+        </li>
+      </th:block>
+
+      <li class="page-item" th:classappend="${page.isLast()} ? 'disabled'">
+        <a class="page-link" href="#"
+           th:aria-disabled="${page.isLast()}"
+           th:aria-label="#{pagination.next}"
+           th:href="${page.isLast()} ? '' : ${urlBuilder.fromCurrentRequest().replaceQueryParam('page', page.number + 1).toUriString()}"
+           th:tabindex="${page.isLast()} ? '-1'">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+</th:block>
+
+</body>
+</html>

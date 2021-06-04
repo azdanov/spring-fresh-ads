@@ -1,6 +1,5 @@
 package org.js.azdanov.springfresh.models;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,8 +31,7 @@ public class Listing {
   @ManyToOne(fetch = FetchType.LAZY)
   private User user;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @MapsId
+  @ManyToOne(fetch = FetchType.LAZY)
   private Area area;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -51,10 +47,6 @@ public class Listing {
 
   @CreationTimestamp private LocalDateTime createdAt;
   @UpdateTimestamp private LocalDateTime updatedAt;
-
-  public BigDecimal getCost() {
-    return category.getPrice();
-  }
 
   @Override
   public boolean equals(Object o) {

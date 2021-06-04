@@ -35,7 +35,7 @@ public class RegistrationController {
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     if (userDetails == null) {
       model.addAttribute("user", new RegisterUserFormData());
-      return "register";
+      return "auth/register";
     } else {
       return "redirect:/";
     }
@@ -54,7 +54,7 @@ public class RegistrationController {
 
     if (bindingResult.hasErrors()) {
       model.addAttribute("user", formData);
-      return "register";
+      return "auth/register";
     }
 
     var registeredUser = userService.createUser(new UserDTO(formData));

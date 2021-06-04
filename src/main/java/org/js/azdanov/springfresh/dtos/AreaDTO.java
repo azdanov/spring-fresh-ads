@@ -1,3 +1,3 @@
 package org.js.azdanov.springfresh.dtos;
 
-public record AreaDTO(String name, String slug) {}
+public record AreaDTO(Integer id, String name, String slug) {}

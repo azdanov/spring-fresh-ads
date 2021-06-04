@@ -3,8 +3,8 @@ package org.js.azdanov.springfresh.resolvers;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.js.azdanov.springfresh.dtos.AreaDTO;
-import org.js.azdanov.springfresh.services.AreaService;
+import org.js.azdanov.springfresh.dtos.CategoryDTO;
+import org.js.azdanov.springfresh.services.CategoryService;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,12 +15,12 @@ import org.springframework.web.servlet.HandlerMapping;
 
 @Component
 @RequiredArgsConstructor
-public class AreaDTOArgumentResolver implements HandlerMethodArgumentResolver {
-  private final AreaService areaService;
+public class CategoryDTOArgumentResolver implements HandlerMethodArgumentResolver {
+  private final CategoryService categoryService;
 
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
-    return parameter.getParameter().getType() == AreaDTO.class;
+    return parameter.getParameter().getType() == CategoryDTO.class;
   }
 
   @Override
@@ -31,7 +31,7 @@ public class AreaDTOArgumentResolver implements HandlerMethodArgumentResolver {
       WebDataBinderFactory binderFactory) {
 
     Map<String, String> pathVariables = getPathVariables(webRequest);
-    return areaService.findBySlug(pathVariables.get("areaSlug"));
+    return categoryService.findBySlug(pathVariables.get("categorySlug"));
   }
 
   private Map<String, String> getPathVariables(NativeWebRequest webRequest) {

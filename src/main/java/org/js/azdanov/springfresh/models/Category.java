@@ -12,6 +12,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -24,12 +25,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.js.azdanov.springfresh.models.listeners.CategoryListener;
 import pl.exsio.nestedj.model.NestedNode;
 
-@EntityListeners(CategoryListener.class)
-@Table(name = "categories")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@EntityListeners(CategoryListener.class)
+@Table(
+    name = "categories",
+    indexes = {@Index(columnList = "slug", unique = true)})
 public class Category implements NestedNode<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,16 +13,19 @@
     <div class="card-body">
       <div class="container">
         <div class="row">
-          <div class="col-md-4 mb-4" th:each="category : ${categories}">
+          <div class="col-md-4 mb-4" th:each="category : ${categories}"
+               th:with="url=${#httpServletRequest.requestURI}">
             <h4>
-              <a class="text-decoration-none" th:href="@{/{slug}(slug=${category.slug})}"
+              <a class="text-decoration-none link-secondary"
+                 th:href="@{{url}/{slug}/listings(url=${url}, slug=${category.slug})}"
                  th:text="#{${category.slug}}">Category</a>
             </h4>
             <hr>
             <div class="row">
               <th:block th:each="sub : ${category.children}">
                 <h5>
-                  <a class="text-decoration-none" th:href="@{/{slug}(slug=${sub.slug})}"
+                  <a class="text-decoration-none link-secondary"
+                     th:href="@{{url}/{slug}/listings(url=${url}, slug=${sub.slug})}"
                      th:text="#{${sub.slug}}">Sub-category</a>
                   (x)
                 </h5>
