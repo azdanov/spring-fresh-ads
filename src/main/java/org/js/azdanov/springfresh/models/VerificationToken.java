@@ -56,8 +56,12 @@ public class VerificationToken {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
     VerificationToken that = (VerificationToken) o;
 
     return id != null && id.equals(that.id);

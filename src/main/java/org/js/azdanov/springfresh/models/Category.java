@@ -82,8 +82,12 @@ public class Category implements NestedNode<Integer> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+      return false;
+    }
     Category category = (Category) o;
 
     return id != null && id.equals(category.id);

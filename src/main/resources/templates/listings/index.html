@@ -12,17 +12,21 @@
   <div class="card">
     <div class="card-body">
       <div class="container">
-        <div class="row mb-3">
-          <h4 th:if="${#lists.isEmpty(category.children)}" th:text="${category.name}">Category</h4>
-          <h4 th:text="${category.name} + ' > ' + ${category.children.get(0).name}"
-              th:unless="${#lists.isEmpty(category.children)}">Category > Sub-category</h4>
+        <div class="mb-3">
+          <h4>
+            <th:block th:text="#{${category.slug}}">Category</th:block>
+            <th:block th:if="${!#lists.isEmpty(category.children)}">
+              - <th:block th:text="#{${category.children.get(0).slug}}">Sub-category</th:block>
+            </th:block>
+          </h4>
+
           <hr>
           <th:block th:if="${listings.isEmpty}">
             <p th:text="#{no-listings-found}">No listings found.</p>
           </th:block>
           <th:block th:if="${!listings.isEmpty}">
             <th:block th:each="listing : ${listings}">
-              <div th:replace="fragments/listing :: default(listing=${listing}, area=${session.currentArea})"></div>
+              <div th:replace="listings/fragments/listing :: default(listing=${listing})"></div>
             </th:block>
           </th:block>
         </div>

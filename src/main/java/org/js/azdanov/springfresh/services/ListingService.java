@@ -9,4 +9,6 @@ import org.springframework.data.domain.Pageable;
 public interface ListingService {
   Page<ListingDTO> findByAreaAndCategory(
       AreaDTO areaDTO, CategoryDTO categoryDTO, Pageable pageable);
+
+  ListingDTO findById(Integer listingId);
 }

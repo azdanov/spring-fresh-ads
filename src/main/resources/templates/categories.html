@@ -27,7 +27,8 @@
                   <a class="text-decoration-none link-secondary"
                      th:href="@{{url}/{slug}/listings(url=${url}, slug=${sub.slug})}"
                      th:text="#{${sub.slug}}">Sub-category</a>
-                  <th:block th:text="|(${sub.listings})|">(0)</th:block>
+                  <span class="badge rounded-pill bg-light text-secondary"
+                        th:text="${sub.listings}">0</span>
                 </h5>
               </th:block>
             </div>

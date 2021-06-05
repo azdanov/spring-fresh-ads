@@ -3,4 +3,10 @@ package org.js.azdanov.springfresh.dtos;
 import java.time.LocalDateTime;
 
 public record ListingDTO(
-    String title, String body, String author, String area, LocalDateTime createdAt) {}
+    Integer id,
+    String title,
+    String body,
+    boolean live,
+    String author,
+    String area,
+    LocalDateTime createdAt) {}

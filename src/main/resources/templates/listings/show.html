@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${listing.title}">Listing</title>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3" sec:authorize="isAuthenticated()">
+        <div class="card">
+          <div class="card-body">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="#" th:text="#{listing.email-to-friend}">
+                  Email to a friend</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" th:text="#{listing.add-to-favorites}">
+                  Add to favorites</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div th:classappend="${#authorization.expression('isAuthenticated()')} ? 'col-md-9' : 'col-md-12' ">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-3">
+              <th:block th:text="${listing.title}">Card title</th:block>
+              <th:block th:text="|#{in} ${listing.area}|">in Area</th:block>
+            </h4>
+            <p class="card-text"
+               th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(listing.body),'\n','&lt;br /&gt;'))}">
+              Card body text</p>
+            <small th:text="#{listing.viewed-times(${0})}">Viewed 0 times</small>
+          </div>
+          <div class="card-body border-top">
+            <h4 class="card-title mb-3" th:text="|#{listing.contact-with} ${listing.author}|">
+              Contact Author
+            </h4>
+
+            <div class="card-text" sec:authorize="!isAuthenticated()">
+              <p>
+                <a th:href="@{/register}" th:text="#{to-register}">Register</a>
+                <th:block th:text="#{or}">or</th:block>
+                <a th:href="@{/login}" th:text="${#strings.toLowerCase(message)}"
+                   th:with="message=#{to-login}">login</a>
+                <th:block th:text="#{listing.to-contact-owner}">to contact listing owners.</th:block>
+              </p>
+            </div>
+            <div class="card-text" sec:authorize="isAuthenticated()">
+              <form method="post" th:action="@{/}">
+                <div class="form-floating mb-3">
+                  <textarea class="form-control"
+                            id="message" placeholder="Leave a message here"></textarea>
+                  <label for="message" th:text="#{form.message}">Message</label>
+                </div>
+                <button class="btn btn-primary mb-2" th:text="#{form.send}" type="submit">Send</button>
+                <br>
+                <small class="text-muted" th:utext="#{form.contact-help-description(${listing.author})}">
+                  This will email Author and they'll be able to reply directly to you by email.
+                </small>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
