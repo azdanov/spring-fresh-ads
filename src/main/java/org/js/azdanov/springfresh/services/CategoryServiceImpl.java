@@ -92,7 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
   private long getListingSize(Category category, List<Integer> areaIds) {
     List<Listing> listings = category.getListings();
     return listings.stream()
-        .filter(listing -> !listing.isLive() && areaIds.contains(listing.getArea().getId()))
+        .filter(listing -> listing.isLive() && areaIds.contains(listing.getArea().getId()))
         .count();
   }
 
