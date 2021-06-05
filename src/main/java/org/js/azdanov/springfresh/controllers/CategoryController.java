@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
-import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
+import org.js.azdanov.springfresh.dtos.CategoryListingTreeDTO;
 import org.js.azdanov.springfresh.services.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +23,7 @@ public class CategoryController {
   public String index(AreaDTO areaDTO, Model model, HttpSession session) {
     session.setAttribute(CURRENT_AREA, areaDTO);
 
-    List<CategoryTreeDTO> categories = categoryService.getAllCategories();
+    List<CategoryListingTreeDTO> categories = categoryService.getAllCategoriesWithListingCount(areaDTO);
     model.addAttribute("categories", categories);
     return "categories";
   }

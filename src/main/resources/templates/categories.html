@@ -27,7 +27,7 @@
                   <a class="text-decoration-none link-secondary"
                      th:href="@{{url}/{slug}/listings(url=${url}, slug=${sub.slug})}"
                      th:text="#{${sub.slug}}">Sub-category</a>
-                  (x)
+                  <th:block th:text="|(${sub.listings})|">(0)</th:block>
                 </h5>
               </th:block>
             </div>
