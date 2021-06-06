@@ -11,4 +11,10 @@ public interface ListingService {
       AreaDTO areaDTO, CategoryDTO categoryDTO, Pageable pageable);
 
   ListingDTO findById(Integer listingId);
+
+  void storeFavoriteListing(Integer listingId, String email);
+
+  boolean hasUserFavorited(Integer listingId, String email);
+
+  void deleteFavoriteListing(Integer listingId, String email);
 }

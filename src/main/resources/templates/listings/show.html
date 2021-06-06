@@ -21,9 +21,21 @@
                 <a class="nav-link active" href="#" th:text="#{listing.email-to-friend}">
                   Email to a friend</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" th:text="#{listing.add-to-favorites}">
+              <li class="nav-item" th:if="${hasUserFavorited}">
+                <a class="nav-link" onclick="event.preventDefault(); document.getElementById('listing-unfavorite-form').submit();"
+                   th:href="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"
+                   th:text="#{listing.remove-from-favorites}">
+                  Remove from favorites</a>
+                <form class="d-none" id="listing-unfavorite-form" th:method="DELETE"
+                      th:action="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"></form>
+              </li>
+              <li class="nav-item" th:if="!${hasUserFavorited}">
+                <a class="nav-link" onclick="event.preventDefault(); document.getElementById('listing-favorite-form').submit();"
+                   th:href="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"
+                   th:text="#{listing.add-to-favorites}">
                   Add to favorites</a>
+                <form class="d-none" id="listing-favorite-form" method="POST"
+                      th:action="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"></form>
               </li>
             </ul>
           </div>

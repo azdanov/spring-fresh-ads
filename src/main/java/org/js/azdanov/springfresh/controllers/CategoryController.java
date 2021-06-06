@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/{areaSlug}")
 @RequiredArgsConstructor
-public class AreaCategoryController {
+public class CategoryController {
   private final AreaService areaService;
   private final CategoryService categoryService;
 

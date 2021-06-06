@@ -3,6 +3,7 @@ package org.js.azdanov.springfresh.models;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -56,6 +57,13 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Listing> listings = new ArrayList<>();
 
+  @ManyToMany
+  @JoinTable(
+      name = "user_favorite_listing",
+      joinColumns = @JoinColumn(name = "favorite_listing_id"),
+      inverseJoinColumns = @JoinColumn(name = "favorite_user_id"))
+  private Set<Listing> favoriteListings = new HashSet<>();
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -63,8 +71,8 @@ public class User {
   @ManyToMany
   @JoinTable(
       name = "users_roles",
-      joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles;
 
   public User() {}
@@ -84,6 +92,16 @@ public class User {
   public void removeListing(Listing listing) {
     listings.remove(listing);
     listing.setUser(null);
+  }
+
+  public void addFavoriteListing(Listing listing) {
+    favoriteListings.add(listing);
+    listing.getFavoritedUsers().add(this);
+  }
+
+  public void removeFavoriteListing(Listing listing) {
+    favoriteListings.remove(listing);
+    listing.getFavoritedUsers().remove(this);
   }
 
   @Override
