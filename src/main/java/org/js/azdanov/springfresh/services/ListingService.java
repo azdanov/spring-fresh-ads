@@ -17,4 +17,6 @@ public interface ListingService {
   boolean hasUserFavorited(Integer listingId, String email);
 
   void deleteFavoriteListing(Integer listingId, String email);
+
+  Page<ListingDTO> getFavoriteListings(String email, Pageable pageable);
 }

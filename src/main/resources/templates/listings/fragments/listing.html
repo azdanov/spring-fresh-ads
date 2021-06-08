@@ -13,7 +13,6 @@
        th:href="@{{url}/{id}(url=${url}, id=${listing.id})}"
        th:text="|${listing.title} #{in} ${listing.area}|">
     </a>
-
   </h5>
   <ul class="list-inline">
     <li class="list-inline-item"
@@ -21,6 +20,35 @@
     </li>
     <li class="list-inline-item"
         th:text="${listing.author}">User
+    </li>
+  </ul>
+</th:block>
+
+<!--/*@thymesVar id="listing" type="org.js.azdanov.springfresh.dtos.ListingDTO"*/-->
+<!--/*@thymesVar id="area" type="org.js.azdanov.springfresh.dtos.AreaDTO"*/-->
+<th:block th:fragment="favorite(listing)">
+  <h5>
+    <a class="text-decoration-none link-secondary"
+       th:href="@{{url}/{id}(url=${url}, id=${listing.id})}"
+       th:text="|${listing.title} #{in} ${listing.area}|">
+    </a>
+  </h5>
+  <ul class="list-inline mb-1">
+    <li class="list-inline-item"
+        th:text="${#temporals.format(listing.createdAt, 'dd/MM/yyyy HH:mm')}">DateTime
+    </li>
+    <li class="list-inline-item"
+        th:text="${listing.author}">User
+    </li>
+  </ul>
+  <ul class="list-inline">
+    <li class="list-inline-item">
+      <a class="text-decoration-none" th:onclick="'event.preventDefault(); document.getElementById(\'listing-unfavorite-form-' + ${listing.id} + '\').submit();'"
+         th:href="@{/listings/{listingId}/favorites(listingId=${listing.id})}"
+         th:text="#{listing.remove-from-favorites}">
+        Remove from favorites</a>
+      <form class="d-none" th:id="'listing-unfavorite-form-' + ${listing.id}" th:method="DELETE"
+            th:action="@{/listings/{listingId}/favorites(listingId=${listing.id})}"></form>
     </li>
   </ul>
 </th:block>

@@ -2,6 +2,7 @@ package org.js.azdanov.springfresh.services;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
@@ -35,9 +36,7 @@ public class ListingServiceImpl implements ListingService {
     Page<Listing> listings =
         listingRepository.findAllActiveFor(areaIds, categoryDTO.id(), pageable);
 
-    List<ListingDTO> listingDTOS = listings.stream().map(this::getListingDTO).toList();
-
-    return new PageImpl<>(listingDTOS, listings.getPageable(), listings.getTotalElements());
+    return getListingDTOPage(listings);
   }
 
   @Override
@@ -72,6 +71,17 @@ public class ListingServiceImpl implements ListingService {
         listingRepository.findById(listingId).orElseThrow(ListingNotFoundException::new);
     User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     user.removeFavoriteListing(listing);
+  }
+
+  @Override
+  public Page<ListingDTO> getFavoriteListings(String email, Pageable pageable) {
+    Page<Listing> listings = listingRepository.findFavoriteListings(email, pageable);
+    return getListingDTOPage(listings);
+  }
+
+  private Page<ListingDTO> getListingDTOPage(Page<Listing> listings) {
+    List<ListingDTO> listingDTOS = listings.stream().map(this::getListingDTO).toList();
+    return new PageImpl<>(listingDTOS, listings.getPageable(), listings.getTotalElements());
   }
 
   private ListingDTO getListingDTO(Listing listing) {

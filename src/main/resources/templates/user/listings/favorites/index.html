@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="#{listings}">Listings</title>
+  <title th:text="#{listings.favorite-listings}">Favorite listings</title>
 </head>
 <body>
 
@@ -13,20 +13,17 @@
     <div class="card-body">
       <div class="container">
         <div class="mb-3">
-          <h4>
-            <th:block th:text="#{${category.slug}}">Category</th:block>
-            <th:block th:if="${!#lists.isEmpty(category.children)}">
-              - <th:block th:text="#{${category.children.get(0).slug}}">Sub-category</th:block>
-            </th:block>
+          <h4 th:text="#{listings.favorite-listings}">
+            Favorite listings
           </h4>
 
           <hr>
           <th:block th:if="${listings.isEmpty}">
-            <p th:text="#{listings.no-listings-found}">No listings found.</p>
+            <p th:text="#{listings.no-favorite-listings-found}">No favorite listings found.</p>
           </th:block>
           <th:block th:if="${!listings.isEmpty}">
             <th:block th:each="listing : ${listings}">
-              <div th:replace="listings/fragments/listing :: default(listing=${listing})"></div>
+              <div th:replace="listings/fragments/listing :: favorite(listing=${listing})"></div>
             </th:block>
           </th:block>
         </div>
