@@ -6,7 +6,6 @@ import org.js.azdanov.springfresh.services.AreaService;
 import org.js.azdanov.springfresh.services.ListingService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,6 @@ public class FavoriteListingController {
   public final AreaService areaService;
   public final ListingService listingService;
 
-  @PreAuthorize("isAuthenticated()")
   @GetMapping("/listings/favorites")
   public String index(
       @AuthenticationPrincipal UserDetails userDetails, Model model, Pageable pageable) {
@@ -33,7 +31,6 @@ public class FavoriteListingController {
     return "user/listings/favorites/index";
   }
 
-  @PreAuthorize("isAuthenticated()")
   @PostMapping("/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites")
   public String store(
       @PathVariable String areaSlug,
@@ -45,7 +42,6 @@ public class FavoriteListingController {
     return "redirect:/%s/categories/%s/listings/%d".formatted(areaSlug, categorySlug, listingId);
   }
 
-  @PreAuthorize("isAuthenticated()")
   @DeleteMapping({
     "/listings/{listingId}/favorites",
     "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites"

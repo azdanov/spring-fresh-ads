@@ -2,7 +2,6 @@ package org.js.azdanov.springfresh.services;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;

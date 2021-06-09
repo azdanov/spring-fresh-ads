@@ -66,10 +66,13 @@ public class ListingController {
           HttpStatus.NOT_FOUND, "Listing %d is not live".formatted(listingId));
     }
 
-    boolean hasUserFavorited =
-        listingService.hasUserFavorited(listingId, userDetails.getUsername());
+    if (userDetails != null) {
+      boolean hasUserFavorited =
+          listingService.hasUserFavorited(listingId, userDetails.getUsername());
+      model.addAttribute("hasUserFavorited", hasUserFavorited);
+    }
+
     model.addAttribute("listing", listing);
-    model.addAttribute("hasUserFavorited", hasUserFavorited);
 
     return "listings/show";
   }
