@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>toasts</title>
+</head>
+<body>
+
+<div class="toast-container position-sticky p-3 bottom-0 start-50 translate-middle-x"
+     th:fragment="bottom-center">
+  <div aria-atomic="true" aria-live="assertive" class="toast fade show align-items-center" data-bs-delay="5000"
+       role="alert" th:if="${toastDefault}">
+    <div class="d-flex">
+      <div class="toast-body" th:text="${toastDefault}">
+        This is a toast message.
+      </div>
+      <button aria-label="Close" class="btn-close me-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
