@@ -11,7 +11,7 @@ import org.js.azdanov.springfresh.services.ListingService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.SortDefault;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,10 +35,7 @@ public class ListingController {
       @PathVariable String areaSlug,
       @PathVariable String categorySlug,
       Model model,
-      @SortDefault.SortDefaults({
-            @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC),
-          })
-          Pageable pageable) {
+      @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
     AreaDTO areaDTO = areaService.findBySlug(areaSlug);
     CategoryDTO categoryDTO = categoryService.findBySlug(categorySlug);
 

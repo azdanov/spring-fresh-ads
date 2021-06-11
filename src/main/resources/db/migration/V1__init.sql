@@ -114,10 +114,11 @@ CREATE
 CREATE
     TABLE
         user_favorite_listing(
-            favorite_user_id INTEGER NOT NULL,
-            favorite_listing_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            listing_id INTEGER NOT NULL,
+            created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
             CONSTRAINT pk_user_favorite_listing PRIMARY KEY(
-                favorite_user_id,
-                favorite_listing_id
+                user_id,
+                listing_id
             )
         );

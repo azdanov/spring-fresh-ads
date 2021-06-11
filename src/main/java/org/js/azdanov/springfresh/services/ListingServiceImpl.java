@@ -4,14 +4,20 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
+import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
+import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.exceptions.ListingNotFoundException;
 import org.js.azdanov.springfresh.exceptions.UserNotFoundException;
+import org.js.azdanov.springfresh.models.Area;
+import org.js.azdanov.springfresh.models.Category;
 import org.js.azdanov.springfresh.models.Listing;
 import org.js.azdanov.springfresh.models.User;
+import org.js.azdanov.springfresh.models.UserFavoriteListing;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.js.azdanov.springfresh.repositories.CategoryRepository;
 import org.js.azdanov.springfresh.repositories.ListingRepository;
+import org.js.azdanov.springfresh.repositories.UserFavoriteListingRepository;
 import org.js.azdanov.springfresh.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +33,7 @@ public class ListingServiceImpl implements ListingService {
   public final AreaRepository areaRepository;
   public final CategoryRepository categoryRepository;
   public final ListingRepository listingRepository;
+  public final UserFavoriteListingRepository userFavoriteListingRepository;
 
   @Override
   public Page<ListingDTO> findByAreaAndCategory(
@@ -60,7 +67,7 @@ public class ListingServiceImpl implements ListingService {
     Listing listing =
         listingRepository.findById(listingId).orElseThrow(ListingNotFoundException::new);
     User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-    return user.getFavoriteListings().contains(listing);
+    return user.hasFavoritedListing(listing);
   }
 
   @Override
@@ -73,9 +80,20 @@ public class ListingServiceImpl implements ListingService {
   }
 
   @Override
-  public Page<ListingDTO> getFavoriteListings(String email, Pageable pageable) {
-    Page<Listing> listings = listingRepository.findFavoriteListings(email, pageable);
-    return getListingDTOPage(listings);
+  public Page<FavoriteListingDTO> getFavoriteListings(String email, Pageable pageable) {
+    Page<UserFavoriteListing> listings =
+        userFavoriteListingRepository.findFavoriteListings(email, pageable);
+
+    List<FavoriteListingDTO> favoriteListingDTOS =
+        listings.stream()
+            .map(
+                (UserFavoriteListing userFavoriteListing) ->
+                    new FavoriteListingDTO(
+                        getListingDTO(userFavoriteListing.getListing()),
+                        userFavoriteListing.getCreatedAt()))
+            .toList();
+
+    return new PageImpl<>(favoriteListingDTOS, listings.getPageable(), listings.getTotalElements());
   }
 
   private Page<ListingDTO> getListingDTOPage(Page<Listing> listings) {
@@ -89,8 +107,21 @@ public class ListingServiceImpl implements ListingService {
         listing.getTitle(),
         listing.getBody(),
         listing.isLive(),
-        listing.getUser().getName(),
-        listing.getArea().getName(),
+        getUserDTO(listing.getUser()),
+        getAreaDTO(listing.getArea()),
+        getCategoryDTO(listing.getCategory()),
         listing.getCreatedAt());
+  }
+
+  private UserDTO getUserDTO(User user) {
+    return new UserDTO(user.getId(), user.getName(), user.getEmail(), null, user.isEnabled());
+  }
+
+  private AreaDTO getAreaDTO(Area area) {
+    return new AreaDTO(area);
+  }
+
+  private CategoryDTO getCategoryDTO(Category category) {
+    return new CategoryDTO(category);
   }
 }

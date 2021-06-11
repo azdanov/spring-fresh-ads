@@ -7,6 +7,7 @@ public record ListingDTO(
     String title,
     String body,
     boolean live,
-    String author,
-    String area,
+    UserDTO user,
+    AreaDTO area,
+    CategoryDTO category,
     LocalDateTime createdAt) {}

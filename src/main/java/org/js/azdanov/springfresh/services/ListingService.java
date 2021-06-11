@@ -2,6 +2,7 @@ package org.js.azdanov.springfresh.services;
 
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
+import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,5 +19,5 @@ public interface ListingService {
 
   void deleteFavoriteListing(Integer listingId, String email);
 
-  Page<ListingDTO> getFavoriteListings(String email, Pageable pageable);
+  Page<FavoriteListingDTO> getFavoriteListings(String email, Pageable pageable);
 }

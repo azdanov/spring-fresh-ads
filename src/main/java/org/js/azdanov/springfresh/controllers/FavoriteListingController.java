@@ -2,12 +2,14 @@ package org.js.azdanov.springfresh.controllers;
 
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
-import org.js.azdanov.springfresh.dtos.ListingDTO;
+import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.services.AreaService;
 import org.js.azdanov.springfresh.services.ListingService;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -27,11 +29,12 @@ public class FavoriteListingController {
 
   @GetMapping("/listings/favorites")
   public String index(
-      @AuthenticationPrincipal UserDetails userDetails, Model model, Pageable pageable) {
-    // TODO: order favorites by 'favoritedAt' date
-    Page<ListingDTO> listings =
+      @AuthenticationPrincipal UserDetails userDetails,
+      Model model,
+      @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    Page<FavoriteListingDTO> favoriteListings =
         listingService.getFavoriteListings(userDetails.getUsername(), pageable);
-    model.addAttribute("listings", listings);
+    model.addAttribute("favoriteListings", favoriteListings);
     return "user/listings/favorites/index";
   }
 

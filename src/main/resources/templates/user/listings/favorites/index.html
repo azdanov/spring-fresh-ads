@@ -18,18 +18,18 @@
           </h4>
 
           <hr>
-          <th:block th:if="${listings.isEmpty}">
+          <th:block th:if="${favoriteListings.isEmpty}">
             <p th:text="#{listings.no-favorite-listings-found}">No favorite listings found.</p>
           </th:block>
-          <th:block th:if="${!listings.isEmpty}">
-            <th:block th:each="listing : ${listings}">
-              <div th:replace="listings/fragments/listing :: favorite(listing=${listing})"></div>
+          <th:block th:if="${!favoriteListings.isEmpty}">
+            <th:block th:each="favoriteListing : ${favoriteListings}">
+              <div th:replace="listings/fragments/listing :: favorite(favoriteListing=${favoriteListing})"></div>
             </th:block>
           </th:block>
         </div>
 
-        <th:block th:if="${listings.totalPages > 1}">
-          <div th:replace="fragments/pagination :: controls(page=${listings})"></div>
+        <th:block th:if="${favoriteListings.totalPages > 1}">
+          <div th:replace="fragments/pagination :: controls(page=${favoriteListings})"></div>
         </th:block>
       </div>
     </div>

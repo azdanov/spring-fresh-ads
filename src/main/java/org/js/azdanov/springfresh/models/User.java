@@ -3,7 +3,7 @@ package org.js.azdanov.springfresh.models;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -57,12 +57,8 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Listing> listings = new ArrayList<>();
 
-  @ManyToMany
-  @JoinTable(
-      name = "user_favorite_listing",
-      joinColumns = @JoinColumn(name = "favorite_listing_id"),
-      inverseJoinColumns = @JoinColumn(name = "favorite_user_id"))
-  private Set<Listing> favoriteListings = new HashSet<>();
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserFavoriteListing> favoriteListings = new ArrayList<>();
 
   @CreationTimestamp private LocalDateTime createdAt;
 
@@ -95,13 +91,34 @@ public class User {
   }
 
   public void addFavoriteListing(Listing listing) {
-    favoriteListings.add(listing);
-    listing.getFavoritedUsers().add(this);
+    UserFavoriteListing userFavoriteListing = new UserFavoriteListing(this, listing);
+    favoriteListings.add(userFavoriteListing);
+    listing.getFavoritedUsers().add(userFavoriteListing);
+  }
+
+  public boolean hasFavoritedListing(Listing listing) {
+    for (UserFavoriteListing userFavoriteListing : favoriteListings) {
+      if (userFavoriteListing.getUser().equals(this)
+          && userFavoriteListing.getListing().equals(listing)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public void removeFavoriteListing(Listing listing) {
-    favoriteListings.remove(listing);
-    listing.getFavoritedUsers().remove(this);
+    for (Iterator<UserFavoriteListing> iterator = favoriteListings.iterator();
+        iterator.hasNext(); ) {
+      UserFavoriteListing userFavoriteListing = iterator.next();
+
+      if (userFavoriteListing.getUser().equals(this)
+          && userFavoriteListing.getListing().equals(listing)) {
+        iterator.remove();
+        userFavoriteListing.getListing().getFavoritedUsers().remove(userFavoriteListing);
+        userFavoriteListing.setUser(null);
+        userFavoriteListing.setListing(null);
+      }
+    }
   }
 
   @Override
