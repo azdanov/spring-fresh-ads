@@ -1,7 +1,6 @@
 package org.js.azdanov.springfresh.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.dtos.VisitedListingDTO;
 import org.js.azdanov.springfresh.services.ListingService;
 import org.springframework.data.domain.Page;

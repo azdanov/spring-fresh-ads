@@ -66,8 +66,7 @@ public class Listing {
   }
 
   public void removeViewedByUser(User user) {
-    for (Iterator<UserVisitedListing> iterator = visitedByUsers.iterator();
-         iterator.hasNext(); ) {
+    for (Iterator<UserVisitedListing> iterator = visitedByUsers.iterator(); iterator.hasNext(); ) {
       UserVisitedListing userVisitedListing = iterator.next();
 
       if (userVisitedListing.getUser().equals(user)
