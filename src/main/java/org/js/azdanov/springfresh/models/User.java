@@ -60,6 +60,9 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<UserFavoriteListing> favoriteListings = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserVisitedListing> visitedListings = new ArrayList<>();
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;
@@ -93,7 +96,7 @@ public class User {
   public void addFavoriteListing(Listing listing) {
     UserFavoriteListing userFavoriteListing = new UserFavoriteListing(this, listing);
     favoriteListings.add(userFavoriteListing);
-    listing.getFavoritedUsers().add(userFavoriteListing);
+    listing.getFavoriteByUsers().add(userFavoriteListing);
   }
 
   public boolean hasFavoritedListing(Listing listing) {
@@ -114,7 +117,7 @@ public class User {
       if (userFavoriteListing.getUser().equals(this)
           && userFavoriteListing.getListing().equals(listing)) {
         iterator.remove();
-        userFavoriteListing.getListing().getFavoritedUsers().remove(userFavoriteListing);
+        userFavoriteListing.getListing().getFavoriteByUsers().remove(userFavoriteListing);
         userFavoriteListing.setUser(null);
         userFavoriteListing.setListing(null);
       }

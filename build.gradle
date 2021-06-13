@@ -25,10 +25,6 @@ spotless {
 		target '*.gradle'
 		greclipse()
 	}
-	sql {
-		target 'src/main/resources/db/**/*.sql'
-		dbeaver()
-	}
 	format 'styling', {
 		target 'src/main/resources/static/**/*.css', 'src/main/resources/static/**/*.js'
 		prettier()

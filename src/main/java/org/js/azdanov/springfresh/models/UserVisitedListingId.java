@@ -14,8 +14,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFavoriteListingId implements Serializable {
-  static final long serialVersionUID = -1192120145739583721L;
+public class UserVisitedListingId implements Serializable {
+  static final long serialVersionUID = -8332676910719193338L;
 
   @Column(name = "user_id")
   private Integer userId;
@@ -33,7 +33,7 @@ public class UserFavoriteListingId implements Serializable {
       return false;
     }
 
-    UserFavoriteListingId that = (UserFavoriteListingId) o;
+    UserVisitedListingId that = (UserVisitedListingId) o;
     return Objects.equals(userId, that.userId) && Objects.equals(listingId, that.listingId);
   }
 

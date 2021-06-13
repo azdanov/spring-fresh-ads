@@ -3,6 +3,7 @@ package org.js.azdanov.springfresh.models;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,7 +37,10 @@ public class Listing {
   private User user;
 
   @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<UserFavoriteListing> favoritedUsers = new ArrayList<>();
+  private List<UserFavoriteListing> favoriteByUsers = new ArrayList<>();
+
+  @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserVisitedListing> visitedByUsers = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Area area;
@@ -54,6 +58,27 @@ public class Listing {
 
   @CreationTimestamp private LocalDateTime createdAt;
   @UpdateTimestamp private LocalDateTime updatedAt;
+
+  public void addVisitedByUser(User user) {
+    UserVisitedListing userVisitedListing = new UserVisitedListing(user, this);
+    visitedByUsers.add(userVisitedListing);
+    user.getVisitedListings().add(userVisitedListing);
+  }
+
+  public void removeViewedByUser(User user) {
+    for (Iterator<UserVisitedListing> iterator = visitedByUsers.iterator();
+         iterator.hasNext(); ) {
+      UserVisitedListing userVisitedListing = iterator.next();
+
+      if (userVisitedListing.getUser().equals(user)
+          && userVisitedListing.getListing().equals(this)) {
+        iterator.remove();
+        userVisitedListing.getListing().getVisitedByUsers().remove(userVisitedListing);
+        userVisitedListing.setUser(null);
+        userVisitedListing.setListing(null);
+      }
+    }
+  }
 
   @Override
   public boolean equals(Object o) {

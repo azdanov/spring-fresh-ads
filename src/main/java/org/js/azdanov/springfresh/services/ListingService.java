@@ -20,4 +20,8 @@ public interface ListingService {
   void deleteFavoriteListing(Integer listingId, String email);
 
   Page<FavoriteListingDTO> getFavoriteListings(String email, Pageable pageable);
+
+  void incrementUserVisit(Integer listingId, String email);
+
+  int sumAllUserVisits(Integer listingId);
 }

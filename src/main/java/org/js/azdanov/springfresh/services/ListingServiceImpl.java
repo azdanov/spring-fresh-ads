@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.services;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
@@ -14,11 +15,13 @@ import org.js.azdanov.springfresh.models.Category;
 import org.js.azdanov.springfresh.models.Listing;
 import org.js.azdanov.springfresh.models.User;
 import org.js.azdanov.springfresh.models.UserFavoriteListing;
+import org.js.azdanov.springfresh.models.UserVisitedListing;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.js.azdanov.springfresh.repositories.CategoryRepository;
 import org.js.azdanov.springfresh.repositories.ListingRepository;
 import org.js.azdanov.springfresh.repositories.UserFavoriteListingRepository;
 import org.js.azdanov.springfresh.repositories.UserRepository;
+import org.js.azdanov.springfresh.repositories.UserVisitedListingRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +37,7 @@ public class ListingServiceImpl implements ListingService {
   public final CategoryRepository categoryRepository;
   public final ListingRepository listingRepository;
   public final UserFavoriteListingRepository userFavoriteListingRepository;
+  public final UserVisitedListingRepository userVisitedListingRepository;
 
   @Override
   public Page<ListingDTO> findByAreaAndCategory(
@@ -94,6 +98,31 @@ public class ListingServiceImpl implements ListingService {
             .toList();
 
     return new PageImpl<>(favoriteListingDTOS, listings.getPageable(), listings.getTotalElements());
+  }
+
+  @Override
+  @Transactional
+  public void incrementUserVisit(Integer listingId, String email) {
+    Optional<UserVisitedListing> userVisitedListingOptional =
+        userVisitedListingRepository.findByUserEmailAndListingId(email, listingId);
+
+    if (userVisitedListingOptional.isPresent()) {
+      userVisitedListingOptional.get().incrementVisited();
+    } else {
+      initUserVisitedListing(listingId, email);
+    }
+  }
+
+  @Override
+  public int sumAllUserVisits(Integer listingId) {
+    return userVisitedListingRepository.sumAllByListingId(listingId);
+  }
+
+  private void initUserVisitedListing(Integer listingId, String email) {
+    Listing listing =
+        listingRepository.findById(listingId).orElseThrow(ListingNotFoundException::new);
+    User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    listing.addVisitedByUser(user);
   }
 
   private Page<ListingDTO> getListingDTOPage(Page<Listing> listings) {

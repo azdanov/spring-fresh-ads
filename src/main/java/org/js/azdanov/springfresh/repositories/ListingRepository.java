@@ -22,11 +22,11 @@ public interface ListingRepository extends PagingAndSortingRepository<Listing, I
   @Query(
       value =
           "select l from Listing l"
-              + " join fetch l.favoritedUsers fu"
+              + " join fetch l.favoriteByUsers fu"
               + " where fu.user.email = :email",
       countQuery =
           "select count(l) from Listing l"
-              + " left join l.favoritedUsers fu"
+              + " left join l.favoriteByUsers fu"
               + " where fu.user.email = :email")
   Page<Listing> findFavoriteListings(String email, Pageable pageable);
 }
