@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.repositories;
 
 import java.util.List;
+import java.util.Optional;
 import org.js.azdanov.springfresh.models.Listing;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +21,8 @@ public interface ListingRepository extends PagingAndSortingRepository<Listing, I
   Page<Listing> findAllActiveFor(List<Integer> areaIds, Integer categoryId, Pageable pageable);
 
   @Query(
-      value =
-          "select l from Listing l"
-              + " join fetch l.favoriteByUsers fu"
-              + " where fu.user.email = :email",
-      countQuery =
-          "select count(l) from Listing l"
-              + " left join l.favoriteByUsers fu"
-              + " where fu.user.email = :email")
-  Page<Listing> findFavoriteListings(String email, Pageable pageable);
+      "select l from Listing l"
+          + " join fetch l.area join fetch l.category join fetch l.user"
+          + " where l.id = :listingId")
+  Optional<Listing> findByIdWithAreaAndCategoryAndUser(Integer listingId);
 }

@@ -56,5 +56,30 @@
   </ul>
 </th:block>
 
+<!--/*@thymesVar id="visitedListing" type="org.js.azdanov.springfresh.dtos.VisitedListingDTO"*/-->
+<th:block th:fragment="visited(visitedListing)" th:with="listing=${visitedListing.listing}">
+  <h5>
+    <a class="text-decoration-none link-secondary"
+       th:href="@{/{area}/categories/{category}/listings/{id}(area=${listing.area.slug}, category=${listing.category.slug}, id=${listing.id})}"
+       th:text="|${listing.title} #{in} ${listing.area.name}|">
+    </a>
+  </h5>
+  <ul class="list-inline mb-1">
+    <li class="list-inline-item"
+        th:text="|#{created} ${#temporals.format(listing.createdAt, 'dd/MM/yyyy HH:mm')}|">Created
+    </li>
+    <li class="list-inline-item"
+        th:text="${listing.user.name}">User
+    </li>
+  </ul>
+  <ul class="list-inline">
+    <li class="list-inline-item"
+        th:text="|#{viewed} ${#temporals.format(visitedListing.updatedAt, 'dd/MM/yyyy HH:mm')}|">Viewed
+    </li>
+    <li class="list-inline-item"th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
+    </li>
+  </ul>
+</th:block>
+
 </body>
 </html>

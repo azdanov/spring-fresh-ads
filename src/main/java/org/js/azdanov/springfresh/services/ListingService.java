@@ -4,6 +4,7 @@ import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
+import org.js.azdanov.springfresh.dtos.VisitedListingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,6 @@ public interface ListingService {
   void incrementUserVisit(Integer listingId, String email);
 
   int sumAllUserVisits(Integer listingId);
+
+  Page<VisitedListingDTO> getVisitedListings(String email, Pageable pageable);
 }

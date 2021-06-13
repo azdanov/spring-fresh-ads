@@ -8,6 +8,7 @@ import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
 import org.js.azdanov.springfresh.dtos.UserDTO;
+import org.js.azdanov.springfresh.dtos.VisitedListingDTO;
 import org.js.azdanov.springfresh.exceptions.ListingNotFoundException;
 import org.js.azdanov.springfresh.exceptions.UserNotFoundException;
 import org.js.azdanov.springfresh.models.Area;
@@ -52,7 +53,7 @@ public class ListingServiceImpl implements ListingService {
   @Override
   public ListingDTO findById(Integer listingId) {
     return listingRepository
-        .findById(listingId)
+        .findByIdWithAreaAndCategoryAndUser(listingId)
         .map(this::getListingDTO)
         .orElseThrow(ListingNotFoundException::new);
   }
@@ -116,6 +117,25 @@ public class ListingServiceImpl implements ListingService {
   @Override
   public int sumAllUserVisits(Integer listingId) {
     return userVisitedListingRepository.sumAllByListingId(listingId);
+  }
+
+  @Override
+  public Page<VisitedListingDTO> getVisitedListings(String email, Pageable pageable) {
+    Page<UserVisitedListing> listings =
+        userVisitedListingRepository.findVisitedListings(email, pageable);
+
+    List<VisitedListingDTO> favoriteListingDTOS =
+        listings.stream()
+            .map(
+                (UserVisitedListing userVisitedListing) ->
+                    new VisitedListingDTO(
+                        getListingDTO(userVisitedListing.getListing()),
+                        userVisitedListing.getVisited(),
+                        userVisitedListing.getCreatedAt(),
+                        userVisitedListing.getUpdatedAt()))
+            .toList();
+
+    return new PageImpl<>(favoriteListingDTOS, listings.getPageable(), listings.getTotalElements());
   }
 
   private void initUserVisitedListing(Integer listingId, String email) {
