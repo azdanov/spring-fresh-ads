@@ -36,3 +36,7 @@ VALUES (1, 'Community', 'community', 0.00, NOW(), NOW(), NULL, 1, 30, 0),
        (34, 'Rooms wanted', 'housing-rooms-wanted', 0.00, NOW(), NOW(), 26, 66, 67, 1),
        (35, 'Sublets / temporary', 'housing-sublets-temporary', 0.00, NOW(), NOW(), 26, 68, 69, 1),
        (36, 'Vacation rentals', 'housing-vacation-rentals', 0.00, NOW(), NOW(), 26, 70, 71, 1);
+
+UPDATE categories
+SET usable = TRUE
+WHERE tree_level > 0;

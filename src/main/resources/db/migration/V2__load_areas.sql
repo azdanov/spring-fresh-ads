@@ -72,3 +72,7 @@ VALUES (1, 'Estonia', 'estonia', NOW(), NOW(), NULL, 1, 30, 0),
        (71, 'Ventura County', 'california-ventura-county', NOW(), NOW(), 46, 139, 140, 2),
        (72, 'Visalia-Tulare', 'california-visalia-tulare', NOW(), NOW(), 46, 141, 142, 2),
        (73, 'Yuba-Sutter', 'california-yuba-sutter', NOW(), NOW(), 46, 143, 144, 2);
+
+UPDATE areas
+SET usable = TRUE
+WHERE tree_level > 1;

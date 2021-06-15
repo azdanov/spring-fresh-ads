@@ -41,6 +41,8 @@ public class Area implements NestedNode<Integer> {
   @Column(nullable = false, unique = true)
   private String slug;
 
+  private boolean usable;
+
   @CreationTimestamp private LocalDateTime createdAt;
 
   @UpdateTimestamp private LocalDateTime updatedAt;

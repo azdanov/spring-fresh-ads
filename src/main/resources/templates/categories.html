@@ -15,11 +15,7 @@
         <div class="row">
           <div class="col-md-4 mb-4" th:each="category : ${categories}"
                th:with="url=${#httpServletRequest.requestURI}">
-            <h4>
-              <a class="text-decoration-none link-secondary"
-                 th:href="@{{url}/{slug}/listings(url=${url}, slug=${category.slug})}"
-                 th:text="#{${category.slug}}">Category</a>
-            </h4>
+            <h4 th:text="#{${category.slug}}">Category</h4>
             <hr>
             <div class="row">
               <th:block th:each="sub : ${category.children}">

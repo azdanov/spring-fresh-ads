@@ -49,6 +49,8 @@ public class Category implements NestedNode<Integer> {
   @Column(nullable = false)
   private BigDecimal price = BigDecimal.ZERO;
 
+  private boolean usable;
+
   @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Listing> listings = new ArrayList<>();
 
