@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <title th:text="${subject}">Title</title>
+</head>
+<body>
+
+Hi,
+<th:block th:text="${listing.user.name}">User</th:block>
+<br><br>
+
+<th:block th:text="${senderEmail}">sender@email</th:block>
+has contacted you about your listing
+<a th:href="@{{url}(url=${listingURI})}" th:text="${listing.title}">Listing title</a>.<br><br>
+
+---<br>
+<th:block th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(message),'\n','&lt;br /&gt;'))}">Message</th:block>
+<br>
+---<br><br>
+
+Reply directly to this email to get back to them.
+
+</body>
+</html>

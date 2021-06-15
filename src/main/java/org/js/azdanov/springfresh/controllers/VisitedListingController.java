@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class ViewedListingController {
+public class VisitedListingController {
   public final ListingService listingService;
 
   @GetMapping("/listings/visited")

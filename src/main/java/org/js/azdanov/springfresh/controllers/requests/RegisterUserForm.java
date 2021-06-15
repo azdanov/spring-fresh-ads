@@ -12,7 +12,7 @@ import org.js.azdanov.springfresh.validators.UserNotExist;
 @PasswordsMatch
 @Getter
 @Setter
-public class RegisterUserFormData {
+public class RegisterUserForm {
   @NotBlank
   @Size(max = 120)
   private String name;
@@ -27,6 +27,6 @@ public class RegisterUserFormData {
 
   @Override
   public String toString() {
-    return "RegisterUserFormData{name='%s', email='%s'}".formatted(name, email);
+    return "RegisterUserForm{name='%s', email='%s'}".formatted(name, email);
   }
 }

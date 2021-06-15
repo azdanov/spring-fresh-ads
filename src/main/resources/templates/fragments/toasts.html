@@ -17,6 +17,15 @@
       <button aria-label="Close" class="btn-close me-2 m-auto" data-bs-dismiss="toast" type="button"></button>
     </div>
   </div>
+  <div aria-atomic="true" aria-live="assertive" class="toast text-white bg-success fade show align-items-center" data-bs-delay="5000"
+       role="alert" th:if="${toastSuccess}">
+    <div class="d-flex">
+      <div class="toast-body" th:text="${toastSuccess}">
+        This is a toast message.
+      </div>
+      <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" type="button"></button>
+    </div>
+  </div>
 </div>
 
 </body>

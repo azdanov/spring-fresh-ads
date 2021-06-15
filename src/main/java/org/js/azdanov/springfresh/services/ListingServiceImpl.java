@@ -41,7 +41,7 @@ public class ListingServiceImpl implements ListingService {
   public final UserVisitedListingRepository userVisitedListingRepository;
 
   @Override
-  public Page<ListingDTO> findByAreaAndCategory(
+  public Page<ListingDTO> getByAreaAndCategory(
       AreaDTO areaDTO, CategoryDTO categoryDTO, Pageable pageable) {
     List<Integer> areaIds = areaRepository.findInclusiveChildrenIds(areaDTO.slug());
     Page<Listing> listings =
@@ -51,7 +51,7 @@ public class ListingServiceImpl implements ListingService {
   }
 
   @Override
-  public ListingDTO findById(Integer listingId) {
+  public ListingDTO getById(Integer listingId) {
     return listingRepository
         .findByIdWithAreaAndCategoryAndUser(listingId)
         .map(this::getListingDTO)

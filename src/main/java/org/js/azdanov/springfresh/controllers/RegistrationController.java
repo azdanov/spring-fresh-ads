@@ -3,7 +3,7 @@ package org.js.azdanov.springfresh.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.js.azdanov.springfresh.controllers.requests.RegisterUserFormData;
+import org.js.azdanov.springfresh.controllers.requests.RegisterUserForm;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.events.UserRegisteredEvent;
 import org.js.azdanov.springfresh.services.UserService;
@@ -34,7 +34,7 @@ public class RegistrationController {
   @GetMapping
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     if (userDetails == null) {
-      model.addAttribute("user", new RegisterUserFormData());
+      model.addAttribute("user", new RegisterUserForm());
       return "auth/register";
     } else {
       return "redirect:/";
@@ -43,7 +43,7 @@ public class RegistrationController {
 
   @PostMapping
   public String store(
-      @Valid @ModelAttribute("user") RegisterUserFormData formData,
+      @Valid @ModelAttribute("user") RegisterUserForm formData,
       BindingResult bindingResult,
       Model model,
       HttpServletRequest request,

@@ -22,15 +22,17 @@
                   Email to a friend</a>
               </li>
               <li class="nav-item" th:if="${hasUserFavorited}">
-                <a class="nav-link" onclick="event.preventDefault(); document.getElementById('listing-unfavorite-form').submit();"
+                <a class="nav-link"
+                   onclick="event.preventDefault(); document.getElementById('listing-unfavorite-form').submit();"
                    th:href="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"
                    th:text="#{listing.remove-from-favorites}">
                   Remove from favorites</a>
-                <form class="d-none" id="listing-unfavorite-form" th:method="DELETE"
-                      th:action="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"></form>
+                <form class="d-none" id="listing-unfavorite-form" th:action="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"
+                      th:method="DELETE"></form>
               </li>
               <li class="nav-item" th:if="!${hasUserFavorited}">
-                <a class="nav-link" onclick="event.preventDefault(); document.getElementById('listing-favorite-form').submit();"
+                <a class="nav-link"
+                   onclick="event.preventDefault(); document.getElementById('listing-favorite-form').submit();"
                    th:href="@{{url}/favorites(url=${#httpServletRequest.requestURI})}"
                    th:text="#{listing.add-to-favorites}">
                   Add to favorites</a>
@@ -68,11 +70,18 @@
               </p>
             </div>
             <div class="card-text" sec:authorize="isAuthenticated()">
-              <form method="post" th:action="@{/}">
+              <form method="post" th:action="@{{url}/contact(url=${#httpServletRequest.requestURI})}"
+                    th:object="${contact}">
                 <div class="form-floating mb-3">
-                  <textarea class="form-control"
-                            id="message" placeholder="Leave a message here"></textarea>
+                  <textarea class="form-control" id="message" name="message"
+                            th:placeholder="#{contact.leave-message}"
+                            th:classappend="${#fields.hasErrors('message') ? 'is-invalid' : ''}"
+                            th:text="*{message}"></textarea>
                   <label for="message" th:text="#{form.message}">Message</label>
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}"
+                       th:text="${#strings.listJoin(#fields.errors('message'), ' ')}">
+                    Field validation error message(s).
+                  </div>
                 </div>
                 <button class="btn btn-primary mb-2" th:text="#{form.send}" type="submit">Send</button>
                 <br>

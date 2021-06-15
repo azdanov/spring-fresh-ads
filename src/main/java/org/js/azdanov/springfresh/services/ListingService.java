@@ -9,10 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ListingService {
-  Page<ListingDTO> findByAreaAndCategory(
+  Page<ListingDTO> getByAreaAndCategory(
       AreaDTO areaDTO, CategoryDTO categoryDTO, Pageable pageable);
 
-  ListingDTO findById(Integer listingId);
+  ListingDTO getById(Integer listingId);
 
   void storeFavoriteListing(Integer listingId, String email);
 

@@ -36,10 +36,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests(
             c ->
                 c.mvcMatchers(
+                        "/listings/visited",
                         "/listings/favorites",
-                        "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites",
                         "/listings/{listingId}/favorites",
-                        "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites")
+                        "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites",
+                        "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/contact")
                     .authenticated()
                     .anyRequest()
                     .permitAll())

@@ -2,17 +2,17 @@ package org.js.azdanov.springfresh.validators;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import org.js.azdanov.springfresh.controllers.requests.RegisterUserFormData;
+import org.js.azdanov.springfresh.controllers.requests.RegisterUserForm;
 
 public class PasswordsMatchValidator
-    implements ConstraintValidator<PasswordsMatch, RegisterUserFormData> {
+    implements ConstraintValidator<PasswordsMatch, RegisterUserForm> {
   @Override
   public void initialize(PasswordsMatch constraintAnnotation) {
     // intentionally empty
   }
 
   @Override
-  public boolean isValid(RegisterUserFormData value, ConstraintValidatorContext context) {
+  public boolean isValid(RegisterUserForm value, ConstraintValidatorContext context) {
     if (value.getPassword().equals(value.getPasswordRepeated())) {
       return true;
     }
