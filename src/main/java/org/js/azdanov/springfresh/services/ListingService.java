@@ -15,6 +15,8 @@ public interface ListingService {
 
   ListingDTO getById(Integer listingId);
 
+  boolean belongsTo(Integer listingId, String email);
+
   void storeFavoriteListing(Integer listingId, String email);
 
   boolean hasUserFavorited(Integer listingId, String email);
@@ -29,5 +31,7 @@ public interface ListingService {
 
   Page<VisitedListingDTO> getVisitedListings(String email, Pageable pageable);
 
-  ListingDTO createListing(CreateListingForm createListingForm);
+  ListingDTO createListing(CreateListingForm listingForm);
+
+  ListingDTO updateListing(CreateListingForm listingForm);
 }

@@ -25,4 +25,10 @@ public interface ListingRepository extends PagingAndSortingRepository<Listing, I
           + " join fetch l.area join fetch l.category join fetch l.user"
           + " where l.id = :listingId")
   Optional<Listing> findByIdWithAreaAndCategoryAndUser(Integer listingId);
+
+  @Query(
+      "select case when count(l) > 0 then true else false end from Listing l"
+          + " left join l.user"
+          + " where l.id = :listingId and l.user.email = :email")
+  boolean listingBelongsTo(Integer listingId, String email);
 }

@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="#{listing.create-listing}">Create listing</title>
+  <title th:text="#{listing.edit-listing}">Edit listing</title>
 </head>
 <body>
 
@@ -13,10 +13,18 @@
     <div class="card-body">
       <div class="container">
         <div class="mb-3">
-          <h4 th:text="#{listing.create-listing}">Create listing</h4>
+          <div class="row justify-content-between align-items-center">
+            <h4 class="col-auto" th:text="#{listing.edit-listing}">Edit listing</h4>
+            <a class="col-auto" th:href="${listingURI}" th:if="${listing.live}" th:text="#{listing.go-to}">
+              Go to listing</a>
+          </div>
           <hr>
 
-          <form class="form-create row g-3" method="post" th:action="@{/listings}" th:object="${listing}">
+          <form class="form-create row g-3" th:action="@{/listings}" th:method="put" th:object="${listing}">
+            <input name="id" th:value="*{id}" type="hidden">
+            <input name="userEmail" th:value="*{userEmail}" type="hidden">
+            <input name="live" th:value="*{live}" type="hidden">
+            <input name="categoryId" th:if="${listing.live}" th:value="*{categoryId}" type="hidden">
             <div class="mb-2">
               <label for="title" th:text="#{title}">Title</label>
               <input class="form-control" id="title" name="title"
@@ -83,8 +91,16 @@
                    th:text="${#strings.listJoin(#fields.errors('categoryId'), ' ')}">
                 Field validation error message(s).
               </div>
+              <div id="categoryHelp" class="form-text" th:text="#{listing.category-lock}">After payment category is locked.</div>
             </div>
             <button class="btn btn-lg btn-primary mt-4 col-4" th:text="#{save}" type="submit">Save</button>
+            <button class="btn btn-lg btn-success mt-4 col-4 ms-auto"
+                    th:if="${!listing.live}" th:text="#{pay}"
+                    type="button">Pay
+            </button>
+            <div class="d-flex justify-content-end">
+              <small th:if="${!listing.live}" th:text="#{listing.pay-to-live}">To get live</small>
+            </div>
           </form>
         </div>
       </div>

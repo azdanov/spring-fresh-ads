@@ -40,7 +40,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         HttpMethod.GET,
                         "/listings/visited",
                         "/listings/favorites",
-                        "/listings/create")
+                        "/listings/create",
+                        "/listings/{listingId}/edit")
                     .authenticated()
                     .mvcMatchers(
                         HttpMethod.POST,
@@ -52,6 +53,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         HttpMethod.DELETE,
                         "/listings/{listingId}/favorites",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites")
+                    .authenticated()
+                    .mvcMatchers(
+                        HttpMethod.PUT,
+                        "/listings")
                     .authenticated()
                     .anyRequest()
                     .permitAll())
