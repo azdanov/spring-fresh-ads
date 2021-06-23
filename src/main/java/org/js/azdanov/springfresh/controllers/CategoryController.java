@@ -13,16 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/{areaSlug}")
 @RequiredArgsConstructor
 public class CategoryController {
   private final AreaService areaService;
   private final CategoryService categoryService;
 
-  @GetMapping("/categories")
+  @GetMapping("/{areaSlug}/categories")
   public String index(@PathVariable String areaSlug, Model model, HttpSession session) {
     AreaDTO areaDTO = areaService.findBySlug(areaSlug);
     session.setAttribute(CURRENT_AREA, areaDTO);

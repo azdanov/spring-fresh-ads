@@ -3,6 +3,7 @@ package org.js.azdanov.springfresh.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,11 +37,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests(
             c ->
                 c.mvcMatchers(
+                        HttpMethod.GET,
                         "/listings/visited",
                         "/listings/favorites",
-                        "/listings/{listingId}/favorites",
+                        "/listings/create")
+                    .authenticated()
+                    .mvcMatchers(
+                        HttpMethod.POST,
+                        "/listings",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/contact")
+                    .authenticated()
+                    .mvcMatchers(
+                        HttpMethod.DELETE,
+                        "/listings/{listingId}/favorites",
+                        "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites")
                     .authenticated()
                     .anyRequest()
                     .permitAll())

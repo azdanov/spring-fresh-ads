@@ -3,12 +3,15 @@ package org.js.azdanov.springfresh.services;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.js.azdanov.springfresh.controllers.requests.CreateListingForm;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.dtos.VisitedListingDTO;
+import org.js.azdanov.springfresh.exceptions.AreaNotFoundException;
+import org.js.azdanov.springfresh.exceptions.CategoryNotFoundException;
 import org.js.azdanov.springfresh.exceptions.ListingNotFoundException;
 import org.js.azdanov.springfresh.exceptions.UserNotFoundException;
 import org.js.azdanov.springfresh.models.Area;
@@ -28,6 +31,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 @Service
 @RequiredArgsConstructor
@@ -138,6 +142,46 @@ public class ListingServiceImpl implements ListingService {
     return new PageImpl<>(favoriteListingDTOS, listings.getPageable(), listings.getTotalElements());
   }
 
+  //  @CacheEvict(value = {CATEGORY_LISTING}, key = "#result.area().slug()")
+  @Override
+  @Transactional
+  public ListingDTO createListing(CreateListingForm listingForm) {
+    var user =
+        userRepository
+            .findByEmail(listingForm.getUserEmail())
+            .orElseThrow(UserNotFoundException::new);
+    var area =
+        areaRepository.findById(listingForm.getAreaId()).orElseThrow(AreaNotFoundException::new);
+    var category =
+        categoryRepository
+            .findById(listingForm.getCategoryId())
+            .orElseThrow(CategoryNotFoundException::new);
+
+    Assert.state(user.isEnabled(), "createListing user(id=%d) must be enabled".formatted(user.getId()));
+    Assert.state(area.isUsable(), "createListing area(id=%d) must be usable".formatted(area.getId()));
+    Assert.state(category.isUsable(), "createListing category(id=%d) must be usable".formatted(category.getId()));
+
+    var listing = new Listing();
+
+    listing.setTitle(listingForm.getTitle());
+    listing.setBody(listingForm.getBody());
+    listing.setUser(user);
+    listing.setCategory(category);
+    listing.setArea(area);
+
+    listing = listingRepository.save(listing);
+
+    return new ListingDTO(
+        listing.getId(),
+        listing.getTitle(),
+        listing.getBody(),
+        listing.isLive(),
+        getUserDTO(user),
+        getAreaDTO(area),
+        getCategoryDTO(category),
+        listing.getCreatedAt());
+  }
+
   private void initUserVisitedListing(Integer listingId, String email) {
     Listing listing =
         listingRepository.findById(listingId).orElseThrow(ListingNotFoundException::new);
@@ -163,7 +207,7 @@ public class ListingServiceImpl implements ListingService {
   }
 
   private UserDTO getUserDTO(User user) {
-    return new UserDTO(user.getId(), user.getName(), user.getEmail(), null, user.isEnabled());
+    return new UserDTO(user.getId(), user.getName(), user.getEmail(), "", user.isEnabled());
   }
 
   private AreaDTO getAreaDTO(Area area) {

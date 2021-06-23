@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableCaching
 public class CacheConfig {
-  public static final String AREA = "area";
-  public static final String CATEGORY = "category";
+  public static final String AREA_TREE = "area_tree";
+  public static final String CATEGORY_LISTING = "category_listing";
+  public static final String CATEGORY_TREE = "category_tree";
 
   private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration =
       Eh107Configuration.fromEhcacheCacheConfiguration(
@@ -26,8 +27,9 @@ public class CacheConfig {
   @Bean
   public JCacheManagerCustomizer cacheManagerCustomizer() {
     return cm -> {
-      createCache(cm, AREA);
-      createCache(cm, CATEGORY);
+      createCache(cm, AREA_TREE);
+      createCache(cm, CATEGORY_TREE);
+      createCache(cm, CATEGORY_LISTING);
     };
   }
 

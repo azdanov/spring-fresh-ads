@@ -4,4 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record CategoryTreeDTO(
-    String name, String slug, BigDecimal price, List<CategoryTreeDTO> children) {}
+    Integer id,
+    String name,
+    String slug,
+    BigDecimal price,
+    boolean usable,
+    List<CategoryTreeDTO> children) {}

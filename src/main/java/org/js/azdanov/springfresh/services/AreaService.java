@@ -5,7 +5,7 @@ import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.AreaTreeDTO;
 
 public interface AreaService {
-  List<AreaTreeDTO> getAllAreas();
+  List<AreaTreeDTO> getAllAreasTree();
 
   AreaDTO findBySlug(String slug);
 }

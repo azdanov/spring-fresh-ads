@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.exceptions.RoleNotFoundException;
 import org.js.azdanov.springfresh.exceptions.UserAlreadyExistsException;
+import org.js.azdanov.springfresh.exceptions.UserNotFoundException;
 import org.js.azdanov.springfresh.models.User;
 import org.js.azdanov.springfresh.repositories.RoleRepository;
 import org.js.azdanov.springfresh.repositories.UserRepository;
@@ -47,5 +48,15 @@ public class UserServiceImpl implements UserService {
   @Override
   public boolean userExistsByEmail(String email) {
     return userRepository.existsByEmail(email);
+  }
+
+  @Override
+  public UserDTO findByEmail(String email) {
+    return userRepository
+        .findByEmail(email)
+        .map(
+            user ->
+                new UserDTO(user.getId(), user.getName(), user.getEmail(), "", user.isEnabled()))
+        .orElseThrow(UserNotFoundException::new);
   }
 }

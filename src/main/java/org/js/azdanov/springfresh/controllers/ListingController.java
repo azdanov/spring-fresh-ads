@@ -27,14 +27,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
-@RequestMapping("/{areaSlug}/categories/{categorySlug}/listings")
 @RequiredArgsConstructor
 public class ListingController {
   public final AreaService areaService;
@@ -43,7 +41,7 @@ public class ListingController {
   private final ContactService contactService;
   private final MessageSource messageSource;
 
-  @GetMapping
+  @GetMapping("/{areaSlug}/categories/{categorySlug}/listings")
   public String index(
       @PathVariable String areaSlug,
       @PathVariable String categorySlug,
@@ -61,7 +59,7 @@ public class ListingController {
     return "listings/index";
   }
 
-  @GetMapping("/{listingId}")
+  @GetMapping("/{areaSlug}/categories/{categorySlug}/listings/{listingId}")
   public String show(
       @PathVariable String areaSlug,
       @PathVariable String categorySlug,
@@ -94,7 +92,7 @@ public class ListingController {
     return "listings/show";
   }
 
-  @PostMapping("/{listingId}/contact")
+  @PostMapping("/{areaSlug}/categories/{categorySlug}/listings/{listingId}/contact")
   public String storeContact(
       @PathVariable String areaSlug,
       @PathVariable String categorySlug,

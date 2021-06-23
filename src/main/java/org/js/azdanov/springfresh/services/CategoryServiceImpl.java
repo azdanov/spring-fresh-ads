@@ -1,6 +1,7 @@
 package org.js.azdanov.springfresh.services;
 
-import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY;
+import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY_LISTING;
+import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY_TREE;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.js.azdanov.springfresh.models.Category;
 import org.js.azdanov.springfresh.models.Listing;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.js.azdanov.springfresh.repositories.CategoryRepository;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,16 +21,29 @@ import pl.exsio.nestedj.NestedNodeRepository;
 import pl.exsio.nestedj.model.Tree;
 
 @Service
-@CacheConfig(cacheNames = {CATEGORY})
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
   private final AreaRepository areaRepository;
   private final NestedNodeRepository<Integer, Category> categoryNestedNodeRepository;
 
+  @Cacheable(cacheNames = {CATEGORY_TREE})
+  @Override
+  @Transactional(readOnly = true)
+  public List<CategoryTreeDTO> getAllCategories() {
+    List<Category> roots = categoryRepository.findAllByParentIdIsNull();
+
+    return roots.stream()
+        .map(
+            category -> getCategoryTreeDTORecursive(categoryNestedNodeRepository.getTree(category)))
+        .toList();
+  }
+
   // Needs cache to prevent NestedJ n+1
   // TODO: Find a way to reduce n+1
-  @Cacheable(key = "#areaDTO.slug")
+  @Cacheable(
+      cacheNames = {CATEGORY_LISTING},
+      key = "#areaDTO.slug")
   @Transactional(readOnly = true)
   public List<CategoryListingTreeDTO> getAllCategoriesWithListingCount(AreaDTO areaDTO) {
     List<Category> roots = categoryRepository.findAllByParentIdIsNull();
@@ -48,10 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
   public CategoryDTO findBySlug(String slug) {
     return categoryRepository
         .findBySlug(slug)
-        .map(
-            category ->
-                new CategoryDTO(
-                    category.getId(), category.getName(), category.getSlug(), category.getPrice()))
+        .map(CategoryDTO::new)
         .orElseThrow(CategoryNotFoundException::new);
   }
 
@@ -63,15 +73,23 @@ public class CategoryServiceImpl implements CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
 
     CategoryTreeDTO categoryTreeDTO =
-        new CategoryTreeDTO(category.getName(), category.getSlug(), category.getPrice(), null);
+        new CategoryTreeDTO(
+            category.getId(),
+            category.getName(),
+            category.getSlug(),
+            category.getPrice(),
+            category.isUsable(),
+            null);
     return categoryNestedNodeRepository
         .getParent(category)
         .map(
             categoryParent ->
                 new CategoryTreeDTO(
+                    categoryParent.getId(),
                     categoryParent.getName(),
                     categoryParent.getSlug(),
                     categoryParent.getPrice(),
+                    categoryParent.isUsable(),
                     List.of(categoryTreeDTO)))
         .orElse(categoryTreeDTO);
   }
@@ -86,7 +104,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.getSlug(),
         category.getPrice(),
         listingSize,
-        processTreeList(children, areaIds));
+        processCategoryListingTreeList(children, areaIds));
   }
 
   private long getListingSize(Category category, List<Integer> areaIds) {
@@ -96,10 +114,26 @@ public class CategoryServiceImpl implements CategoryService {
         .count();
   }
 
-  private List<CategoryListingTreeDTO> processTreeList(
+  private List<CategoryListingTreeDTO> processCategoryListingTreeList(
       List<Tree<Integer, Category>> treeList, List<Integer> areaIds) {
     return treeList.stream()
         .map(tree -> getCategoryListingTreeDTORecursive(tree, areaIds))
         .toList();
+  }
+
+  private CategoryTreeDTO getCategoryTreeDTORecursive(Tree<Integer, Category> tree) {
+    Category category = tree.getNode();
+    List<Tree<Integer, Category>> children = tree.getChildren();
+    return new CategoryTreeDTO(
+        category.getId(),
+        category.getName(),
+        category.getSlug(),
+        category.getPrice(),
+        category.isUsable(),
+        processCategoryTreeList(children));
+  }
+
+  private List<CategoryTreeDTO> processCategoryTreeList(List<Tree<Integer, Category>> treeList) {
+    return treeList.stream().map(this::getCategoryTreeDTORecursive).toList();
   }
 }

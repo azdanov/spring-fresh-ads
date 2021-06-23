@@ -1,5 +1,6 @@
 package org.js.azdanov.springfresh.services;
 
+import org.js.azdanov.springfresh.controllers.requests.CreateListingForm;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
@@ -27,4 +28,6 @@ public interface ListingService {
   int sumAllUserVisits(Integer listingId);
 
   Page<VisitedListingDTO> getVisitedListings(String email, Pageable pageable);
+
+  ListingDTO createListing(CreateListingForm createListingForm);
 }

@@ -1,6 +1,5 @@
 package org.js.azdanov.springfresh.controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,7 +28,7 @@ class IndexControllerTest {
 
   @Test
   void shouldGetAreas() throws Exception {
-    when(areaService.getAllAreas()).thenReturn(List.of());
+    when(areaService.getAllAreasTree()).thenReturn(List.of());
 
     mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk());
   }

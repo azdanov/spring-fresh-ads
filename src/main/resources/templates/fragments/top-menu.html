@@ -43,6 +43,9 @@
         </button>
         <ul aria-labelledby="user-menu" class="dropdown-menu text-small">
           <li><a class="dropdown-item"
+                 th:href="@{/listings/create}"
+                 th:text="#{listing.create-listing}">Create listing</a></li>
+          <li><a class="dropdown-item"
                  th:href="@{/listings/favorites}"
                  th:text="#{listings.favorite-listings}">Favorite listings</a></li>
           <li><a class="dropdown-item"

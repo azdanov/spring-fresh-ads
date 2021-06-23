@@ -17,21 +17,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
-@RequestMapping("/register")
 @RequiredArgsConstructor
 public class RegistrationController {
   private final UserService userService;
   private final VerificationTokenService tokenService;
   private final ApplicationEventPublisher eventPublisher;
 
-  @GetMapping
+  @GetMapping("/register")
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     if (userDetails == null) {
       model.addAttribute("user", new RegisterUserForm());
@@ -41,7 +39,7 @@ public class RegistrationController {
     }
   }
 
-  @PostMapping
+  @PostMapping("/register")
   public String store(
       @Valid @ModelAttribute("user") RegisterUserForm formData,
       BindingResult bindingResult,
@@ -77,7 +75,7 @@ public class RegistrationController {
         .toUriString();
   }
 
-  @GetMapping("/confirm")
+  @GetMapping("/register/confirm")
   public String confirmEmail(@RequestParam String token, RedirectAttributes redirectAttributes) {
     var tokenVerificationStatus = tokenService.validateVerificationToken(token);
 

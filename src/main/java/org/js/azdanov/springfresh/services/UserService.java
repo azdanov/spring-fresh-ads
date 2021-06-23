@@ -6,4 +6,6 @@ public interface UserService {
   UserDTO createUser(UserDTO userDTO);
 
   boolean userExistsByEmail(String email);
+
+  UserDTO findByEmail(String email);
 }

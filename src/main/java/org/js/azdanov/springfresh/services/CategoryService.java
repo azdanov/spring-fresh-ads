@@ -7,6 +7,8 @@ import org.js.azdanov.springfresh.dtos.CategoryListingTreeDTO;
 import org.js.azdanov.springfresh.dtos.CategoryTreeDTO;
 
 public interface CategoryService {
+  List<CategoryTreeDTO> getAllCategories();
+
   List<CategoryListingTreeDTO> getAllCategoriesWithListingCount(AreaDTO areaDTO);
 
   CategoryDTO findBySlug(String slug);
