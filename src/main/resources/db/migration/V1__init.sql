@@ -85,8 +85,8 @@ CREATE TABLE listings
     user_id     INTEGER,
     area_id     INTEGER,
     category_id INTEGER,
-    title       VARCHAR(255),
-    body        VARCHAR(255),
+    title       TEXT,
+    body        TEXT,
     live        BOOLEAN,
     deleted     BOOLEAN,
     created_at  TIMESTAMP WITHOUT TIME ZONE,
@@ -117,4 +117,15 @@ CREATE TABLE user_visited_listing
     CONSTRAINT pk_user_visited_listing PRIMARY KEY (user_id, listing_id),
     CONSTRAINT fk_user_visited_listing_on_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT fk_user_visited_listing_on_listing FOREIGN KEY (user_id) REFERENCES listings (id) ON DELETE CASCADE
+);
+
+CREATE TABLE payment
+(
+    listing_id INTEGER        NOT NULL,
+    payment_id TEXT,
+    price      NUMERIC(12, 2) NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE,
+    updated_at TIMESTAMP WITHOUT TIME ZONE,
+    CONSTRAINT pk_payment PRIMARY KEY (listing_id),
+    CONSTRAINT fk_payment_on_listing FOREIGN KEY (listing_id) REFERENCES listings (id)
 );

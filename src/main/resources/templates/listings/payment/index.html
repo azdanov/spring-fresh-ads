@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{payment}">Payment</title>
+  <th:block th:if="${listing.category.price > 0}">
+    <link rel="stylesheet" th:href="@{/css/payment.css}">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script defer th:src="@{/js/payment.js}"></script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+
+      var clientSecret = /*[[${clientSecret}]]*/ null;
+      var publicKey = /*[[${publicKey}]]*/ null;
+      var userEmail = /*[[${#authentication.getPrincipal().getUsername()}]]*/ null;
+
+      /*]]>*/
+    </script>
+  </th:block>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+  <div class="card w-75 mx-auto">
+    <div class="card-body">
+      <div class="container">
+        <div class="mb-3">
+          <h4>
+            <th:block th:text="#{payment}">Payment</th:block>
+          </h4>
+
+          <hr>
+
+          <form class="mx-auto" id="payment-form" th:if="${listing.category.price > 0}">
+            <p th:text="#{total-cost(${#numbers.formatDecimal(listing.category.price, 1, 'DEFAULT', 2, 'DEFAULT')})}">
+              Total cost: €0</p>
+            <div class="border rounded" id="card-element"><!--Stripe.js injects the Card Element--></div>
+            <button class="btn btn-primary w-100 mt-2" id="submit">
+              <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status">
+                <span class="visually-hidden" th:text="#{payment.in-progress}">Payment in progress...</span>
+              </span>
+              <span id="button-text" th:text="#{payment.pay-now}">Pay now</span>
+            </button>
+            <p id="card-error" role="alert"></p>
+            <p class="result-message d-none d-flex justify-content-between">
+              <span th:text="#{payment.succeeded}">Payment succeeded</span>
+              <a
+                  th:href="@{/listings/{listingId}/edit(listingId=${listing.id})}"
+                  th:text="#{listing.continue-to-listing}">
+                Continue to listing</a>
+            </p>
+          </form>
+          <div th:unless="${listing.category.price > 0}">
+            <form th:action="@{/listings/{listingId}/payment(listingId=${listing.id})}"
+                  th:method="patch">
+              <p th:text="#{payment.nothing-to-pay}">There's nothing for you to pay.</p>
+              <button class="btn btn-success" th:text="#{listing.continue-to-listing}">
+                Continue to listing
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

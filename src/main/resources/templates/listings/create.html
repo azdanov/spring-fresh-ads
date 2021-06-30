@@ -16,71 +16,66 @@
           <h4 th:text="#{listing.create-listing}">Create listing</h4>
           <hr>
 
-          <form class="form-create row g-3" method="post" th:action="@{/listings}" th:object="${listing}">
+          <form class="form-create row g-3" method="post" th:action="@{/listings}" th:object="${listingForm}">
             <div class="mb-2">
-              <label for="title" th:text="#{title}">Title</label>
-              <input class="form-control" id="title" name="title"
-                     th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : ''}"
-                     th:value="*{title}" type="text">
-              <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('title')}"
-                   th:text="${#strings.listJoin(#fields.errors('title'), ' ')}">
+              <label th:for="title" th:text="#{title}">Title</label>
+              <input class="form-control"
+                     th:errorclass="is-invalid"
+                     th:field="*{title}" type="text">
+              <div class="invalid-feedback mb-1" th:errors="*{title}"
+                   th:if="${#fields.hasErrors('title')}">
                 Field validation error message(s).
               </div>
             </div>
 
             <div>
-              <label for="body" th:text="#{listing.body}">Body</label>
-              <textarea class="form-control" id="body" name="body" rows="4"
-                        th:classappend="${#fields.hasErrors('body') ? 'is-invalid' : ''}" th:text="*{body}"></textarea>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('body')}"
-                   th:text="${#strings.listJoin(#fields.errors('body'), ' ')}">
+              <label th:for="body" th:text="#{listing.body}">Body</label>
+              <textarea class="form-control" rows="4"
+                        th:errorclass="is-invalid"
+                        th:field="*{body}"></textarea>
+              <div class="invalid-feedback" th:errors="*{body}"
+                   th:if="${#fields.hasErrors('body')}">
                 Field validation error message(s).
               </div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label" for="area" th:text="#{area}">Area</label>
-              <select class="form-select" id="area" name="areaId"
-                      th:classappend="${#fields.hasErrors('areaId') ? 'is-invalid' : ''}">
-                <option disabled hidden selected value></option>
+              <label class="form-label" th:for="areaId" th:text="#{area}">Area</label>
+              <select class="form-select" th:errorclass="is-invalid" th:field="*{areaId}">
+                <option disabled hidden selected value="0"></option>
                 <th:block th:each="country : ${areas}">
-                  <option disabled th:text="${country.name}" value>Country</option>
-                  <th:block th:each="state : ${country.children}">
-                    <optgroup label="State" th:label="${state.name}">
-                      <th:block th:each="city : ${state.children}">
-                        <option th:disabled="${!city.usable}" th:selected="${city.id == listing.areaId}"
-                                th:text="${city.name}" th:value="${city.id}">
-                          City
-                        </option>
-                      </th:block>
-                    </optgroup>
-                  </th:block>
+                  <option disabled th:text="${country.name}" th:value="${country.id}">Country</option>
+                  <optgroup label="State" th:each="state : ${country.children}" th:label="${state.name}">
+                    <option th:disabled="${!city.usable}" th:each="city : ${state.children}"
+                            th:selected="${city.id == listingForm.areaId}"
+                            th:text="${city.name}" th:value="${city.id}">
+                      City
+                    </option>
+                  </optgroup>
                 </th:block>
               </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('areaId')}"
-                   th:text="${#strings.listJoin(#fields.errors('areaId'), ' ')}">
+              <div class="invalid-feedback" th:errors="*{areaId}" th:if="${#fields.hasErrors('areaId')}">
                 Field validation error message(s).
               </div>
             </div>
 
             <div class="col-md-6">
-              <label class="form-label" for="category" th:text="#{category}">Category</label>
-              <select class="form-select" id="category" name="categoryId"
-                      th:classappend="${#fields.hasErrors('categoryId') ? 'is-invalid' : ''}"
-                      th:disabled="${listing.live}">
-                <option disabled hidden selected value></option>
+              <label class="form-label" th:for="categoryId" th:text="#{category}">Category</label>
+              <select class="form-select" th:disabled="*{live}"
+                      th:errorclass="is-invalid"
+                      th:field="*{categoryId}">
+                <option disabled hidden selected value="0"></option>
                 <optgroup label="Category" th:each="category : ${categories}" th:label="#{${category.slug}}">
-                  <th:block th:each="subCategory : ${category.children}">
-                    <option th:disabled="${!subCategory.usable}"
-                            th:selected="${subCategory.id == listing.categoryId}"
-                            th:text="|#{${subCategory.slug}} (€${subCategory.price})|" th:value="${subCategory.id}">
-                      Sub category
-                    </option>
-                  </th:block>
+                  <option th:disabled="${!subCategory.usable}" th:each="subCategory : ${category.children}"
+                          th:selected="${subCategory.id == listingForm.categoryId}"
+                          th:text="|#{${subCategory.slug}} (#{currency(${subCategory.price})})|"
+                          th:value="${subCategory.id}">
+                    Sub category
+                  </option>
                 </optgroup>
               </select>
-              <div class="invalid-feedback" th:if="${#fields.hasErrors('categoryId')}"
-                   th:text="${#strings.listJoin(#fields.errors('categoryId'), ' ')}">
+              <div class="invalid-feedback" th:errors="*{categoryId}"
+                   th:if="${#fields.hasErrors('categoryId')}">
                 Field validation error message(s).
               </div>
             </div>

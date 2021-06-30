@@ -1,5 +1,9 @@
 package org.js.azdanov.springfresh.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.CONFLICT)
 public final class UserAlreadyExistsException extends RuntimeException {
   public UserAlreadyExistsException() {
     super();

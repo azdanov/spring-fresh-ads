@@ -71,15 +71,15 @@
             </div>
             <div class="card-text" sec:authorize="isAuthenticated()">
               <form method="post" th:action="@{{url}/contact(url=${#httpServletRequest.requestURI})}"
-                    th:object="${contact}">
+                    th:object="${listingContactForm}">
                 <div class="form-floating mb-3">
-                  <textarea class="form-control" id="message" name="message"
+                  <textarea class="form-control"
                             th:placeholder="#{contact.leave-message}"
-                            th:classappend="${#fields.hasErrors('message') ? 'is-invalid' : ''}"
-                            th:text="*{message}"></textarea>
-                  <label for="message" th:text="#{form.message}">Message</label>
+                            th:errorclass="is-invalid"
+                            th:field="*{message}"></textarea>
+                  <label th:for="message" th:text="#{form.message}">Message</label>
                   <div class="invalid-feedback" th:if="${#fields.hasErrors('message')}"
-                       th:text="${#strings.listJoin(#fields.errors('message'), ' ')}">
+                       th:errors="*{message}">
                     Field validation error message(s).
                   </div>
                 </div>

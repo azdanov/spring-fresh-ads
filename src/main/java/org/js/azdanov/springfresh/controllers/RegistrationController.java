@@ -32,7 +32,7 @@ public class RegistrationController {
   @GetMapping("/register")
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     if (userDetails == null) {
-      model.addAttribute("user", new RegisterUserForm());
+      model.addAttribute("registerUserForm", new RegisterUserForm());
       return "auth/register";
     } else {
       return "redirect:/";
@@ -41,7 +41,7 @@ public class RegistrationController {
 
   @PostMapping("/register")
   public String store(
-      @Valid @ModelAttribute("user") RegisterUserForm formData,
+      @Valid @ModelAttribute("registerUserForm") RegisterUserForm registerUserForm,
       BindingResult bindingResult,
       Model model,
       HttpServletRequest request,
@@ -51,11 +51,11 @@ public class RegistrationController {
     // TODO: Add password reset
 
     if (bindingResult.hasErrors()) {
-      model.addAttribute("user", formData);
+      model.addAttribute("registerUserForm", registerUserForm);
       return "auth/register";
     }
 
-    var registeredUser = userService.createUser(new UserDTO(formData));
+    var registeredUser = userService.createUser(new UserDTO(registerUserForm));
     var token = tokenService.createVerificationTokenForUser(registeredUser);
     var confirmationURI = getConfirmationURI(uriComponentsBuilder, token);
 

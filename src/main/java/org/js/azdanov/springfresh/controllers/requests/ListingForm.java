@@ -9,7 +9,7 @@ import org.js.azdanov.springfresh.dtos.ListingDTO;
 
 @Data
 @NoArgsConstructor
-public class CreateListingForm {
+public class ListingForm {
   private Integer id;
 
   @NotBlank
@@ -21,11 +21,13 @@ public class CreateListingForm {
   private String body;
 
   private boolean live;
+  private boolean paid;
   private String userEmail;
   @Positive private int areaId;
   @Positive private int categoryId;
+  private boolean payment;
 
-  public CreateListingForm(ListingDTO listing) {
+  public ListingForm(ListingDTO listing) {
     id = listing.id();
     title = listing.title();
     body = listing.body();
@@ -33,5 +35,6 @@ public class CreateListingForm {
     userEmail = listing.user().email();
     areaId = listing.area().id();
     categoryId = listing.category().id();
+    paid = listing.payment() != null;
   }
 }

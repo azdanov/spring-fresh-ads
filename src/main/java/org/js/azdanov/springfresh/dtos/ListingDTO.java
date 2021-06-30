@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import org.js.azdanov.springfresh.models.Area;
 import org.js.azdanov.springfresh.models.Category;
 import org.js.azdanov.springfresh.models.Listing;
+import org.js.azdanov.springfresh.models.Payment;
 import org.js.azdanov.springfresh.models.User;
 
 public record ListingDTO(
@@ -14,15 +15,18 @@ public record ListingDTO(
     UserDTO user,
     AreaDTO area,
     CategoryDTO category,
+    PaymentDTO payment,
     LocalDateTime createdAt) {
   public ListingDTO(Listing listing) {
-    this(listing.getId(),
+    this(
+        listing.getId(),
         listing.getTitle(),
         listing.getBody(),
         listing.isLive(),
         getUserDTO(listing.getUser()),
         getAreaDTO(listing.getArea()),
         getCategoryDTO(listing.getCategory()),
+        getPaymentDTO(listing.getPayment()),
         listing.getCreatedAt());
   }
 
@@ -36,5 +40,13 @@ public record ListingDTO(
 
   private static CategoryDTO getCategoryDTO(Category category) {
     return new CategoryDTO(category);
+  }
+
+  private static PaymentDTO getPaymentDTO(Payment payment) {
+    if (payment == null) {
+      return null;
+    }
+
+    return new PaymentDTO(payment);
   }
 }

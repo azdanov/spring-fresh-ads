@@ -2,7 +2,7 @@ package org.js.azdanov.springfresh.controllers;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.js.azdanov.springfresh.controllers.requests.CreateListingForm;
+import org.js.azdanov.springfresh.controllers.requests.ListingForm;
 import org.js.azdanov.springfresh.dtos.ListingDTO;
 import org.js.azdanov.springfresh.exceptions.ForbiddenException;
 import org.js.azdanov.springfresh.services.AreaService;
@@ -39,8 +39,8 @@ public class CreateListingController {
     model.addAttribute("areas", areas);
     model.addAttribute("categories", categories);
 
-    if (!model.containsAttribute("listing")) {
-      model.addAttribute("listing", new CreateListingForm());
+    if (!model.containsAttribute("listingForm")) {
+      model.addAttribute("listingForm", new ListingForm());
     }
 
     return "listings/create";
@@ -48,15 +48,15 @@ public class CreateListingController {
 
   @PostMapping("/listings")
   public String store(
-      @Valid @ModelAttribute("listing") CreateListingForm listingForm,
+      @Valid @ModelAttribute("listingForm") ListingForm listingForm,
       BindingResult bindingResult,
       RedirectAttributes redirectAttributes,
       @AuthenticationPrincipal UserDetails userDetails) {
 
     if (bindingResult.hasErrors()) {
-      redirectAttributes.addFlashAttribute("listing", listingForm);
+      redirectAttributes.addFlashAttribute("listingForm", listingForm);
       redirectAttributes.addFlashAttribute(
-          "org.springframework.validation.BindingResult.listing", bindingResult);
+          "org.springframework.validation.BindingResult.listingForm", bindingResult);
       return "redirect:listings/create";
     }
 
@@ -84,8 +84,8 @@ public class CreateListingController {
 
     model.addAttribute("areas", areas);
     model.addAttribute("categories", categories);
-    if (!model.containsAttribute("listing")) {
-      model.addAttribute("listing", new CreateListingForm(listing));
+    if (!model.containsAttribute("listingForm")) {
+      model.addAttribute("listingForm", new ListingForm(listing));
     }
     model.addAttribute("listingURI", getListingURI(uriComponentsBuilder, listing));
 
@@ -94,15 +94,15 @@ public class CreateListingController {
 
   @PutMapping("/listings")
   public String update(
-      @Valid @ModelAttribute("listing") CreateListingForm listingForm,
+      @Valid @ModelAttribute("listingForm") ListingForm listingForm,
       BindingResult bindingResult,
       RedirectAttributes redirectAttributes,
       @AuthenticationPrincipal UserDetails userDetails) {
 
     if (bindingResult.hasErrors()) {
-      redirectAttributes.addFlashAttribute("listing", listingForm);
+      redirectAttributes.addFlashAttribute("listingForm", listingForm);
       redirectAttributes.addFlashAttribute(
-          "org.springframework.validation.BindingResult.listing", bindingResult);
+          "org.springframework.validation.BindingResult.listingForm", bindingResult);
       return "redirect:listings/%d/edit".formatted(listingForm.getId());
     }
 
@@ -110,12 +110,15 @@ public class CreateListingController {
         && !listingService.belongsTo(listingForm.getId(), listingForm.getUserEmail())) {
       throw new ForbiddenException(
           "update Listing(%d, %s) by user(%s)"
-              .formatted(listingForm.getId(), listingForm.getUserEmail(), userDetails.getUsername()));
+              .formatted(
+                  listingForm.getId(), listingForm.getUserEmail(), userDetails.getUsername()));
     }
 
-    ListingDTO listing = listingService.updateListing(listingForm);
+    var listing = listingService.updateListing(listingForm);
 
-    // TODO: Check if pay button was clicked
+    if (listingForm.isPayment()) {
+      return "redirect:listings/%d/payment".formatted(listing.id());
+    }
 
     return "redirect:listings/%d/edit".formatted(listing.id());
   }

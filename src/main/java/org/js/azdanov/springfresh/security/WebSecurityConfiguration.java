@@ -41,27 +41,29 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/listings/visited",
                         "/listings/favorites",
                         "/listings/create",
-                        "/listings/{listingId}/edit")
-                    .authenticated()
-                    .mvcMatchers(
+                        "/listings/{listingId}/edit",
+                        "/listings/{listingId}/payment")
+                    .authenticated())
+        .authorizeRequests(
+            c ->
+                c.mvcMatchers(
                         HttpMethod.POST,
                         "/listings",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/contact")
-                    .authenticated()
-                    .mvcMatchers(
+                    .authenticated())
+        .authorizeRequests(
+            c ->
+                c.mvcMatchers(
                         HttpMethod.DELETE,
                         "/listings/{listingId}/favorites",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites")
-                    .authenticated()
-                    .mvcMatchers(
-                        HttpMethod.PUT,
-                        "/listings")
-                    .authenticated()
-                    .anyRequest()
-                    .permitAll())
+                    .authenticated())
+        .authorizeRequests(c -> c.mvcMatchers(HttpMethod.PUT, "/listings").authenticated())
+        .authorizeRequests(c -> c.anyRequest().permitAll())
         .formLogin(c -> c.loginPage("/login").permitAll().usernameParameter("email"))
         .logout(c -> c.logoutSuccessUrl("/"))
-        .rememberMe(c -> c.key(rememberMeKey));
+        .rememberMe(c -> c.key(rememberMeKey))
+        .csrf(c -> c.ignoringAntMatchers("/webhook/**"));
   }
 }

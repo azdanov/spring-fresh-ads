@@ -5,6 +5,7 @@ import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY_TREE;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.CategoryListingTreeDTO;
@@ -22,6 +23,7 @@ import pl.exsio.nestedj.model.Tree;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
   private final AreaRepository areaRepository;

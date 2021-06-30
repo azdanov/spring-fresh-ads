@@ -1,6 +1,6 @@
 package org.js.azdanov.springfresh.services;
 
-import org.js.azdanov.springfresh.controllers.requests.CreateListingForm;
+import org.js.azdanov.springfresh.controllers.requests.ListingForm;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
@@ -31,7 +31,9 @@ public interface ListingService {
 
   Page<VisitedListingDTO> getVisitedListings(String email, Pageable pageable);
 
-  ListingDTO createListing(CreateListingForm listingForm);
+  ListingDTO createListing(ListingForm listingForm);
 
-  ListingDTO updateListing(CreateListingForm listingForm);
+  ListingDTO updateListing(ListingForm listingForm);
+
+  void handleFreeListing(Integer listingId);
 }

@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,6 +57,9 @@ public class Listing {
 
   private boolean deleted = Boolean.FALSE;
 
+  @OneToOne(mappedBy = "listing", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private Payment payment;
+
   @CreationTimestamp private LocalDateTime createdAt;
   @UpdateTimestamp private LocalDateTime updatedAt;
 
@@ -65,7 +69,7 @@ public class Listing {
     user.getVisitedListings().add(userVisitedListing);
   }
 
-  public void removeViewedByUser(User user) {
+  public void removeVisitedByUser(User user) {
     for (Iterator<UserVisitedListing> iterator = visitedByUsers.iterator(); iterator.hasNext(); ) {
       UserVisitedListing userVisitedListing = iterator.next();
 

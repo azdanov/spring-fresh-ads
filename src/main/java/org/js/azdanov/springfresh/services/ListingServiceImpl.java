@@ -1,9 +1,14 @@
 package org.js.azdanov.springfresh.services;
 
+import static org.js.azdanov.springfresh.config.CacheConfig.CATEGORY_LISTING;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import javax.cache.CacheManager;
 import lombok.RequiredArgsConstructor;
-import org.js.azdanov.springfresh.controllers.requests.CreateListingForm;
+import org.js.azdanov.springfresh.controllers.requests.ListingForm;
 import org.js.azdanov.springfresh.dtos.AreaDTO;
 import org.js.azdanov.springfresh.dtos.CategoryDTO;
 import org.js.azdanov.springfresh.dtos.FavoriteListingDTO;
@@ -14,12 +19,14 @@ import org.js.azdanov.springfresh.exceptions.CategoryNotFoundException;
 import org.js.azdanov.springfresh.exceptions.ListingNotFoundException;
 import org.js.azdanov.springfresh.exceptions.UserNotFoundException;
 import org.js.azdanov.springfresh.models.Listing;
+import org.js.azdanov.springfresh.models.Payment;
 import org.js.azdanov.springfresh.models.User;
 import org.js.azdanov.springfresh.models.UserFavoriteListing;
 import org.js.azdanov.springfresh.models.UserVisitedListing;
 import org.js.azdanov.springfresh.repositories.AreaRepository;
 import org.js.azdanov.springfresh.repositories.CategoryRepository;
 import org.js.azdanov.springfresh.repositories.ListingRepository;
+import org.js.azdanov.springfresh.repositories.PaymentRepository;
 import org.js.azdanov.springfresh.repositories.UserFavoriteListingRepository;
 import org.js.azdanov.springfresh.repositories.UserRepository;
 import org.js.azdanov.springfresh.repositories.UserVisitedListingRepository;
@@ -40,6 +47,8 @@ public class ListingServiceImpl implements ListingService {
   public final ListingRepository listingRepository;
   public final UserFavoriteListingRepository userFavoriteListingRepository;
   public final UserVisitedListingRepository userVisitedListingRepository;
+  private final PaymentRepository paymentRepository;
+  private final CacheManager cacheManager;
 
   @Override
   public Page<ListingDTO> getByAreaAndCategory(
@@ -146,7 +155,7 @@ public class ListingServiceImpl implements ListingService {
 
   @Override
   @Transactional
-  public ListingDTO createListing(CreateListingForm listingForm) {
+  public ListingDTO createListing(ListingForm listingForm) {
     var user =
         userRepository
             .findByEmail(listingForm.getUserEmail())
@@ -179,10 +188,9 @@ public class ListingServiceImpl implements ListingService {
     return new ListingDTO(listing);
   }
 
-  //  @CacheEvict(value = {CATEGORY_LISTING}, key = "#result.area().slug()")
   @Override
   @Transactional
-  public ListingDTO updateListing(CreateListingForm listingForm) {
+  public ListingDTO updateListing(ListingForm listingForm) {
     var listing =
         listingRepository.findById(listingForm.getId()).orElseThrow(ListingNotFoundException::new);
 
@@ -209,6 +217,24 @@ public class ListingServiceImpl implements ListingService {
     listing = listingRepository.save(listing);
 
     return new ListingDTO(listing);
+  }
+
+  @Override
+  @Transactional
+  public void handleFreeListing(Integer listingId) {
+    var listing = listingRepository.findById(listingId).orElseThrow(ListingNotFoundException::new);
+
+    var payment = new Payment();
+    payment.setPrice(BigDecimal.ZERO);
+    payment.setListing(listing);
+
+    listing.setLive(true);
+    listing.setCreatedAt(LocalDateTime.now());
+
+    paymentRepository.save(payment);
+    listingRepository.save(listing);
+
+    cacheManager.getCache(CATEGORY_LISTING).clear();
   }
 
   private void initUserVisitedListing(Integer listingId, String email) {

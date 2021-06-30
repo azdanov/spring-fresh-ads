@@ -25,54 +25,54 @@
   <div class="text-center">
     <div class="form-register">
 
-      <form method="post" th:action="@{/register}" th:object="${user}">
+      <form method="post" th:action="@{/register}" th:object="${registerUserForm}">
         <h1 class="h3 mb-3 fw-normal" th:text="#{please-register}">Please register</h1>
 
         <div class="form-floating mb-2">
-          <input class="form-control" id="name" name="name" placeholder="Jane Doe"
-                 th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
-                 th:value="*{name}" type="text">
-          <label for="name" th:text="#{name}">Name</label>
-          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('name')}"
-               th:text="${#strings.listJoin(#fields.errors('name'), ' ')}">
+          <input class="form-control" placeholder="Jane Doe"
+                 th:errorclass="is-invalid"
+                 th:field="*{name}" type="text">
+          <label th:for="name" th:text="#{name}">Name</label>
+          <div class="invalid-feedback mb-1" th:errors="*{name}"
+               th:if="${#fields.hasErrors('name')}">
             Field validation error message(s).
           </div>
         </div>
 
         <div class="form-floating mb-2">
-          <input class="form-control" id="email" name="email" placeholder="name@example.com"
-                 th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
-                 th:value="*{email}" type="email">
-          <label for="email" th:text="#{email-address}">Email Address</label>
-          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('email')}"
-               th:text="${#strings.listJoin(#fields.errors('email'), ' ')}">
+          <input class="form-control" placeholder="name@example.com"
+                 th:errorclass="is-invalid"
+                 th:field="*{email}" type="email">
+          <label th:for="email" th:text="#{email-address}">Email Address</label>
+          <div class="invalid-feedback mb-1" th:errors="*{email}"
+               th:if="${#fields.hasErrors('email')}">
             Field validation error message(s).
           </div>
         </div>
 
         <div class="form-floating mb-2">
-          <input class="form-control" id="password" name="password"
-                 th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}" th:placeholder="#{password}"
-                 type="password">
-          <label for="password" th:text="#{password}">Password</label>
-          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('password')}"
-               th:text="${#strings.listJoin(#fields.errors('password'), ' ')}">
+          <input class="form-control" th:errorclass="is-invalid" th:field="*{password}"
+                 th:placeholder="#{password}" type="password">
+          <label th:for="password" th:text="#{password}">Password</label>
+          <div class="invalid-feedback mb-1" th:errors="*{password}"
+               th:if="${#fields.hasErrors('password')}">
             Field validation error message(s).
           </div>
         </div>
 
         <div class="form-floating mb-2">
-          <input class="form-control" id="passwordRepeated" name="passwordRepeated"
-                 th:classappend="${#fields.hasErrors('passwordRepeated') ? 'is-invalid' : ''}"
+          <input class="form-control" th:errorclass="is-invalid" th:field="*{passwordRepeated}"
                  th:placeholder="#{confirm-password}" type="password">
-          <label for="passwordRepeated" th:text="#{confirm-password}">Confirm Password</label>
-          <div class="invalid-feedback mb-1" th:if="${#fields.hasErrors('passwordRepeated')}"
-               th:text="${#strings.listJoin(#fields.errors('passwordRepeated'), ' ')}">
+          <label th:for="passwordRepeated" th:text="#{confirm-password}">Confirm Password</label>
+          <div class="invalid-feedback mb-1" th:errors="*{passwordRepeated}"
+               th:if="${#fields.hasErrors('passwordRepeated')}">
             Field validation error message(s).
           </div>
         </div>
 
-        <button class="w-100 btn btn-lg btn-primary mt-2" th:text="#{register}" type="submit">Register</button>
+        <button class="w-100 btn btn-lg btn-primary mt-2"
+                th:text="#{register}" type="submit">Register
+        </button>
       </form>
     </div>
   </div>

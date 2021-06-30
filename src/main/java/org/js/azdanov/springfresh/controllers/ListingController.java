@@ -85,8 +85,8 @@ public class ListingController {
 
     model.addAttribute("listing", listing);
 
-    if (!model.containsAttribute("contact")) {
-      model.addAttribute("contact", new ListingContactForm());
+    if (!model.containsAttribute("listingContactForm")) {
+      model.addAttribute("listingContactForm", new ListingContactForm());
     }
 
     return "listings/show";
@@ -97,7 +97,7 @@ public class ListingController {
       @PathVariable String areaSlug,
       @PathVariable String categorySlug,
       @PathVariable Integer listingId,
-      @Valid @ModelAttribute("contact") ListingContactForm formData,
+      @Valid @ModelAttribute("listingContactForm") ListingContactForm listingContactForm,
       BindingResult bindingResult,
       RedirectAttributes redirectAttributes,
       @AuthenticationPrincipal UserDetails userDetails,
@@ -106,15 +106,15 @@ public class ListingController {
 
     if (bindingResult.hasErrors()) {
       redirectAttributes.addFlashAttribute(
-          "org.springframework.validation.BindingResult.contact", bindingResult);
-      redirectAttributes.addFlashAttribute("contact", formData);
+          "org.springframework.validation.BindingResult.listingContactForm", bindingResult);
+      redirectAttributes.addFlashAttribute("listingContactForm", listingContactForm);
       return "redirect:/%s/categories/%s/listings/%d".formatted(areaSlug, categorySlug, listingId);
     }
 
     var listingURI = getListingURI(uriComponentsBuilder, areaSlug, categorySlug, listingId);
     ListingDTO listing = listingService.getById(listingId);
     contactService.sendMessage(
-        listing, formData.getMessage(), userDetails.getUsername(), listingURI);
+        listing, listingContactForm.getMessage(), userDetails.getUsername(), listingURI);
 
     redirectAttributes.addFlashAttribute(
         "toastSuccess",

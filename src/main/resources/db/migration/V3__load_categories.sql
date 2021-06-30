@@ -40,3 +40,6 @@ VALUES (1, 'Community', 'community', 0.00, NOW(), NOW(), NULL, 1, 30, 0),
 UPDATE categories
 SET usable = TRUE
 WHERE tree_level > 0;
+
+update categories
+set price = floor(random() * 10);
