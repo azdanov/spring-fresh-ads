@@ -27,8 +27,12 @@
                th:text="#{about}">About</a></li>
       </ul>
 
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-        <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
+      <form method="get" th:action="@{/search}" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+        <div class="input-group input-group-sm">
+          <input aria-describedby="search-button" th:aria-label="#{search}" class="form-control"
+                 name="query" type="search" th:value="${query}?:''">
+          <button class="btn btn-outline-secondary" id="search-button" th:text="#{search}" type="submit">Search</button>
+        </div>
       </form>
 
       <div class="col-md-3 text-end" sec:authorize="!isAuthenticated()">
@@ -54,7 +58,9 @@
           <li><a class="dropdown-item"
                  th:href="@{/listings/visited}"
                  th:text="#{listings.visited-listings}">Visited listings</a></li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           <li><a class="dropdown-item"
                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" th:href="@{/logout}"
                  th:text="#{logout}">Logout</a></li>

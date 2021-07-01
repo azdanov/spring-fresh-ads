@@ -24,6 +24,26 @@
 </th:block>
 
 <!--/*@thymesVar id="listing" type="org.js.azdanov.springfresh.dtos.ListingDTO"*/-->
+<th:block th:fragment="search(listing)" th:with="url=${#httpServletRequest.requestURI}">
+  <h5>
+    <a class="text-decoration-none link-secondary"
+       th:href="@{{url}/{id}(url=${url}, id=${listing.id})}"
+       th:text="|${listing.title} #{in} ${listing.area.name}|">
+    </a>
+  </h5>
+  <p class="mb-1" th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(listing.body),'\n','&lt;br /&gt;'))}">
+    Description</p>
+  <ul class="list-inline">
+    <li class="list-inline-item"
+        th:text="${#temporals.format(listing.createdAt, 'dd/MM/yyyy HH:mm')}">Created
+    </li>
+    <li class="list-inline-item"
+        th:text="${listing.user.name}">User
+    </li>
+  </ul>
+</th:block>
+
+<!--/*@thymesVar id="listing" type="org.js.azdanov.springfresh.dtos.ListingDTO"*/-->
 <th:block th:fragment="user(listing)" th:with="url=${#httpServletRequest.requestURI}">
   <h5>
     <a class="text-decoration-none link-secondary"

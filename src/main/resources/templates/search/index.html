@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layouts/main}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="#{search}">Search</title>
+</head>
+<body>
+
+<main layout:fragment="page-content">
+  <div class="card">
+    <div class="card-body">
+      <div class="container">
+        <div class="mb-3">
+          <h4 th:text="#{search}">Search</h4>
+
+          <hr>
+          <th:block th:if="${listings.isEmpty}">
+            <p th:text="#{listings.no-listings-found}">No listings found.</p>
+          </th:block>
+          <th:block th:if="${!listings.isEmpty}">
+            <th:block th:each="listing : ${listings}">
+              <div th:replace="listings/fragments/listing :: search(listing=${listing})"></div>
+            </th:block>
+          </th:block>
+        </div>
+
+        <th:block th:if="${listings.totalPages > 1}">
+          <div th:replace="fragments/pagination :: controls(page=${listings})"></div>
+        </th:block>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

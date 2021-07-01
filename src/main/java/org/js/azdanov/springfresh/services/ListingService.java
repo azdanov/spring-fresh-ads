@@ -40,4 +40,6 @@ public interface ListingService {
   void handleFreeListing(Integer listingId);
 
   void delete(Integer listingId);
+
+  Page<ListingDTO> findByQuery(String query, Pageable pageable);
 }

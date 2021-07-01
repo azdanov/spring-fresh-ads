@@ -250,6 +250,13 @@ public class ListingServiceImpl implements ListingService {
     listingRepository.deleteById(listingId);
   }
 
+  @Override
+  public Page<ListingDTO> findByQuery(String query, Pageable pageable) {
+    Page<Listing> listings = listingRepository.findForQuery(query, pageable);
+
+    return getListingDTOPage(listings);
+  }
+
   private void initUserVisitedListing(Integer listingId, String email) {
     Listing listing =
         listingRepository.findById(listingId).orElseThrow(ListingNotFoundException::new);
