@@ -23,6 +23,51 @@
   </ul>
 </th:block>
 
+<!--/*@thymesVar id="listing" type="org.js.azdanov.springfresh.dtos.ListingDTO"*/-->
+<th:block th:fragment="user(listing)" th:with="url=${#httpServletRequest.requestURI}">
+  <h5>
+    <a class="text-decoration-none link-secondary"
+       th:href="@{{area}/categories/{category}/listings/{id}(area=${listing.area.slug}, category=${listing.category.slug}, id=${listing.id})}"
+       th:if="${listing.active}"
+       th:text="|${listing.title} #{in} ${listing.area.name}|">
+    </a>
+    <a class="text-decoration-none link-secondary pe-none"
+       th:href="@{{url}/{id}/edit(url=${url}, id=${listing.id})}"
+       th:if="${!listing.active}"
+       th:text="|${listing.title} #{in} ${listing.area.name}|">
+    </a>
+  </h5>
+  <ul class="list-inline mb-1">
+    <li class="list-inline-item"
+        th:text="${#temporals.format(listing.createdAt, 'dd/MM/yyyy HH:mm')}">Created
+    </li>
+    <li class="list-inline-item">
+      <span class="badge rounded-pill bg-success" th:if="${listing.active}" th:text="#{active}">Active</span>
+      <span class="badge rounded-pill bg-danger" th:if="${!listing.active}" th:text="#{inactive}">Inactive</span>
+      <span class="badge rounded-pill bg-warning text-dark" th:if="${listing.payment == null}" th:text="#{unpaid}">Unpaid</span>
+    </li>
+  </ul>
+  <ul class="list-inline">
+    <li class="list-inline-item">
+      <a class="text-decoration-none"
+         th:href="@{{url}/{id}/edit(url=${url}, id=${listing.id})}"
+         th:text="#{edit}">Edit
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="text-decoration-none"
+         th:href="@{/listings/{listingId}(listingId=${listing.id})}"
+         th:onclick="'event.preventDefault(); if(confirm(\''+#{confirm}+'\')) { document.getElementById(\'listing-remove-form-'+${listing.id}+'\').submit() }'"
+         th:text="#{remove}">
+        Remove</a>
+      <form class="d-none"
+            th:action="@{/listings/{listingId}(listingId=${listing.id})}"
+            th:id="'listing-remove-form-' + ${listing.id}"
+            th:method="DELETE"></form>
+    </li>
+  </ul>
+</th:block>
+
 <!--/*@thymesVar id="favoriteListing" type="org.js.azdanov.springfresh.dtos.FavoriteListingDTO"*/-->
 <th:block th:fragment="favorite(favoriteListing)" th:with="listing=${favoriteListing.listing}">
   <h5>
@@ -76,7 +121,7 @@
     <li class="list-inline-item"
         th:text="|#{viewed} ${#temporals.format(visitedListing.updatedAt, 'dd/MM/yyyy HH:mm')}|">Viewed
     </li>
-    <li class="list-inline-item"th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
+    <li class="list-inline-item" th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
     </li>
   </ul>
 </th:block>

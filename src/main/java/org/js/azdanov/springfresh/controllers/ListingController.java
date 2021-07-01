@@ -68,9 +68,9 @@ public class ListingController {
       @AuthenticationPrincipal UserDetails userDetails) {
     ListingDTO listing = listingService.getById(listingId);
 
-    if (!listing.live()) {
+    if (!listing.active()) {
       throw new ResponseStatusException(
-          HttpStatus.NOT_FOUND, "Listing %d is not live".formatted(listingId));
+          HttpStatus.NOT_FOUND, "Listing %d is not active".formatted(listingId));
     }
 
     if (userDetails != null) {

@@ -61,7 +61,7 @@
 
             <div class="col-md-6">
               <label class="form-label" th:for="categoryId" th:text="#{category}">Category</label>
-              <select class="form-select" th:disabled="*{live}"
+              <select class="form-select" th:disabled="*{paid}"
                       th:errorclass="is-invalid"
                       th:field="*{categoryId}">
                 <option disabled hidden selected value="0"></option>

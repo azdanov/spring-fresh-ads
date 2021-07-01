@@ -26,10 +26,10 @@ public interface UserVisitedListingRepository
           "select l from UserVisitedListing l"
               + " join fetch l.user lu join fetch l.listing ll"
               + " join fetch ll.category join fetch ll.area"
-              + " where lu.email = :email and ll.live = true",
+              + " where lu.email = :email and ll.active = true",
       countQuery =
           "select count(l) from UserVisitedListing l"
               + " left join l.user lu left join l.listing ll"
-              + " where lu.email = :email and ll.live = true")
+              + " where lu.email = :email and ll.active = true")
   Page<UserVisitedListing> findVisitedListings(String email, Pageable pageable);
 }

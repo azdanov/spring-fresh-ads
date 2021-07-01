@@ -38,6 +38,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             c ->
                 c.mvcMatchers(
                         HttpMethod.GET,
+                        "/listings",
                         "/listings/visited",
                         "/listings/favorites",
                         "/listings/create",
@@ -56,6 +57,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             c ->
                 c.mvcMatchers(
                         HttpMethod.DELETE,
+                        "/listings/{listingId}",
                         "/listings/{listingId}/favorites",
                         "/{areaSlug}/categories/{categorySlug}/listings/{listingId}/favorites")
                     .authenticated())

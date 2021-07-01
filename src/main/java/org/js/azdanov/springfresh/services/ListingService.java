@@ -13,6 +13,8 @@ public interface ListingService {
   Page<ListingDTO> getByAreaAndCategory(
       AreaDTO areaDTO, CategoryDTO categoryDTO, Pageable pageable);
 
+  Page<ListingDTO> getByUserEmail(String email, Pageable pageable);
+
   ListingDTO getById(Integer listingId);
 
   boolean belongsTo(Integer listingId, String email);
@@ -36,4 +38,6 @@ public interface ListingService {
   ListingDTO updateListing(ListingForm listingForm);
 
   void handleFreeListing(Integer listingId);
+
+  void delete(Integer listingId);
 }

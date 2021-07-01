@@ -61,6 +61,13 @@ public class ListingServiceImpl implements ListingService {
   }
 
   @Override
+  public Page<ListingDTO> getByUserEmail(String email, Pageable pageable) {
+    Page<Listing> listings = listingRepository.findAllFor(email, pageable);
+
+    return getListingDTOPage(listings);
+  }
+
+  @Override
   public ListingDTO getById(Integer listingId) {
     return listingRepository
         .findByIdWithAreaAndCategoryAndUser(listingId)
@@ -203,7 +210,7 @@ public class ListingServiceImpl implements ListingService {
         area.isUsable(), "createListing area(id=%d) must be usable".formatted(area.getId()));
     listing.setArea(area);
 
-    if (!listing.isLive()) {
+    if (!listing.isActive()) {
       var category =
           categoryRepository
               .findById(listingForm.getCategoryId())
@@ -228,13 +235,19 @@ public class ListingServiceImpl implements ListingService {
     payment.setPrice(BigDecimal.ZERO);
     payment.setListing(listing);
 
-    listing.setLive(true);
+    listing.setActive(true);
     listing.setCreatedAt(LocalDateTime.now());
 
     paymentRepository.save(payment);
     listingRepository.save(listing);
 
     cacheManager.getCache(CATEGORY_LISTING).clear();
+  }
+
+  @Override
+  @Transactional
+  public void delete(Integer listingId) {
+    listingRepository.deleteById(listingId);
   }
 
   private void initUserVisitedListing(Integer listingId, String email) {

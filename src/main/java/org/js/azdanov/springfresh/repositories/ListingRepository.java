@@ -13,12 +13,23 @@ public interface ListingRepository extends PagingAndSortingRepository<Listing, I
       value =
           "select l from Listing l"
               + " left join fetch l.user left join fetch l.area"
-              + " where l.area.id in :areaIds and l.category.id = :categoryId and l.live = true",
+              + " where l.area.id in :areaIds and l.category.id = :categoryId and l.active = true",
       countQuery =
           "select count(l) from Listing l"
               + " left join l.user left join l.area"
-              + " where l.area.id in :areaIds and l.category.id = :categoryId and l.live = true")
+              + " where l.area.id in :areaIds and l.category.id = :categoryId and l.active = true")
   Page<Listing> findAllActiveFor(List<Integer> areaIds, Integer categoryId, Pageable pageable);
+
+  @Query(
+      value =
+          "select l from Listing l"
+              + " left join fetch l.user left join fetch l.area"
+              + " where l.user.email = :email",
+      countQuery =
+          "select count(l) from Listing l"
+              + " left join l.user left join l.area"
+              + " where l.user.email = :email")
+  Page<Listing> findAllFor(String email, Pageable pageable);
 
   @Query(
       "select l from Listing l"

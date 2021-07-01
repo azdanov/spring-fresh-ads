@@ -53,7 +53,7 @@ public class Listing {
 
   private String body;
 
-  private boolean live = Boolean.FALSE;
+  private boolean active = Boolean.FALSE;
 
   private boolean deleted = Boolean.FALSE;
 
@@ -104,8 +104,8 @@ public class Listing {
   @Override
   public String toString() {
     return MessageFormat.format(
-        "{0}(id = {1}, title = {2}, body = {3}, live = {4}, deleted = {5},"
+        "{0}(id = {1}, title = {2}, body = {3}, active = {4}, deleted = {5},"
             + " createdAt = {6}, updatedAt = {7})",
-        getClass().getSimpleName(), id, title, body, live, deleted, createdAt, updatedAt);
+        getClass().getSimpleName(), id, title, body, active, deleted, createdAt, updatedAt);
   }
 }

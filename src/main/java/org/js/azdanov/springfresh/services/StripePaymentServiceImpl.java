@@ -115,7 +115,7 @@ public class StripePaymentServiceImpl implements StripePaymentService {
     payment.setPrice(BigDecimal.valueOf(paymentIntent.getAmount()).movePointLeft(2));
     payment.setListing(listing);
 
-    listing.setLive(true);
+    listing.setActive(true);
     listing.setCreatedAt(LocalDateTime.now());
 
     paymentRepository.save(payment);

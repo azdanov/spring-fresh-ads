@@ -14,10 +14,10 @@ public interface UserFavoriteListingRepository
           "select l from UserFavoriteListing l"
               + " join fetch l.user lu join fetch l.listing ll"
               + " join fetch ll.category join fetch ll.area"
-              + " where lu.email = :email and ll.live = true",
+              + " where lu.email = :email and ll.active = true",
       countQuery =
           "select count(l) from UserFavoriteListing l"
               + " left join l.user lu left join l.listing ll"
-              + " where lu.email = :email and ll.live = true")
+              + " where lu.email = :email and ll.active = true")
   Page<UserFavoriteListing> findFavoriteListings(String email, Pageable pageable);
 }

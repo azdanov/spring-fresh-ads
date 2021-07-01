@@ -87,7 +87,7 @@ CREATE TABLE listings
     category_id INTEGER,
     title       TEXT,
     body        TEXT,
-    live        BOOLEAN,
+    active      BOOLEAN,
     deleted     BOOLEAN,
     created_at  TIMESTAMP WITHOUT TIME ZONE,
     updated_at  TIMESTAMP WITHOUT TIME ZONE,
@@ -119,11 +119,12 @@ CREATE TABLE user_visited_listing
     CONSTRAINT fk_user_visited_listing_on_listing FOREIGN KEY (user_id) REFERENCES listings (id) ON DELETE CASCADE
 );
 
-CREATE TABLE payment
+CREATE TABLE payments
 (
     listing_id INTEGER        NOT NULL,
     payment_id TEXT,
     price      NUMERIC(12, 2) NOT NULL,
+    deleted    BOOLEAN,
     created_at TIMESTAMP WITHOUT TIME ZONE,
     updated_at TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_payment PRIMARY KEY (listing_id),

@@ -43,6 +43,9 @@
         </button>
         <ul aria-labelledby="user-menu" class="dropdown-menu text-small">
           <li><a class="dropdown-item"
+                 th:href="@{/listings}"
+                 th:text="#{listings.user-listings}">User listings</a></li>
+          <li><a class="dropdown-item"
                  th:href="@{/listings/create}"
                  th:text="#{listing.create-listing}">Create listing</a></li>
           <li><a class="dropdown-item"
@@ -51,9 +54,7 @@
           <li><a class="dropdown-item"
                  th:href="@{/listings/visited}"
                  th:text="#{listings.visited-listings}">Visited listings</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
+          <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item"
                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" th:href="@{/logout}"
                  th:text="#{logout}">Logout</a></li>

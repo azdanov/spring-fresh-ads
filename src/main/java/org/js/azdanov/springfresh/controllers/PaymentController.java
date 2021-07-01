@@ -71,7 +71,7 @@ public class PaymentController {
   }
 
   private void canContinue(Integer listingId, UserDetails userDetails, ListingDTO listing) {
-    Assert.state(!listing.live(), "listing is already live");
+    Assert.state(!listing.active(), "listing is already active");
     Assert.state(listing.payment() == null, "listing is already paid");
 
     if (!listing.user().email().equals(userDetails.getUsername())) {

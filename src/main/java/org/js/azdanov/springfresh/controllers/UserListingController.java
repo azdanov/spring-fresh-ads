@@ -9,11 +9,16 @@ import org.js.azdanov.springfresh.services.AreaService;
 import org.js.azdanov.springfresh.services.CategoryService;
 import org.js.azdanov.springfresh.services.ListingService;
 import org.js.azdanov.springfresh.services.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +30,23 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequiredArgsConstructor
-public class CreateListingController {
+public class UserListingController {
   public final UserService userService;
   public final AreaService areaService;
   public final ListingService listingService;
   private final CategoryService categoryService;
+
+  @GetMapping("/listings")
+  public String index(
+      Model model,
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+    Page<ListingDTO> listings = listingService.getByUserEmail(userDetails.getUsername(), pageable);
+    model.addAttribute("listings", listings);
+
+    return "listings/index-user";
+  }
 
   @GetMapping("/listings/create")
   public String create(Model model) {
@@ -121,6 +138,19 @@ public class CreateListingController {
     }
 
     return "redirect:listings/%d/edit".formatted(listing.id());
+  }
+
+  @DeleteMapping("/listings/{listingId}")
+  public String destroy(
+      @PathVariable Integer listingId, @AuthenticationPrincipal UserDetails userDetails) {
+    if (!listingService.belongsTo(listingId, userDetails.getUsername())) {
+      throw new ForbiddenException(
+          "delete Listing(%d) by user(%s)".formatted(listingId, userDetails.getUsername()));
+    }
+
+    listingService.delete(listingId);
+
+    return "redirect:/listings";
   }
 
   private String getListingURI(UriComponentsBuilder uriComponentsBuilder, ListingDTO listing) {

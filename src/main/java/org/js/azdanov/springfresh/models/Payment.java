@@ -15,15 +15,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
-@Table(name = "payment")
+@Table(name = "payments")
 @Entity
+@SQLDelete(sql = "UPDATE payments SET deleted = true WHERE listing_id=?")
+@Where(clause = "deleted=false")
 @Getter
 @Setter
 public class Payment {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   private String paymentId;
@@ -33,6 +36,8 @@ public class Payment {
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId
   private Listing listing;
+
+  private boolean deleted = Boolean.FALSE;
 
   @CreationTimestamp private LocalDateTime createdAt;
   @UpdateTimestamp private LocalDateTime updatedAt;

@@ -20,7 +20,7 @@ public class ListingForm {
   @Size(max = 2000)
   private String body;
 
-  private boolean live;
+  private boolean active;
   private boolean paid;
   private String userEmail;
   @Positive private int areaId;
@@ -31,7 +31,7 @@ public class ListingForm {
     id = listing.id();
     title = listing.title();
     body = listing.body();
-    live = listing.live();
+    active = listing.active();
     userEmail = listing.user().email();
     areaId = listing.area().id();
     categoryId = listing.category().id();

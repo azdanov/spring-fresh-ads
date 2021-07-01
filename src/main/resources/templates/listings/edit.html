@@ -15,7 +15,7 @@
         <div class="mb-3">
           <div class="row justify-content-between align-items-center">
             <h4 class="col-auto" th:text="#{listing.edit-listing}">Edit listing</h4>
-            <a class="col-auto" th:href="${listingURI}" th:if="${listingForm.live}" th:text="#{listing.go-to}">
+            <a class="col-auto" th:href="${listingURI}" th:if="${listingForm.active}" th:text="#{listing.go-to}">
               Go to listing</a>
           </div>
           <hr>
@@ -23,8 +23,8 @@
           <form class="form-create row g-3" th:action="@{/listings}" th:method="put" th:object="${listingForm}">
             <input th:field="*{id}" type="hidden">
             <input th:field="*{userEmail}" type="hidden">
-            <input th:field="*{live}" type="hidden">
-            <input th:field="*{categoryId}" th:if="*{live}" type="hidden">
+            <input th:field="*{active}" type="hidden">
+            <input th:field="*{categoryId}" th:if="*{paid}" type="hidden">
             <div class="mb-2">
               <label th:for="title" th:text="#{title}">Title</label>
               <input class="form-control"
@@ -67,7 +67,7 @@
 
             <div class="col-md-6">
               <label class="form-label" th:for="categoryId" th:text="#{category}">Category</label>
-              <select class="form-select" th:disabled="*{live}"
+              <select class="form-select" th:disabled="*{paid}"
                       th:errorclass="is-invalid"
                       th:field="*{categoryId}">
                 <option disabled hidden selected value="0"></option>
