@@ -12,7 +12,6 @@ import org.js.azdanov.springfresh.services.AreaService;
 import org.js.azdanov.springfresh.services.CategoryService;
 import org.js.azdanov.springfresh.services.ContactService;
 import org.js.azdanov.springfresh.services.ListingService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,9 +40,6 @@ public class ListingController {
   private final CategoryService categoryService;
   private final ContactService contactService;
   private final MessageSource messageSource;
-
-  @Value("${live}")
-  private boolean live;
 
   @GetMapping("/{areaSlug}/categories/{categorySlug}/listings")
   public String index(
@@ -118,11 +114,8 @@ public class ListingController {
     var listingURI = getListingURI(uriComponentsBuilder, areaSlug, categorySlug, listingId);
     ListingDTO listing = listingService.getById(listingId);
 
-    // Disable mail for live testing purpose
-    if (!live) {
-      contactService.sendMessage(
-          listing, listingContactForm.getMessage(), userDetails.getUsername(), listingURI);
-    }
+    contactService.sendMessage(
+        listing, listingContactForm.getMessage(), userDetails.getUsername(), listingURI);
 
     redirectAttributes.addFlashAttribute(
         "toastSuccess",

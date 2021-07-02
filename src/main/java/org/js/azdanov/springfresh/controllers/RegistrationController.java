@@ -8,7 +8,6 @@ import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.events.UserRegisteredEvent;
 import org.js.azdanov.springfresh.services.UserService;
 import org.js.azdanov.springfresh.services.VerificationTokenService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,9 +28,6 @@ public class RegistrationController {
   private final UserService userService;
   private final VerificationTokenService tokenService;
   private final ApplicationEventPublisher eventPublisher;
-
-  @Value("${live}")
-  private boolean live;
 
   @GetMapping("/register")
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -61,12 +57,9 @@ public class RegistrationController {
     var token = tokenService.createVerificationTokenForUser(registeredUser);
     var confirmationURI = getConfirmationURI(uriComponentsBuilder, token);
 
-    // Disable mail for live testing purpose
-    if (live) {
-      eventPublisher.publishEvent(
-          new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
-      redirectAttributes.addFlashAttribute("confirmationURI", confirmationURI);
-    }
+    eventPublisher.publishEvent(
+        new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
+    redirectAttributes.addFlashAttribute("confirmationURI", confirmationURI);
 
     redirectAttributes.addFlashAttribute("registrationSuccess", true);
     return "redirect:/login";
