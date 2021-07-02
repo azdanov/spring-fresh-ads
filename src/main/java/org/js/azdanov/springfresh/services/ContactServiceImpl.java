@@ -33,8 +33,6 @@ public class ContactServiceImpl implements ContactService {
   @SneakyThrows
   private MimeMessage constructEmailMessage(
       ListingDTO listing, String message, String senderEmail, String listingURI) {
-    // TODO: It's possible to get receiver preferences for language if it is implemented in personal
-    //   configuration
     String subject =
         messages.getMessage(
             "contact.email.subject", new String[] {senderEmail, listing.title()}, Locale.ENGLISH);

@@ -4,12 +4,58 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 >
 <head>
-  <title>Main</title>
+  <title th:text="#{about}">About</title>
 </head>
 <body>
 
 <main layout:fragment="page-content">
-  <h1>About</h1>
+  <div class="card w-75 mx-auto">
+    <div class="card-body">
+      <div class="container">
+        <div class="mb-3">
+          <h4 th:text="#{about}">About</h4>
+          <hr>
+          <p>
+            This app is powered by
+            <a class="text-decoration-none link-secondary" href="https://www.oracle.com/java/technologies/">Java</a>.
+            The backend is made in
+            <a class="text-decoration-none link-secondary"
+               href="https://spring.io/projects/spring-framework/">Spring</a>,
+            <a class="text-decoration-none link-secondary" href="https://spring.io/projects/spring-boot">Spring Boot</a>,
+            <a class="text-decoration-none link-secondary" href="https://spring.io/projects/spring-data-jpa/">Spring
+              Data JPA</a>
+            and secured by
+            <a class="text-decoration-none link-secondary" href="https://spring.io/projects/spring-security/">Spring
+              Security</a>.
+            The frontend is created with
+            <a class="text-decoration-none link-secondary" href="https://www.thymeleaf.org/">Thymeleaf</a> and
+            <a class="text-decoration-none link-secondary" href="https://getbootstrap.com/">Bootstrap 5</a>
+            with minimal
+            <a class="text-decoration-none link-secondary"
+               href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+            >JavaScript</a>, apart from
+            <a class="text-decoration-none link-secondary" href="https://stripe.com">Stripe</a> payment integration.
+          </p>
+          <p>If you have any questions, you can write to me
+            <a class="text-decoration-none link-secondary" href="mailto:anton.zdanov@pm.me">anton.zdanov@pm.me</a> or
+            check out the source code at
+            <a class="text-decoration-none link-secondary" href="https://github.com/azdanov/spring-fresh-ads">github.com/azdanov/spring-fresh-ads</a>
+          </p>
+          <p>
+          <pre class="alert alert-light">
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ <span class="text-success">:: Spring Boot ::</span>                (v2.5.2)
+        </pre>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 </body>

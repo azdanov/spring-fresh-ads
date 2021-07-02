@@ -42,7 +42,6 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   // Needs cache to prevent NestedJ n+1
-  // TODO: Find a way to reduce n+1
   @Cacheable(
       cacheNames = {CATEGORY_LISTING},
       key = "#areaDTO.slug")

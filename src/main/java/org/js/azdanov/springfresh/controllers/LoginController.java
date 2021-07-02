@@ -23,8 +23,6 @@ public class LoginController {
       logError(request);
     }
 
-    // TODO: Add email and remember-me restore for form
-
     if (userDetails == null) {
       return "auth/login";
     } else {

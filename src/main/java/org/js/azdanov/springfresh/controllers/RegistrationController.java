@@ -8,6 +8,7 @@ import org.js.azdanov.springfresh.dtos.UserDTO;
 import org.js.azdanov.springfresh.events.UserRegisteredEvent;
 import org.js.azdanov.springfresh.services.UserService;
 import org.js.azdanov.springfresh.services.VerificationTokenService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,9 @@ public class RegistrationController {
   private final VerificationTokenService tokenService;
   private final ApplicationEventPublisher eventPublisher;
 
+  @Value("${live}")
+  private boolean live;
+
   @GetMapping("/register")
   public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
     if (userDetails == null) {
@@ -48,8 +52,6 @@ public class RegistrationController {
       RedirectAttributes redirectAttributes,
       UriComponentsBuilder uriComponentsBuilder) {
 
-    // TODO: Add password reset
-
     if (bindingResult.hasErrors()) {
       model.addAttribute("registerUserForm", registerUserForm);
       return "auth/register";
@@ -59,8 +61,12 @@ public class RegistrationController {
     var token = tokenService.createVerificationTokenForUser(registeredUser);
     var confirmationURI = getConfirmationURI(uriComponentsBuilder, token);
 
-    eventPublisher.publishEvent(
-        new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
+    // Disable mail for live testing purpose
+    if (live) {
+      eventPublisher.publishEvent(
+          new UserRegisteredEvent(registeredUser, request.getLocale(), confirmationURI));
+      redirectAttributes.addFlashAttribute("confirmationURI", confirmationURI);
+    }
 
     redirectAttributes.addFlashAttribute("registrationSuccess", true);
     return "redirect:/login";
@@ -78,8 +84,6 @@ public class RegistrationController {
   @GetMapping("/register/confirm")
   public String confirmEmail(@RequestParam String token, RedirectAttributes redirectAttributes) {
     var tokenVerificationStatus = tokenService.validateVerificationToken(token);
-
-    // TODO: Resend token if account is disabled on login OR if token is expired
 
     switch (tokenVerificationStatus) {
       case TOKEN_VERIFIED -> {

@@ -14,8 +14,9 @@
   </th:block>
   <!--/*@thymesVar id="registrationSuccess" type="java.lang.Boolean"*/-->
   <th:block th:if="${registrationSuccess}">
-    <div class="alert alert-primary" role="alert" th:fragment="registration-success" th:text="#{registration.success}">
-      Registration success.
+    <div class="alert alert-primary" role="alert" th:fragment="registration-success">
+      <th:block th:text="#{registration.success}">Registration success.</th:block>
+      <a th:if="${confirmationURI}" th:href="${confirmationURI}" th:text="${confirmationURI}">Confirmation url</a>
     </div>
   </th:block>
   <!--/*@thymesVar id="confirmationSuccess" type="java.lang.Boolean"*/-->
