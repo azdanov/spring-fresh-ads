@@ -25,10 +25,10 @@
 </th:block>
 
 <!--/*@thymesVar id="listing" type="org.js.azdanov.springfresh.dtos.ListingDTO"*/-->
-<th:block th:fragment="search(listing)" th:with="url=${#httpServletRequest.requestURI}">
+<th:block th:fragment="search(listing)">
   <h5>
     <a class="text-decoration-none link-secondary"
-       th:href="@{{url}/{id}(url=${url}, id=${listing.id})}"
+       th:href="@{{area}/categories/{category}/listings/{id}(area=${listing.area.slug}, category=${listing.category.slug}, id=${listing.id})}"
        th:text="|${listing.title} #{in} ${listing.area.name}|">
     </a>
   </h5>

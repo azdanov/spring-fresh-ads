@@ -19,7 +19,7 @@ public interface UserVisitedListingRepository
   Optional<UserVisitedListing> findByUserEmailAndListingId(String email, Integer listingId);
 
   @Query("select sum(l.visited) from UserVisitedListing l where l.listing.id = :listingId")
-  int sumAllByListingId(Integer listingId);
+  Optional<Integer> sumAllByListingId(Integer listingId);
 
   @Query(
       value =

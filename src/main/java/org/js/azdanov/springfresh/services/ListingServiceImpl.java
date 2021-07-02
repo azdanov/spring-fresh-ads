@@ -138,7 +138,7 @@ public class ListingServiceImpl implements ListingService {
 
   @Override
   public int sumAllUserVisits(Integer listingId) {
-    return userVisitedListingRepository.sumAllByListingId(listingId);
+    return userVisitedListingRepository.sumAllByListingId(listingId).orElse(0);
   }
 
   @Override
