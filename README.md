@@ -1,6 +1,6 @@
 # Spring Fresh Ads
 
-A classified ads site made in Spring Boot hosted on Heroku.
+A classified ads site made in Spring Boot hosted on Heroku with Email support, Stripe for payments and i18n English/Russian languages.
 
 A project where I explored Thymeleaf and minimal JavaScript approach to building classical applications with Spring.
 
