@@ -10,7 +10,7 @@ This app is powered by [Java 16](https://www.oracle.com/java/technologies/). The
 
 | ![image](https://user-images.githubusercontent.com/6123841/124307274-45df1500-db70-11eb-9e8e-3c6129bb5201.png) | ![image](https://user-images.githubusercontent.com/6123841/124308490-06192d00-db72-11eb-888f-b22acdaad288.png) | ![image](https://user-images.githubusercontent.com/6123841/124309189-05cd6180-db73-11eb-8d15-edfc3da1fde6.png) |
 | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| ![img.png](img.png)                                                                                            | ![image](https://user-images.githubusercontent.com/6123841/124308561-1d581a80-db72-11eb-9999-b9f8841cd752.png) | ![image](https://user-images.githubusercontent.com/6123841/124309347-4036fe80-db73-11eb-996f-755bd7e1d6af.png) |
+| ![image](https://user-images.githubusercontent.com/6123841/124308194-94d97a00-db71-11eb-8944-73c9417769a1.png) | ![image](https://user-images.githubusercontent.com/6123841/124308561-1d581a80-db72-11eb-9999-b9f8841cd752.png) | ![image](https://user-images.githubusercontent.com/6123841/124309347-4036fe80-db73-11eb-996f-755bd7e1d6af.png) |
 
 ## Dev
 
