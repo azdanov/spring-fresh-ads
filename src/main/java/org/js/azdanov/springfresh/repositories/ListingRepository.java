@@ -43,7 +43,8 @@ public interface ListingRepository extends PagingAndSortingRepository<Listing, I
           + " where l.id = :listingId and l.user.email = :email")
   boolean listingBelongsTo(Integer listingId, String email);
 
-  @Query("select l from Listing l" +
-      " where search_function(title, :query) = true or search_function(body, :query) = true")
+  @Query(
+      "select l from Listing l"
+          + " where search_function(title, :query) = true or search_function(body, :query) = true")
   Page<Listing> findForQuery(String query, Pageable pageable);
 }

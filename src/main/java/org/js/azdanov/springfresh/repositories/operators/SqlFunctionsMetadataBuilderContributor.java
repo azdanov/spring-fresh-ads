@@ -10,7 +10,6 @@ public class SqlFunctionsMetadataBuilderContributor implements MetadataBuilderCo
   public void contribute(MetadataBuilder metadataBuilder) {
     metadataBuilder.applySqlFunction(
         "search_function",
-        new SQLFunctionTemplate(
-            BooleanType.INSTANCE, "to_tsvector(?1) @@ plainto_tsquery(?2)"));
+        new SQLFunctionTemplate(BooleanType.INSTANCE, "to_tsvector(?1) @@ plainto_tsquery(?2)"));
   }
 }

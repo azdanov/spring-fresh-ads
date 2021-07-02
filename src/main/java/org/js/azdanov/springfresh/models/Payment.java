@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -26,8 +24,7 @@ import org.hibernate.annotations.Where;
 @Getter
 @Setter
 public class Payment {
-  @Id
-  private Integer id;
+  @Id private Integer id;
 
   private String paymentId;
 
