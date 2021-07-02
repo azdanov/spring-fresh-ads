@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>listing</title>
 </head>
@@ -141,7 +142,7 @@
     <li class="list-inline-item"
         th:text="|#{viewed} ${#temporals.format(visitedListing.updatedAt, 'dd/MM/yyyy HH:mm')}|">Viewed
     </li>
-    <li class="list-inline-item" th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
+    <li sec:authorize="isAuthenticated()" class="list-inline-item" th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
     </li>
   </ul>
 </th:block>
