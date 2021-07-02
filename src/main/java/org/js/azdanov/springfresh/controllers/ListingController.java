@@ -77,11 +77,11 @@ public class ListingController {
       boolean hasUserFavorited =
           listingService.hasUserFavorited(listingId, userDetails.getUsername());
       model.addAttribute("hasUserFavorited", hasUserFavorited);
-
       listingService.incrementUserVisit(listingId, userDetails.getUsername());
-      int totalVisits = listingService.sumAllUserVisits(listingId);
-      model.addAttribute("totalVisits", totalVisits);
     }
+
+    int totalVisits = listingService.sumAllUserVisits(listingId);
+    model.addAttribute("totalVisits", totalVisits);
 
     model.addAttribute("listing", listing);
 
