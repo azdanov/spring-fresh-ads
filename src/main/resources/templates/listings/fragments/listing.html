@@ -142,7 +142,7 @@
     <li class="list-inline-item"
         th:text="|#{viewed} ${#temporals.format(visitedListing.updatedAt, 'dd/MM/yyyy HH:mm')}|">Viewed
     </li>
-    <li sec:authorize="isAuthenticated()" class="list-inline-item" th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
+    <li th:if="${visitedListing.visited}" class="list-inline-item" th:text="#{listing.viewed-times(${visitedListing.visited})}">Viewed 0 times
     </li>
   </ul>
 </th:block>
