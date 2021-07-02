@@ -2,7 +2,7 @@
 
 A classified ads site made in Spring Boot hosted on Heroku with Email support, Stripe for payments and i18n English/Russian languages.
 
-A project where I explored Thymeleaf and minimal JavaScript approach to building classical applications with Spring.
+A project where I explored Thymeleaf and minimal JavaScript approach to building classical applications with Spring. For Areas and Categories a [Nested Set model](https://en.wikipedia.org/wiki/Nested_set_model) was used thanks to [NestedJ](https://github.com/eXsio/nestedj).
 
 This app is powered by [Java 16](https://www.oracle.com/java/technologies/). The backend is made in [Spring](https://spring.io/projects/spring-framework/), [Spring Boot](https://spring.io/projects/spring-boot), [Spring Data JPA](https://spring.io/projects/spring-data-jpa/) and secured by [Spring Security](https://spring.io/projects/spring-security/). The frontend is created with [Thymeleaf](https://www.thymeleaf.org/) and [Bootstrap 5](https://getbootstrap.com/) with minimal [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript), apart from [Stripe](https://stripe.com) payment integration.
 
