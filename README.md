@@ -1,6 +1,6 @@
 # Spring Fresh Ads
 
-A classified ads site made in Spring Boot hosted on Heroku with Email support, Stripe for payments and i18n English/Russian languages.
+A classified ads site made in Spring Boot hosted on Heroku with Email support, Stripe for payments and i18n English/Russian languages. [Live version.](https://spring-fresh-ads.herokuapp.com/)
 
 A project where I explored Thymeleaf and minimal JavaScript approach to building classical applications with Spring. For Areas and Categories a [Nested Set model](https://en.wikipedia.org/wiki/Nested_set_model) was used thanks to [NestedJ](https://github.com/eXsio/nestedj).
 
